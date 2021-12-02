@@ -9,8 +9,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using CinemaBookingSystem.Infrastructure;
 
 namespace CinemaBookingSystem.Api
 {
@@ -26,12 +29,27 @@ namespace CinemaBookingSystem.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", policy => policy.AllowAnyOrigin());
+            });
+            services.AddInfrastructure(Configuration);
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CinemaBookingSystem.Api", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { 
+                    Title = "CinemaBookingSystem.Api",
+                    Version = "v1",
+                    Description = "Engineering work",
+                    Contact = new OpenApiContact()
+                    {
+                        Email = "pitreksaja99@gmail.com",
+                        Name = "Piotr Saja",
+                        Url = new Uri("https://github.com/PiotrSaja")
+                    }
+                });
             });
+            services.AddHealthChecks();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,9 +62,13 @@ namespace CinemaBookingSystem.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CinemaBookingSystem.Api v1"));
             }
 
+            app.UseHealthChecks("/hc");
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 
