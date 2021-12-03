@@ -43,7 +43,7 @@ namespace CinemaBookingSystem.Api
                     Description = "Engineering work",
                     Contact = new OpenApiContact()
                     {
-                        Email = "pitreksaja99@gmail.com",
+                        Email = "piotreksaja99@gmail.com",
                         Name = "Piotr Saja",
                         Url = new Uri("https://github.com/PiotrSaja")
                     }
