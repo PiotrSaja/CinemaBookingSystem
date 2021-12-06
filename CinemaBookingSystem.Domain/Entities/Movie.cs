@@ -9,7 +9,7 @@ namespace CinemaBookingSystem.Domain.Entities
 {
     public class Movie : AuditableEntity
     {
-        public string Name { get; set; }
+        public string Title { get; set; }
         public int Year { get; set; }
         public DateTime Released { get; set; }
         public int Duration { get; set; }

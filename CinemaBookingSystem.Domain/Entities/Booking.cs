@@ -14,7 +14,7 @@ namespace CinemaBookingSystem.Domain.Entities
         public PersonalName PersonalName { get; set; }
         public int NumberOfSeats { get; set; }
         public BookingStatus BookingStatus { get; set; }
-        public int ShowId { get; set; }
+        public int SeanceId { get; set; }
         public Seance Seance { get; set; }
         public ICollection<SeanceSeat> SeanceSeats { get; set; }
         public string UserId { get; set; }

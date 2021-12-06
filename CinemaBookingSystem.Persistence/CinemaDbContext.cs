@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,6 +34,8 @@ namespace CinemaBookingSystem.Persistence
             modelBuilder.Entity<Actor>().OwnsOne(a => a.ActorName);
             modelBuilder.Entity<Booking>().OwnsOne(b=>b.PersonalName);
             modelBuilder.Entity<Cinema>().OwnsOne(c=>c.Address);
+
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {

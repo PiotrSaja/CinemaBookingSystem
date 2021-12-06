@@ -13,7 +13,7 @@ namespace CinemaBookingSystem.Domain.Entities
         public double Price { get; set; }
         public int? BookingId { get; set; }
         public Booking Booking { get; set; }
-        public int? ShowId { get; set; }
+        public int? SeanceId { get; set; }
         public Seance Seance { get; set; }
         public int? CinemaSeatId { get; set; }
         public CinemaSeat CinemaSeat { get; set; }
