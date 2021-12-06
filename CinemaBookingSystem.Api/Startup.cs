@@ -14,6 +14,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using CinemaBookingSystem.Infrastructure;
+using CinemaBookingSystem.Persistence;
 
 namespace CinemaBookingSystem.Api
 {
@@ -34,6 +35,8 @@ namespace CinemaBookingSystem.Api
                 options.AddPolicy("AllowAll", policy => policy.AllowAnyOrigin());
             });
             services.AddInfrastructure(Configuration);
+            services.AddPersistence(Configuration);
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
