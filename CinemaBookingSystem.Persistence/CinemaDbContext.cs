@@ -5,17 +5,23 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CinemaBookingSystem.Application.Common.Interfaces;
 using CinemaBookingSystem.Domain.Common;
 using CinemaBookingSystem.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Converters;
 
 namespace CinemaBookingSystem.Persistence
 {
     public class CinemaDbContext : DbContext
     {
+        private readonly IDateTime _dateTime;
         public CinemaDbContext(DbContextOptions<CinemaDbContext> options) : base(options)
         {
-            
+        }
+        public CinemaDbContext(DbContextOptions<CinemaDbContext> options, IDateTime dateTime) : base(options)
+        {
+            _dateTime = dateTime;
         }
 
         public DbSet<Actor> Actors { get; set; }
@@ -45,17 +51,17 @@ namespace CinemaBookingSystem.Persistence
                 {
                     case EntityState.Added:
                         entry.Entity.CreatedBy = String.Empty;
-                        entry.Entity.Created = DateTime.Now;
+                        entry.Entity.Created = _dateTime.Now;
                         entry.Entity.StatusId = 1;
                         break;
                     case EntityState.Modified:
                         entry.Entity.ModifiedBy = String.Empty;
-                        entry.Entity.Modified = DateTime.Now;
+                        entry.Entity.Modified = _dateTime.Now;
                         break;
                     case EntityState.Deleted:
                         entry.Entity.ModifiedBy = String.Empty;
-                        entry.Entity.Modified = DateTime.Now;
-                        entry.Entity.Inactivated = DateTime.Now;
+                        entry.Entity.Modified = _dateTime.Now;
+                        entry.Entity.Inactivated = _dateTime.Now;
                         entry.Entity.InactivatedBy = String.Empty;
                         entry.Entity.StatusId = 0;
                         entry.State = EntityState.Modified;

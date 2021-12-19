@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CinemaBookingSystem.Application.Common.Interfaces;
 using CinemaBookingSystem.Infrastructure.ExternalAPI.OMDB;
+using CinemaBookingSystem.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,6 +23,9 @@ namespace CinemaBookingSystem.Infrastructure
                 options.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
             }).ConfigurePrimaryHttpMessageHandler(sp => new HttpClientHandler());
             services.AddScoped<IOmdbClient, OmdbClient>();
+
+            services.AddTransient<IDateTime, DateTimeService>();
+
             return services;
         }
     }

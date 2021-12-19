@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CinemaBookingSystem.Application\CinemaBookingSystem.Application.csproj" />
     <ProjectReference Include="..\CinemaBookingSystem.Domain\CinemaBookingSystem.Domain.csproj" />
   </ItemGroup>
 
