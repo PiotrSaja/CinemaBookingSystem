@@ -10,15 +10,16 @@ namespace CinemaBookingSystem.Domain.Entities
     public class Movie : AuditableEntity
     {
         public string Title { get; set; }
-        public int Year { get; set; }
         public DateTime Released { get; set; }
         public int Duration { get; set; }
         public ICollection<Genre> Genres { get; set; }
-        public string Director { get; set; }
+        public int DirectorId { get; set; }
+        public Director Director { get; set; }
         public ICollection<Actor> Actors { get; set; }
         public string Plot { get; set; }
         public string Country { get; set; }
+        public string Language { get; set; }
         public string PosterPath { get; set; }
-        public double ImdbRating { get; set; }
+        public string ImdbRating { get; set; }
     }
 }

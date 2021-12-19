@@ -16,12 +16,11 @@ namespace CinemaBookingSystem.Persistence.Configurations
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Title).IsRequired().HasMaxLength(256);
-            builder.Property(x => x.Year).IsRequired();
             builder.Property(x => x.Released).IsRequired();
             builder.Property(x => x.Duration).IsRequired();
-            builder.Property(x => x.Director).IsRequired();
             builder.Property(x => x.Plot).IsRequired();
             builder.Property(x => x.Country).IsRequired().HasMaxLength(256);
+            builder.Property(x => x.Language).IsRequired();
             builder.Property(x => x.PosterPath).IsRequired();
             builder.Property(x => x.ImdbRating).IsRequired();
         }

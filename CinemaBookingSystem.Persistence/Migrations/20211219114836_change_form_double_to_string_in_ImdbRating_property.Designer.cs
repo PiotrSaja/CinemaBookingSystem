@@ -4,35 +4,22 @@ using CinemaBookingSystem.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CinemaBookingSystem.Persistence.Migrations
 {
     [DbContext(typeof(CinemaDbContext))]
-    partial class CinemaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211219114836_change_form_double_to_string_in_ImdbRating_property")]
+    partial class change_form_double_to_string_in_ImdbRating_property
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("ActorMovie", b =>
-                {
-                    b.Property<int>("ActorsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MoviesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ActorsId", "MoviesId");
-
-                    b.HasIndex("MoviesId");
-
-                    b.ToTable("ActorMovie");
-                });
 
             modelBuilder.Entity("CinemaBookingSystem.Domain.Entities.Actor", b =>
                 {
@@ -59,10 +46,15 @@ namespace CinemaBookingSystem.Persistence.Migrations
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("MovieId")
+                        .HasColumnType("int");
+
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MovieId");
 
                     b.ToTable("Actors");
                 });
@@ -251,39 +243,6 @@ namespace CinemaBookingSystem.Persistence.Migrations
                     b.ToTable("CinemaSeats");
                 });
 
-            modelBuilder.Entity("CinemaBookingSystem.Domain.Entities.Director", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("Inactivated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("InactivatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("Modified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StatusId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Directors");
-                });
-
             modelBuilder.Entity("CinemaBookingSystem.Domain.Entities.Genre", b =>
                 {
                     b.Property<int>("Id")
@@ -312,6 +271,9 @@ namespace CinemaBookingSystem.Persistence.Migrations
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("MovieId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(128)
@@ -321,6 +283,8 @@ namespace CinemaBookingSystem.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MovieId");
 
                     b.ToTable("Genres");
                 });
@@ -343,8 +307,9 @@ namespace CinemaBookingSystem.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DirectorId")
-                        .HasColumnType("int");
+                    b.Property<string>("Director")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Duration")
                         .HasColumnType("int");
@@ -357,10 +322,6 @@ namespace CinemaBookingSystem.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("InactivatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Language")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("Modified")
@@ -388,9 +349,10 @@ namespace CinemaBookingSystem.Persistence.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.HasKey("Id");
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
 
-                    b.HasIndex("DirectorId");
+                    b.HasKey("Id");
 
                     b.ToTable("Movies");
                 });
@@ -548,38 +510,12 @@ namespace CinemaBookingSystem.Persistence.Migrations
                     b.ToTable("SeanceSeats");
                 });
 
-            modelBuilder.Entity("GenreMovie", b =>
-                {
-                    b.Property<int>("GenresId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MoviesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("GenresId", "MoviesId");
-
-                    b.HasIndex("MoviesId");
-
-                    b.ToTable("GenreMovie");
-                });
-
-            modelBuilder.Entity("ActorMovie", b =>
-                {
-                    b.HasOne("CinemaBookingSystem.Domain.Entities.Actor", null)
-                        .WithMany()
-                        .HasForeignKey("ActorsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CinemaBookingSystem.Domain.Entities.Movie", null)
-                        .WithMany()
-                        .HasForeignKey("MoviesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("CinemaBookingSystem.Domain.Entities.Actor", b =>
                 {
+                    b.HasOne("CinemaBookingSystem.Domain.Entities.Movie", null)
+                        .WithMany("Actors")
+                        .HasForeignKey("MovieId");
+
                     b.OwnsOne("CinemaBookingSystem.Domain.ValueObjects.PersonalName", "ActorName", b1 =>
                         {
                             b1.Property<int>("ActorId")
@@ -707,43 +643,11 @@ namespace CinemaBookingSystem.Persistence.Migrations
                     b.Navigation("CinemaHall");
                 });
 
-            modelBuilder.Entity("CinemaBookingSystem.Domain.Entities.Director", b =>
+            modelBuilder.Entity("CinemaBookingSystem.Domain.Entities.Genre", b =>
                 {
-                    b.OwnsOne("CinemaBookingSystem.Domain.ValueObjects.PersonalName", "DirectorName", b1 =>
-                        {
-                            b1.Property<int>("DirectorId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int")
-                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                            b1.Property<string>("FirstName")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<string>("LastName")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.HasKey("DirectorId");
-
-                            b1.ToTable("Directors");
-
-                            b1.WithOwner()
-                                .HasForeignKey("DirectorId");
-                        });
-
-                    b.Navigation("DirectorName");
-                });
-
-            modelBuilder.Entity("CinemaBookingSystem.Domain.Entities.Movie", b =>
-                {
-                    b.HasOne("CinemaBookingSystem.Domain.Entities.Director", "Director")
-                        .WithMany("Movies")
-                        .HasForeignKey("DirectorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Director");
+                    b.HasOne("CinemaBookingSystem.Domain.Entities.Movie", null)
+                        .WithMany("Genres")
+                        .HasForeignKey("MovieId");
                 });
 
             modelBuilder.Entity("CinemaBookingSystem.Domain.Entities.Payment", b =>
@@ -797,21 +701,6 @@ namespace CinemaBookingSystem.Persistence.Migrations
                     b.Navigation("Seance");
                 });
 
-            modelBuilder.Entity("GenreMovie", b =>
-                {
-                    b.HasOne("CinemaBookingSystem.Domain.Entities.Genre", null)
-                        .WithMany()
-                        .HasForeignKey("GenresId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CinemaBookingSystem.Domain.Entities.Movie", null)
-                        .WithMany()
-                        .HasForeignKey("MoviesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("CinemaBookingSystem.Domain.Entities.Booking", b =>
                 {
                     b.Navigation("SeanceSeats");
@@ -832,9 +721,11 @@ namespace CinemaBookingSystem.Persistence.Migrations
                     b.Navigation("SeanceSeats");
                 });
 
-            modelBuilder.Entity("CinemaBookingSystem.Domain.Entities.Director", b =>
+            modelBuilder.Entity("CinemaBookingSystem.Domain.Entities.Movie", b =>
                 {
-                    b.Navigation("Movies");
+                    b.Navigation("Actors");
+
+                    b.Navigation("Genres");
                 });
 
             modelBuilder.Entity("CinemaBookingSystem.Domain.Entities.Seance", b =>

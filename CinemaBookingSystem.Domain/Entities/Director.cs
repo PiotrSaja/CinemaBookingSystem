@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CinemaBookingSystem.Domain.Common;
+using CinemaBookingSystem.Domain.ValueObjects;
 
 namespace CinemaBookingSystem.Domain.Entities
 {
-    public class Genre : AuditableEntity
+    public class Director : AuditableEntity
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public ICollection<Movie> Movies { get; set;}
+        public PersonalName DirectorName { get; set; }
+        public ICollection<Movie> Movies { get; set; }
     }
 }

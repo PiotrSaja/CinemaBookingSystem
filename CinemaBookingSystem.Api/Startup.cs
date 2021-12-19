@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using CinemaBookingSystem.Application;
 using CinemaBookingSystem.Infrastructure;
 using CinemaBookingSystem.Persistence;
 
@@ -34,6 +35,7 @@ namespace CinemaBookingSystem.Api
             {
                 options.AddPolicy("AllowAll", policy => policy.AllowAnyOrigin());
             });
+            services.AddApplication();
             services.AddInfrastructure(Configuration);
             services.AddPersistence(Configuration);
 

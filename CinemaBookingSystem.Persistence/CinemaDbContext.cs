@@ -13,7 +13,7 @@ using Newtonsoft.Json.Converters;
 
 namespace CinemaBookingSystem.Persistence
 {
-    public class CinemaDbContext : DbContext
+    public class CinemaDbContext : DbContext, ICinemaDbContext
     {
         private readonly IDateTime _dateTime;
         public CinemaDbContext(DbContextOptions<CinemaDbContext> options) : base(options)
@@ -29,6 +29,7 @@ namespace CinemaBookingSystem.Persistence
         public DbSet<Cinema> Cinemas { get; set; }
         public DbSet<CinemaHall> CinemaHalls { get; set; }
         public DbSet<CinemaSeat> CinemaSeats { get; set; }
+        public DbSet<Director> Directors { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Payment> Payments{ get; set; }
@@ -40,6 +41,7 @@ namespace CinemaBookingSystem.Persistence
             modelBuilder.Entity<Actor>().OwnsOne(a => a.ActorName);
             modelBuilder.Entity<Booking>().OwnsOne(b=>b.PersonalName);
             modelBuilder.Entity<Cinema>().OwnsOne(c=>c.Address);
+            modelBuilder.Entity<Director>().OwnsOne(d => d.DirectorName);
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
