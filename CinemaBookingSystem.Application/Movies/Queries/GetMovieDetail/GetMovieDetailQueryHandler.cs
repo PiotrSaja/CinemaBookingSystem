@@ -24,7 +24,7 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMovieDetail
 
         public async Task<MovieDetailVm> Handle(GetMovieDetailQuery request, CancellationToken cancellationToken)
         {
-            var movie = await _context.Movies.Where(p => p.Id == request.MovieId && p.StatusId != 0)
+            var movie = await _context.Movies.Where(p => p.Id == request.MovieId)
                 .Include(x=>x.Genres)
                 .Include(x=>x.Director)
                 .Include(x=>x.Actors)
