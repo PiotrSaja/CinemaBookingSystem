@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CinemaBookingSystem.Application.Common.Exceptions;
 using CinemaBookingSystem.Application.Common.Interfaces;
 using CinemaBookingSystem.Domain.Entities;
 using MediatR;
@@ -26,7 +28,7 @@ namespace CinemaBookingSystem.Application.Movies.Commands.DeleteMovie
 
             if (movie == null)
             {
-                throw new Exception();
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "Not exists in database, check your id");
             }
 
             _context.Movies.Remove(movie);

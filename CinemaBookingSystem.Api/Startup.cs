@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using CinemaBookingSystem.Application;
 using CinemaBookingSystem.Infrastructure;
 using CinemaBookingSystem.Persistence;
+using CinemaBookingSystem.Api.Extensions;
 
 namespace CinemaBookingSystem.Api
 {
@@ -68,6 +69,8 @@ namespace CinemaBookingSystem.Api
             }
 
             app.UseHealthChecks("/hc");
+
+            app.ConfigureCustomExceptionMiddleware();
 
             app.UseHttpsRedirection();
 

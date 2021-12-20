@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using CinemaBookingSystem.Application.Common.Exceptions;
 using CinemaBookingSystem.Application.Common.Interfaces;
 using CinemaBookingSystem.Application.Common.Models;
 using CinemaBookingSystem.Domain.Entities;
@@ -29,7 +31,14 @@ namespace CinemaBookingSystem.Application.Movies.Commands.CreateMovieFromExterna
         {
             var importedMovieJson = await _omdbClient.GetMovieById(request.ImdbId, cancellationToken);
 
+            
+
             var movieFromApi = JsonSerializer.Deserialize<MovieModel>(importedMovieJson);
+
+            if (movieFromApi.Title == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "Not exists in omdb database.");
+            }
 
             //
             string[] releasedDate = movieFromApi.Released.Split(" ");
