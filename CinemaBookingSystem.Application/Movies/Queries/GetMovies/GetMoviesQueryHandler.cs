@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using CinemaBookingSystem.Application.Common.Extensions;
 using CinemaBookingSystem.Application.Common.Interfaces;
 using CinemaBookingSystem.Domain.Entities;
 using MediatR;
@@ -28,16 +29,24 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMovies
             var movies = await _context.Movies
                 .Where(x => x.StatusId != 0)
                 .Include(x => x.Genres)
-                .ToListAsync(cancellationToken);
+                .AsNoTracking()
+                .PaginateAsync(request.PageIndex,request.PageSize, cancellationToken);
+
+            if (request.PageSize < 1 && request.PageIndex < 1) { throw new Exception(); }
+            if (request.PageSize < 1) { throw new Exception(); }
+            if (request.PageIndex < 1) { throw new Exception(); }
 
             if (movies == null)
             {
                 throw new Exception();
             }
-            var moviesDto = _mapper.Map<List<Movie>, List<MoviesDto>>(movies);
+            var moviesDto = _mapper.Map<List<Movie>, List<MoviesDto>>(movies.Items.ToList());
 
             var moviesVm = new MoviesVm()
             {
+                CurrentPage = movies.CurrentPage,
+                TotalItems = movies.TotalItems,
+                TotalPages = movies.TotalPages,
                 Items =  moviesDto
             };
 

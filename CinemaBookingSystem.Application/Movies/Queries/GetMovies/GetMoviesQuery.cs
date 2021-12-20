@@ -9,5 +9,7 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMovies
 {
     public class GetMoviesQuery : IRequest<MoviesVm>
     {
+        public int PageIndex { get; set; }
+        public int PageSize { get; set; }
     }
 }

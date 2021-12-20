@@ -23,10 +23,12 @@ namespace CinemaBookingSystem.Api.Controllers
         [HttpGet(Name = "GetMovies")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetMovies()
+        public async Task<IActionResult> GetMovies([FromQuery] int page, [FromQuery] int limit)
         {
             var vm = await Mediator.Send(new GetMoviesQuery()
             {
+                PageIndex = page,
+                PageSize = limit
             });
             return Ok(vm);
         }
