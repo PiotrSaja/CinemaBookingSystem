@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MediatR;
 
 namespace CinemaBookingSystem.Application.Cinemas.Queries.GetCinemaDetail
 {
-    internal class GetCinemaDetailQuery
+    public class GetCinemaDetailQuery : IRequest<CinemaDetailVm>
     {
+        public int CinemaId { get; set; }
     }
 }
