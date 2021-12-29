@@ -21,5 +21,6 @@ namespace CinemaBookingSystem.Domain.Entities
         public string Language { get; set; }
         public string PosterPath { get; set; }
         public string ImdbRating { get; set; }
+        public ICollection<Seance> Seances { get; set; }
     }
 }

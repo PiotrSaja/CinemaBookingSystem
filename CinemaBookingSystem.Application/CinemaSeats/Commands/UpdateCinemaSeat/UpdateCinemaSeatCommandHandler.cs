@@ -40,7 +40,7 @@ namespace CinemaBookingSystem.Application.CinemaSeats.Commands.UpdateCinemaSeat
             }
 
             cinemaSeatToUpdate.SeatNumber = request.SeatNumber;
-            cinemaSeatToUpdate.Row = request.SeatRow;
+            cinemaSeatToUpdate.Row = request.Row;
             cinemaSeatToUpdate.SeatType = request.SeatType;
             cinemaSeatToUpdate.CinemaHallId = request.CinemaHallId;
 
