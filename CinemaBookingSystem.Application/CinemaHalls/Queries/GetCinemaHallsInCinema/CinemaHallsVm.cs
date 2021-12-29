@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace CinemaBookingSystem.Application.CinemaHalls.Queries.GetCinemaHallsInCinema
 {
-    internal class CinemaHallsVm
+    public class CinemaHallsVm
     {
+        public ICollection<CinemaHallDto> Items;
     }
 }
