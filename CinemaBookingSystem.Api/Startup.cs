@@ -17,6 +17,10 @@ using CinemaBookingSystem.Application;
 using CinemaBookingSystem.Infrastructure;
 using CinemaBookingSystem.Persistence;
 using CinemaBookingSystem.Api.Extensions;
+using CinemaBookingSystem.Api.Services;
+using CinemaBookingSystem.Application.Common.Interfaces;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 
 namespace CinemaBookingSystem.Api
@@ -55,6 +59,10 @@ namespace CinemaBookingSystem.Api
                         ValidateAudience = false
                     };
                 });
+
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            //UserService DI
+            services.TryAddScoped(typeof(IUserService), typeof(UserService));
 
             services.AddSwaggerGen(c =>
             {

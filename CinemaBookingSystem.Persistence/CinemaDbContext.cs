@@ -16,12 +16,14 @@ namespace CinemaBookingSystem.Persistence
     public class CinemaDbContext : DbContext, ICinemaDbContext
     {
         private readonly IDateTime _dateTime;
+        private readonly IUserService _userService;
         public CinemaDbContext(DbContextOptions<CinemaDbContext> options) : base(options)
         {
         }
-        public CinemaDbContext(DbContextOptions<CinemaDbContext> options, IDateTime dateTime) : base(options)
+        public CinemaDbContext(DbContextOptions<CinemaDbContext> options, IDateTime dateTime, IUserService userService) : base(options)
         {
             _dateTime = dateTime;
+            _userService = userService;
         }
 
         public DbSet<Actor> Actors { get; set; }
@@ -52,19 +54,19 @@ namespace CinemaBookingSystem.Persistence
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        entry.Entity.CreatedBy = String.Empty;
+                        entry.Entity.CreatedBy = _userService.Email;
                         entry.Entity.Created = _dateTime.Now;
                         entry.Entity.StatusId = 1;
                         break;
                     case EntityState.Modified:
-                        entry.Entity.ModifiedBy = String.Empty;
+                        entry.Entity.ModifiedBy = _userService.Email;
                         entry.Entity.Modified = _dateTime.Now;
                         break;
                     case EntityState.Deleted:
-                        entry.Entity.ModifiedBy = String.Empty;
+                        entry.Entity.ModifiedBy = _userService.Email;
                         entry.Entity.Modified = _dateTime.Now;
                         entry.Entity.Inactivated = _dateTime.Now;
-                        entry.Entity.InactivatedBy = String.Empty;
+                        entry.Entity.InactivatedBy = _userService.Email;
                         entry.Entity.StatusId = 0;
                         entry.State = EntityState.Modified;
                         break;

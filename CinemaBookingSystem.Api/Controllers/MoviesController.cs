@@ -24,7 +24,6 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(vm);
         }
-        [Authorize]
         [HttpGet(Name = "GetMovies")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -40,7 +39,7 @@ namespace CinemaBookingSystem.Api.Controllers
         [HttpPost("omdb")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> CreateMovieFromExternalApi(CreateMovieFromExternalApiCommand command)
         {
             var result = await Mediator.Send(command);

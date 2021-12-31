@@ -18,18 +18,20 @@ namespace CinemaBookingSystem.Application.Bookings.Queries.GetUserBookings
     {
         private readonly ICinemaDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IUserService _userService;
 
-        public GetUserBookingsQueryHandler(ICinemaDbContext context, IMapper mapper)
+        public GetUserBookingsQueryHandler(ICinemaDbContext context, IMapper mapper, IUserService userService)
         {
             _context = context;
             _mapper = mapper;
+            _userService = userService;
         }
 
         public async Task<BookingsVm> Handle(GetUserBookingsQuery request, CancellationToken cancellationToken)
         {
             var bookings = await _context.Bookings
                 .Where(x => x.StatusId != 0
-                            && x.UserId == "")
+                            && x.UserId == _userService.Id)
                 .OrderBy(x => x.Created)
                 .Include(x => x.Seance)
                 .ThenInclude(x => x.Movie)

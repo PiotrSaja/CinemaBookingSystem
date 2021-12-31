@@ -13,12 +13,6 @@ namespace CinemaBookingSystem.Application.Bookings.Commands.CreateBooking
     {
         private readonly ICinemaDbContext _context;
 
-        public CreateBookingCommandHandler(ICinemaDbContext context)
-        {
-            _context = context;
-        }
-
-
         public Task<int> Handle(CreateBookingCommand request, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
