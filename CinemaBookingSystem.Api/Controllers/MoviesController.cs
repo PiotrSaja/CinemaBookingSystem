@@ -17,12 +17,14 @@ namespace CinemaBookingSystem.Api.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<MovieDetailVm>> GetDetails(int id)
         {
             var vm = await Mediator.Send(new GetMovieDetailQuery() { MovieId = id });
 
             return Ok(vm);
         }
+        [Authorize]
         [HttpGet(Name = "GetMovies")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
