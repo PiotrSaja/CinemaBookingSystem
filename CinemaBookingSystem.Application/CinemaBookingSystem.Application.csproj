@@ -19,4 +19,8 @@
     <ProjectReference Include="..\CinemaBookingSystem.Domain\CinemaBookingSystem.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Bookings\Commands\DeleteBooking\" />
+  </ItemGroup>
+
 </Project>
