@@ -15,8 +15,8 @@ namespace CinemaBookingSystem.Application.Bookings.Queries.GetUserBookingDetail
         public int BookingId { get; set; }
         public int NumberOfSeats { get; set; }
         public BookingStatus BookingStatus { get; set; }
-        public SeanceDto Show { get; set; }
-        public List<SeanceSeatDto> SeanceSeats { get; set; }
+        public SeanceDto Seance { get; set; }
+        public ICollection<SeanceSeatDto> SeanceSeats { get; set; }
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Booking, BookingDetailVm>()

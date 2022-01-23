@@ -11,6 +11,7 @@ namespace CinemaBookingSystem.Application.Bookings.Commands.CreateBooking
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string PhoneNumber { get; set; }
         public int SeanceId { get; set; }
         public List<int> SeanceSeatIds { get; set; }
     }

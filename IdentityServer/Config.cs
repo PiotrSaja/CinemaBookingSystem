@@ -45,6 +45,22 @@ namespace IdentityServer
                     RedirectUris = {"https://localhost:44334/swagger/oauth2-redirect.html"},
                     AllowedCorsOrigins = { "https://localhost:44334" }
                 },
+
+                new Client
+                {
+                    ClientId = "vue",
+                    ClientName = "Client for vue user",
+                    AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
+                    RequirePkce = true,
+                    RequireClientSecret = false,
+                    AllowedScopes = {"api","user","openid"},
+                    AlwaysSendClientClaims = true,
+                    AlwaysIncludeUserClaimsInIdToken = true,
+                    AllowAccessTokensViaBrowser = true,
+                    RedirectUris = {"http://localhost:8080/login"},
+                    PostLogoutRedirectUris = { "http://localhost:8080/logout" },
+                    AllowedCorsOrigins = { "http://localhost:8080" }
+                }
             };
     }
 }

@@ -27,15 +27,15 @@ namespace CinemaBookingSystem.Application.SeanceSeats.Queries.GetSeanceSeatDetai
 
         public async Task<SeanceSeatVm> Handle(GetSeanceSeatDetailQuery request, CancellationToken cancellationToken)
         {
-            var seanceSeats = await _context.SeanceSeats
+            var seanceSeat = await _context.SeanceSeats
                 .Where(x => x.StatusId != 0 && x.Id == request.SeanceSeatId)
                 .Include(x => x.CinemaSeat)
                 .Include(x => x.Seance)
                 .Include(x => x.Booking)
                 .FirstOrDefaultAsync(cancellationToken);
-            var seanceSeatsVm = _mapper.Map<SeanceSeat, SeanceSeatVm>(seanceSeats);
+            var seanceSeatsVm = _mapper.Map<SeanceSeat, SeanceSeatVm>(seanceSeat);
 
-            if (seanceSeats == null)
+            if (seanceSeat == null)
             {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "Not exists in database or seanceSeatId is incorrect");
             }

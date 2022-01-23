@@ -19,7 +19,7 @@ namespace CinemaBookingSystem.Application.Bookings.Queries.GetBookingDetail
         public BookingStatus Status { get; set; }
         public string UserId { get; set; }
         public SeanceDto Seance { get; set; }
-        public List<SeanceSeatDto> SeanceSeats { get; set; }
+        public ICollection<SeanceSeatDto> SeanceSeats { get; set; }
 
         public void Mapping(Profile profile)
         {

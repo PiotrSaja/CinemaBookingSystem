@@ -8,6 +8,6 @@ namespace CinemaBookingSystem.Application.CinemaHalls.Queries.GetCinemaHallsInCi
 {
     public class CinemaHallsVm
     {
-        public ICollection<CinemaHallDto> Items;
+        public ICollection<CinemaHallDto> Items { get; set; }
     }
 }

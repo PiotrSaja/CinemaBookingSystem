@@ -64,6 +64,10 @@ namespace CinemaBookingSystem.Api
             //UserService DI
             services.TryAddScoped(typeof(IUserService), typeof(UserService));
 
+            //SeatLockingService
+            services.TryAddSingleton<ISeatLockingService, SeatLockingService>();
+            services.AddSingleton<IHostedService, SeatLockingHostedService>();
+
             services.AddSwaggerGen(c =>
             {
                 c.AddSecurityDefinition("bearer", new OpenApiSecurityScheme()

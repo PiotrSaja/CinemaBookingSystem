@@ -595,6 +595,9 @@ namespace CinemaBookingSystem.Persistence.Migrations
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
+                            b1.Property<string>("PhoneNumber")
+                                .HasColumnType("nvarchar(max)");
+
                             b1.HasKey("ActorId");
 
                             b1.ToTable("Actors");
@@ -625,6 +628,9 @@ namespace CinemaBookingSystem.Persistence.Migrations
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("LastName")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("PhoneNumber")
                                 .HasColumnType("nvarchar(max)");
 
                             b1.HasKey("BookingId");
@@ -724,6 +730,9 @@ namespace CinemaBookingSystem.Persistence.Migrations
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
+                            b1.Property<string>("PhoneNumber")
+                                .HasColumnType("nvarchar(max)");
+
                             b1.HasKey("DirectorId");
 
                             b1.ToTable("Directors");
@@ -766,7 +775,7 @@ namespace CinemaBookingSystem.Persistence.Migrations
                         .IsRequired();
 
                     b.HasOne("CinemaBookingSystem.Domain.Entities.Movie", "Movie")
-                        .WithMany()
+                        .WithMany("Seances")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -835,6 +844,11 @@ namespace CinemaBookingSystem.Persistence.Migrations
             modelBuilder.Entity("CinemaBookingSystem.Domain.Entities.Director", b =>
                 {
                     b.Navigation("Movies");
+                });
+
+            modelBuilder.Entity("CinemaBookingSystem.Domain.Entities.Movie", b =>
+                {
+                    b.Navigation("Seances");
                 });
 
             modelBuilder.Entity("CinemaBookingSystem.Domain.Entities.Seance", b =>

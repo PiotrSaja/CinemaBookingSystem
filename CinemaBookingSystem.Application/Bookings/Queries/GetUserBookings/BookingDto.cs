@@ -16,8 +16,8 @@ namespace CinemaBookingSystem.Application.Bookings.Queries.GetUserBookings
         public DateTime CreatedDate { get; set; }
 
         public BookingStatus BookingStatus { get; set; }
-        public MovieDto Movie { get; set; }
-        public CinemaDto Cinema { get; set; }
+       
+        public SeanceDto Seance { get; set; }
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Booking, BookingDto>()

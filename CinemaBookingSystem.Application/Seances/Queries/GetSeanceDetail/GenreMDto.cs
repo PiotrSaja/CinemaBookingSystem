@@ -9,18 +9,16 @@ using CinemaBookingSystem.Domain.Entities;
 
 namespace CinemaBookingSystem.Application.Seances.Queries.GetSeanceDetail
 {
-    public class GenreDto : IMapFrom<Genre>
+    public class GenreMDto : IMapFrom<Genre>
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Genre, Movies.Queries.GetMovieDetail.GenreDto>()
+            profile.CreateMap<Genre, GenreMDto>()
                 .ForMember(d => d.Id, map => map.MapFrom(src => src.Id))
-                .ForMember(d => d.Name, map => map.MapFrom(src => src.Name))
-                .ForMember(d => d.Description, map => map.MapFrom(src => src.Description));
+                .ForMember(d => d.Name, map => map.MapFrom(src => src.Name));
         }
     }
 }

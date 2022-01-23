@@ -17,6 +17,8 @@ namespace CinemaBookingSystem.Application.Bookings.Commands.CreateBooking
             RuleFor(x => x.LastName)
                 .NotEmpty()
                 .MaximumLength(128);
+            RuleFor(x => x.PhoneNumber)
+                .NotEmpty();
             RuleFor(x => x.SeanceId)
                 .NotNull();
             RuleFor(x => x.SeanceSeatIds)

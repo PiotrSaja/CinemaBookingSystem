@@ -1,9 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using CinemaBookingSystem.Application.Movies.Commands.CreateMovieFromExternalApi;
 using CinemaBookingSystem.Application.Movies.Commands.DeleteMovie;
 using CinemaBookingSystem.Application.Movies.Commands.UpdateMovie;
 using CinemaBookingSystem.Application.Movies.Queries.GetMovieDetail;
 using CinemaBookingSystem.Application.Movies.Queries.GetMovies;
+using CinemaBookingSystem.Application.Movies.Queries.GetMoviesWithSeanceOnCurrentCinemaAndDay;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,13 +13,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace CinemaBookingSystem.Api.Controllers
 {
     [Route("api/movies")]
-    [ApiController]
     public class MoviesController : BaseController
     {
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<MovieDetailVm>> GetDetails(int id)
         {
             var vm = await Mediator.Send(new GetMovieDetailQuery() { MovieId = id });
@@ -36,6 +36,18 @@ namespace CinemaBookingSystem.Api.Controllers
             });
             return Ok(vm);
         }
+        [HttpGet("{id}/{date}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetMoviesWithShowsInCinemaOnGivenDay(int id, DateTime date)
+        {
+            var vm = await Mediator.Send(new GetMoviesWithSeanceOnCurrentCinemaAndDayQuery()
+            {
+                CinemaId = id,
+                Date = date
+            });
+            return Ok(vm);
+        }
         [HttpPost("omdb")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -49,6 +61,7 @@ namespace CinemaBookingSystem.Api.Controllers
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> DeleteMovie(int id)
         {
             var result = await Mediator.Send(new DeleteMovieCommand() { MovieId = id });
@@ -59,6 +72,7 @@ namespace CinemaBookingSystem.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> UpdateMovie(int id, UpdateMovieCommand movie)
         {
             if (id != movie.MovieId)

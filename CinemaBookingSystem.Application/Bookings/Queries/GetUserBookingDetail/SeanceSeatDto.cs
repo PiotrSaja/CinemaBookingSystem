@@ -20,7 +20,7 @@ namespace CinemaBookingSystem.Application.Bookings.Queries.GetUserBookingDetail
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<SeanceSeat, SeanceSeats.Queries.GetSeanceSeatsForSeance.SeanceSeatDto>()
+            profile.CreateMap<SeanceSeat, SeanceSeatDto>()
                 .ForMember(x => x.Id, map => map.MapFrom(src => src.Id))
                 .ForMember(x => x.SeatStatus, map => map.MapFrom(src => src.SeatStatus))
                 .ForMember(x => x.Price, map => map.MapFrom(src => src.Price))
