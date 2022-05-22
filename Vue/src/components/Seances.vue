@@ -15,27 +15,50 @@
                     @input="fetchMoviesWithShows()"
                     ></v-select>
                 </div>
-                <div class="col-md-1 col-4 text-right">
-                    Price list
+                <div class="col-md-1 col-4 text-center">
+                    <a href="#">Price list</a>
                 </div>
-                <div class="col-md-1 col-4 text-right">
-                    Maps
+                <div class="col-md-1 col-4 text-center">
+                    <a href="#">Map</a>
                 </div>
-                <div class="col-md-1 col-4 text-right">
-                    Info
+                <div class="col-md-1 col-4 text-center">
+                    <a href="#">Info</a>
                 </div>
             </div>
             <div class="row">
             </div>
             <div class="container text-white mt-5">
                 <div class="row">
-                    <div class="col-md-3 d-none d-sm-block">Now showing</div>
-                    <div class="col-md-6 col-12 text-center">
-                      <b-button class="mr-2" squared @click="prevDay()">&lt;</b-button>
+                    <div class="col-md-3 col-3 d-none d-sm-block font-weight-bold">Now showing</div>
+                    <div class="col-md-6 col-12 col-sm-12 text-center">
+                      <b-button class="mr-2" @click="prevDay()" style="border-radius: 3px">&lt;</b-button>
                       {{currentDateString}}
-                      <b-button class="ml-2" squared @click="nextDay()">&gt;</b-button>
+                      <b-button class="ml-2" @click="nextDay()" style="border-radius: 3px">&gt;</b-button>
                       </div>
-                    <div class="col-md-3 col-12 text-right">Filter</div>
+                    <div class="col-md-3 col-12 col-sm-12 text-right">
+                        <b-button v-b-toggle.collapse-3>Filter</b-button>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-md-12 text-dark">
+                    <b-collapse id="collapse-3">
+                          <b-card>
+                            <div>
+                              <h5 class="text-center">Filtering</h5>
+                              <v-select
+                              class="style-chooser"
+                              placeholder="Order by"
+                              style="width:100%"
+                              :options="sortOptions"
+                              v-model="sortType"
+                              label="name"
+                              id="value"
+                              @input="sortBy(sortType.value)"
+                              ></v-select>
+                            </div>
+                          </b-card>
+                    </b-collapse>
+                  </div>
                 </div>
             </div>
             <hr>
@@ -43,18 +66,18 @@
                 :key="movie.id"
                 :movie="movie">
                 <div class="row text-white mt-4">
-                <div class="col-md-2">
+                <div class="col-lg-3 col-xl-2">
                     <span class="movie-label" v-if="movie.imdbRating >= 7.5">Mega hit!</span>
-                    <img :src="movie.posterPath" class="image-wrapper" style="cursor: pointer;" @click="onMovieClicked(movie.id)">
+                    <img :src="movie.posterPath"  class="image-wrapper" style="cursor: pointer;" @click="onMovieClicked(movie.id)">
                 </div>
-                <div class="col-md-4">
+                <div class="col-lg-4 col-xl-4">
                     <h4 @click="onMovieClicked(movie.id)" style="cursor: pointer;">{{ movie.title}}</h4>
-                    <h6>{{ movie.imdbRating }}/10</h6>
-                    <h6>{{ movie.duration }}</h6><br>
+                    <h6>IMDb: {{ movie.imdbRating }}/10</h6>
+                    <h6>{{ movie.duration }} min.</h6><br>
                     <h6>{{ movie.plot }}</h6>
-                    </div>
-                    <div class="col-md-2"></div>
-                    <div class="col-md-4">
+                </div>
+                    <div class="col-lg-1 col-xl-2"></div>
+                    <div class="col-lg-4 col-xl-4">
                         <div class="container">
                             <div class="row mt-4">
                                 <div class="ml-2 mt-3 show-time"
@@ -84,7 +107,13 @@ export default {
           moviesWithSeances: {},
           selectedCinema: 1,
           currentDate: 0,
-          currentDateString: ''
+          currentDateString: '',
+          sortType: 'Sort By',
+          sortOptions: [
+          { name: 'Sort by: Title', value: 'title' },
+          { name: 'Sort by: Genre', value: 'genre' },
+          { name: 'Sort by: Imdb Rating', value: 'imdbRating' }
+       ]
       }
   },
   created () {
@@ -96,6 +125,7 @@ export default {
     var mockTime = '2022-01-04T00:00'
     this.currentDate = new Date(mockTime)
     this.currentDateString = this.DateToString(this.currentDate)
+    this.fetchMoviesWithShows()
   },
   methods: {
       fetchMoviesWithShows () {
@@ -108,7 +138,7 @@ export default {
       return date
     },
     nextDay () {
-      var mockTime = '2021-01-04T00:00'
+      var mockTime = '2022-01-04T00:00'
       var date = new Date(mockTime).getDate()
       if ((date + 11) > this.currentDate.getDate()) {
         this.currentDate.setDate(this.currentDate.getDate() + 1)
@@ -117,7 +147,7 @@ export default {
       }
     },
     prevDay () {
-      var mockTime = '2021-01-04T00:00'
+      var mockTime = '2022-01-04T00:00'
       var date = new Date(mockTime).getDate()
       if (date < this.currentDate.getDate()) {
       this.currentDate.setDate(this.currentDate.getDate() - 1)
@@ -136,6 +166,10 @@ export default {
     },
     onSeanceClicked (seanceId) {
       this.showSeanceDetail(seanceId)
+    },
+    sortBy (prop) {
+      console.log(prop)
+      this.moviesWithSeances.items.sort((a, b) => a[prop] < b[prop] ? -1 : 1)
     }
   },
   mounted () {
@@ -199,5 +233,47 @@ min-height: 100vh;
     left: 50%;
     transform: translateX(-50%);
     top: -3px;
+}
+@media (min-width:0px) and (max-width:767px){
+    .movie-label{
+      color: #fff;
+      background: #FF5555;
+      font-size: 13px;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 3px;
+      position: absolute;
+      left: 19%;
+      transform: translateX(-50%);
+      top: -3px;
+}
+}
+@media (min-width:768px) and (max-width:991px){
+    .movie-label{
+      color: #fff;
+      background: #FF5555;
+      font-size: 13px;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 3px;
+      position: absolute;
+      left: 14%;
+      transform: translateX(-50%);
+      top: -3px;
+}
+}
+@media (min-width:992px) and (max-width:1199px){
+    .movie-label{
+      color: #fff;
+      background: #FF5555;
+      font-size: 13px;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 3px;
+      position: absolute;
+      left: 41%;
+      transform: translateX(-50%);
+      top: -3px;
+}
 }
 </style>

@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CinemaBookingSystem.Application.Common.Exceptions;
 using CinemaBookingSystem.Application.Common.Interfaces;
+using CinemaBookingSystem.Application.Common.Interfaces.TicketBookingSystem.Application.Common.Interfaces;
 using CinemaBookingSystem.Application.Common.Models;
 using CinemaBookingSystem.Domain.Entities;
 using CinemaBookingSystem.Domain.ValueObjects;
@@ -20,11 +21,13 @@ namespace CinemaBookingSystem.Application.Movies.Commands.CreateMovieFromExterna
     {
         private readonly ICinemaDbContext _context;
         private readonly IOmdbClient _omdbClient;
+        private readonly ITmdbClient _tmdbClient;
 
-        public CreateMovieFromExternalApiCommandHandler(ICinemaDbContext context, IOmdbClient omdbClient)
+        public CreateMovieFromExternalApiCommandHandler(ICinemaDbContext context, IOmdbClient omdbClient, ITmdbClient tmdbClient)
         {
             _context = context;
             _omdbClient = omdbClient;
+            _tmdbClient = tmdbClient;
         }
 
         public async Task<int> Handle(CreateMovieFromExternalApiCommand request, CancellationToken cancellationToken)
@@ -39,6 +42,11 @@ namespace CinemaBookingSystem.Application.Movies.Commands.CreateMovieFromExterna
             {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "Not exists in omdb database.");
             }
+
+            var movieFromTmdb = await _tmdbClient.GetMovieByImdbId(request.ImdbId, CancellationToken.None);
+
+            MovieTmdbJson movieTmdbJson =
+                JsonSerializer.Deserialize<MovieTmdbJson>(movieFromTmdb);
 
             //
             string[] releasedDate = movieFromApi.Released.Split(" ");
@@ -138,6 +146,7 @@ namespace CinemaBookingSystem.Application.Movies.Commands.CreateMovieFromExterna
                 Actors = actorsList,
                 PosterPath = movieFromApi.Poster,
                 ImdbRating = movieFromApi.imdbRating,
+                BackgroundImagePath = "https://image.tmdb.org/t/p/original" + movieTmdbJson.movie_results[0].backdrop_path
             };
             _context.Movies.Add(movie);
 

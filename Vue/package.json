@@ -14,8 +14,10 @@
     "axios": "^0.24.0",
     "bootstrap-vue": "^2.21.2",
     "cors": "^2.8.5",
+    "moment": "^2.29.3",
     "oidc-client": "^1.11.5",
     "vue": "^2.5.2",
+    "vue-horizontal-list-autoscroll": "^1.1.14",
     "vue-router": "^3.0.1",
     "vue-select": "^3.16.0",
     "vueperslides": "^3.3.2"

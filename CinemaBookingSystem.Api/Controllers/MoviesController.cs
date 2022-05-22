@@ -5,6 +5,7 @@ using CinemaBookingSystem.Application.Movies.Commands.DeleteMovie;
 using CinemaBookingSystem.Application.Movies.Commands.UpdateMovie;
 using CinemaBookingSystem.Application.Movies.Queries.GetMovieDetail;
 using CinemaBookingSystem.Application.Movies.Queries.GetMovies;
+using CinemaBookingSystem.Application.Movies.Queries.GetMoviesDaysToPremiere;
 using CinemaBookingSystem.Application.Movies.Queries.GetMoviesWithSeanceOnCurrentCinemaAndDay;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -27,12 +28,13 @@ namespace CinemaBookingSystem.Api.Controllers
         [HttpGet(Name = "GetMovies")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetMovies([FromQuery] int page, [FromQuery] int limit)
+        public async Task<IActionResult> GetMovies([FromQuery] int page, [FromQuery] int limit, string searchString)
         {
             var vm = await Mediator.Send(new GetMoviesQuery()
             {
                 PageIndex = page,
-                PageSize = limit
+                PageSize = limit,
+                SearchString = searchString
             });
             return Ok(vm);
         }
@@ -80,6 +82,19 @@ namespace CinemaBookingSystem.Api.Controllers
                 return BadRequest();
             }
             return Ok(await Mediator.Send(movie));
+        }
+        [HttpGet("soon/{daysToPremiere}", Name = "GetMoviesDaysToPremiere")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetMoviesDaysToPremiere(int page, int limit, int daysToPremiere)
+        {
+            var vm = await Mediator.Send(new GetMoviesDaysToPremiereQuery()
+            {
+                PageIndex = page,
+                PageSize = limit,
+                DaysToPremiere = daysToPremiere
+            });
+            return Ok(vm);
         }
     }
 }

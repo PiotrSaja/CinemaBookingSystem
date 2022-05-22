@@ -5,9 +5,11 @@ using CinemaBookingSystem.Application.Seances.Commands.DeleteSeance;
 using CinemaBookingSystem.Application.Seances.Commands.UpdateSeance;
 using CinemaBookingSystem.Application.Seances.Queries.GetSeanceDetail;
 using CinemaBookingSystem.Application.Seances.Queries.GetSeances;
+using CinemaBookingSystem.Application.Seances.Queries.GetSeancesOfCurrentMovieOnGivenCinemaAndDay;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SeanceDetailVm = CinemaBookingSystem.Application.Seances.Queries.GetSeanceDetail.SeanceDetailVm;
 
 namespace CinemaBookingSystem.Api.Controllers
 {
@@ -70,6 +72,19 @@ namespace CinemaBookingSystem.Api.Controllers
                 return BadRequest();
             }
             return Ok(await Mediator.Send(seance));
+        }
+        [HttpGet("{movieId}/{cinemaId}/{date}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetShowsOfCurrentMovieOnGivenCinemaAndDate(int cinemaId, DateTime date, int movieId)
+        {
+            var vm = await Mediator.Send(new GetSeancesOfCurrentMovieOnGivenCinemaAndDateQuery()
+            {
+                CinemaId = cinemaId,
+                Date = date,
+                MovieId = movieId
+            });
+            return Ok(vm);
         }
     }
 }

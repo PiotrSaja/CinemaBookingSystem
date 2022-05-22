@@ -9,6 +9,9 @@ export default {
   getUserBooking (id) {
     return Axios.get(`${RESOURCE_NAME}/user/${id}`)
   },
+  getUserBookings () {
+    return Axios.get(`${RESOURCE_NAME}/user`)
+  },
   create (data) {
     return Axios.post(RESOURCE_NAME, data)
   }

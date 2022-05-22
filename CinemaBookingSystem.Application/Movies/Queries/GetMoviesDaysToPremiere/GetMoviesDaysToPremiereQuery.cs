@@ -5,13 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using MediatR;
 
-namespace CinemaBookingSystem.Application.Movies.Queries.GetMovies
+namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesDaysToPremiere
 {
-    public class GetMoviesQuery : IRequest<MoviesVm>
+    public class GetMoviesDaysToPremiereQuery : IRequest<MoviesDetailVm>
     {
         public int PageIndex { get; set; }
         public int PageSize { get; set; }
-
-        public string SearchString { get; set; }
+        public int DaysToPremiere { get; set; }
     }
 }

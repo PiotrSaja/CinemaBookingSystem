@@ -3,7 +3,7 @@
     <movie-carousel/>
     <div class="row mt-4">
         <div class="col-12 col-md-2">
-            <b-form-input v-model="searchString" placeholder="Seach movie" class="mt-2 mr-5"></b-form-input>
+            <b-form-input v-model="searchString" @keydown.native="fetchData()" placeholder="Seach movie" class="mt-2 mr-5"></b-form-input>
         </div>
         <div class="col-12 col-md-8">
         <h5 class="text-white underline font-weight-bold">All movies</h5>
@@ -18,7 +18,7 @@
     </div>
     <div class="container">
       <div class="row">
-        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6"
+        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-6 padding"
         v-for="movie in movies.items"
         :key="movie.id"
         :movie="movie"
@@ -70,7 +70,7 @@ export default {
   },
   methods: {
       fetchData () {
-          MovieService.getAll(this.currentPage, this.limitOnPage).then((response) => {
+          MovieService.getAll(this.currentPage, this.limitOnPage, this.searchString).then((response) => {
             this.movies = response.data
         })
       },
@@ -90,12 +90,34 @@ export default {
 
 <style scoped lang="css">
 .movie-grid{
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+  margin: 25px 8px 0;
+  border-radius: 10px;
+  box-shadow:  0 0 3px rgba(0,0,0,0.1);
+  transition: all 0.5s;
+}
+.movie-grid .movie-image img{
+  width: 100%;
+  height: 300px;
+}
+@media only screen and (min-width: 1px) and (max-width: 576px) {
+  .movie-grid {
     font-family: 'Montserrat', sans-serif;
     text-align: center;
-    margin: 25px 15px 0;
+    margin: 15px 0px 0;
     border-radius: 10px;
     box-shadow:  0 0 3px rgba(0,0,0,0.1);
     transition: all 0.5s;
+  }
+  .movie-grid .movie-image img{
+    width: 100%;
+    height: 215px;
+}
+  .padding {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
 }
 .movie-grid:hover{
   box-shadow:  0 0 30px rgba(0,0,0,0.4);
@@ -106,10 +128,6 @@ export default {
     border-radius: 10px 10px 0 0;
     overflow: hidden;
     display: block;
-}
-.movie-grid .movie-image img{
-    width: 100%;
-    height: 300px;
 }
 .movie-grid .movie-label{
     color: #fff;
@@ -144,7 +162,7 @@ export default {
     transition: all 0.4s ease-out;
 }
 .movie-grid .title a:hover{ color: #FF9100; }
-@media screen and (max-width:990px){
+@media screen and (min-width: 577px) and (max-width:990px){
     .movie-grid{ margin: 5px 15px 30px; }
 }
 .underline {

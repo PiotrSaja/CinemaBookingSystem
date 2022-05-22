@@ -12,6 +12,9 @@ import SeanceDetail from '@/components/SeanceDetail'
 import BookingSeats from '@/components/BookingSeats'
 import BookingUserInformation from '@/components/BookingUserInformation'
 import BookingConfirmation from '@/components/BookingConfirmation'
+import BookingDetail from '@/components/BookingDetail'
+import Cinemas from '@/components/Cinemas'
+import CinemaDetail from '@/components/CinemaDetail'
 
 Vue.use(Router)
 
@@ -35,6 +38,11 @@ const routes = [
     path: '/profile',
     name: 'Profile',
     component: Profile
+  },
+  {
+    path: '/profile/booking/:id',
+    name: 'BookingDetail',
+    component: BookingDetail
   },
   {
     path: '/404',
@@ -74,6 +82,16 @@ const routes = [
     name: 'BookingConfirmation',
     component: BookingConfirmation,
     props: true
+  },
+  {
+    path: '/cinemas',
+    name: 'Cinemas',
+    component: Cinemas
+  },
+  {
+    path: '/cinema/:id',
+    name: 'CinemaDetail',
+    component: CinemaDetail
   }
 ]
 

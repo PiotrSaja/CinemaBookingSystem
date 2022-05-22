@@ -8,26 +8,26 @@
         >
             <b-carousel-slide
             class="carousel-item"
-            img-src="https://cdn.benchmark.pl/uploads/article/81190/MODERNICON/885df79e105d78b531580951338378647c14953a.jpg"
+            img-src="https://image.tmdb.org/t/p/original/5P8SmMzSNYikXpxil6BYzJ16611.jpg"
             >
-            <div class="carousel-caption d-none d-md-block glassEffect">
-                <h3>No time to die</h3>
+            <div class="carousel-caption d-none d-md-block">
+                <h1>The Batman</h1>
                 <b-button pill @click="onSeanceClicked()">Buy tickets now</b-button>
             </div></b-carousel-slide>
             <b-carousel-slide
             class="carousel-item"
-            img-src="https://sm.ign.com/t/ign_pl/screenshot/default/ndnn_pt1c.1280.jpg"
+            img-src="https://image.tmdb.org/t/p/original/oQPbZ5e6J9fuAyv4Gl0mMZMIyPI.jpg"
             >
-             <div class="carousel-caption d-none d-md-block glassEffect">
-                <h3>House of Gucci</h3>
+             <div class="carousel-caption d-none d-md-block">
+                <h1>The King's Man</h1>
                 <b-button pill @click="onSeanceClicked()">Buy tickets now</b-button>
             </div></b-carousel-slide>
             <b-carousel-slide
             class="carousel-item"
-            img-src="https://images3.alphacoders.com/858/858193.jpg"
+            img-src="https://image.tmdb.org/t/p/original/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg"
             >
-             <div class="carousel-caption d-none d-md-block glassEffect">
-                <h3>Kingsman</h3>
+             <div class="carousel-caption d-none d-md-block">
+                <h1>Free Guy</h1>
                 <b-button pill @click="onSeanceClicked()">Buy tickets now</b-button>
             </div></b-carousel-slide>
         </b-carousel>
@@ -50,7 +50,7 @@ export default {
 
 <style scoped>
 .carousel-item {
-        max-height:500px!important ;
+  max-height:500px!important ;
 }
 .glassEffect{
   background-color: #ffffff10;

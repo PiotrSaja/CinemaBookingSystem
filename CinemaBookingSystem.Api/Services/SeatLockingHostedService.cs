@@ -57,12 +57,15 @@ namespace CinemaBookingSystem.Api.Services
                 using (var scope = scopeFactory.CreateScope())
                 {
                     var _context = scope.ServiceProvider.GetRequiredService<ICinemaDbContext>();
-                    var itemToUpdate = _context.SeanceSeats.FirstOrDefault(x => x.Id == i.SeanceSeatId);
-                    itemToUpdate.SeatStatus = false;
-                    _context.SeanceSeats.Update(itemToUpdate);
-                    await _context.SaveChangesAsync(CancellationToken.None);
+                    var itemToUpdate =
+                        _context.SeanceSeats.FirstOrDefault(x => x.Id == i.SeanceSeatId && x.BookingId == null);
+                    if (itemToUpdate != null)
+                    {
+                        itemToUpdate.SeatStatus = false;
+                        _context.SeanceSeats.Update(itemToUpdate);
+                        await _context.SaveChangesAsync(CancellationToken.None);
+                    }
                 }
-
             });
             lockedList.RemoveAll(item => item.ExpirationTime.AddMinutes(1) < actualDate);
 

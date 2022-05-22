@@ -1,67 +1,36 @@
 <template>
-  <div class="container page text-white">
-    <movie-carousel/>
-    <div class="container">
-      <div class="row mt-3">
-        <div class="col-md-12">
-          <h5 class="text-white underline font-weight-bold">Premieres</h5>
-          <vue-horizontal-list-autoscroll :items="movies" :options="options">
-            <template v-slot:default="{ item }">
-              <div class="movie-grid" @click="onMovieClicked(item.id)">
-                <div class="image-container">
-                  <div class="movie-image">
-                    <a href="" class="image">
-                      <img class="pic-1" :src="item.posterPath" />
-                    </a>
-                    <span class="movie-label" v-if="item.imdbRating >= 7.5">Mega hit!</span>
-                  </div>
-                  <div class="movie-content">
-                    <h3 class="title"><a href="#">{{ item.title }}</a></h3>
-                  </div>
-                </div>
+  <div class="container text-white">
+    <h5 class="text-white underline font-weight-bold">Recomendation</h5>
+      <vue-horizontal-list-autoscroll :items="movies" :options="options">
+        <template v-slot:default="{ item }">
+          <div class="movie-grid" @click="onMovieClicked(item.id)">
+            <div class="image-container">
+              <div class="movie-image">
+                <a href="" class="image">
+                  <img class="pic-1" :src="item.posterPath" />
+                </a>
+                <span class="movie-label" v-if="item.imdbRating >= 7.5">Mega hit!</span>
               </div>
-            </template>
-          </vue-horizontal-list-autoscroll>
-        </div>
-      </div>
-      <div class="row mt-3">
-        <div class="col-md-12">
-          <h5 class="text-white underline font-weight-bold">Comming soon</h5>
-          <vue-horizontal-list-autoscroll :items="soonMovies" :options="options">
-            <template v-slot:default="{ item }">
-              <div class="movie-grid" @click="onMovieClicked(item.id)">
-                <div class="image-container">
-                  <div class="movie-image">
-                    <a href="" class="image">
-                      <img class="pic-1" :src="item.posterPath" />
-                    </a>
-                    <span class="movie-label-soon" v-if="substractMovieDate(item.releasedDate) <= 14">Soon</span>
-                  </div>
-                  <div class="movie-content">
-                    <h3 class="title"><a href="#">{{ item.title }}</a></h3>
-                  </div>
-                </div>
+              <div class="movie-content">
+                <h3 class="title"><a href="#">{{ item.title }}</a></h3>
               </div>
-            </template>
-          </vue-horizontal-list-autoscroll>
-        </div>
-      </div>
-    </div>
+            </div>
+          </div>
+        </template>
+      </vue-horizontal-list-autoscroll>
   </div>
 </template>
 
 <script>
-import moment from 'moment'
 import MovieService from '@/api-services/movie-service'
-import MovieCarousel from '@/components/MovieCarousel'
 import VueHorizontalListAutoscroll from 'vue-horizontal-list-autoscroll'
 export default {
-  components: { MovieCarousel, VueHorizontalListAutoscroll },
-  name: 'Home',
+  components: { VueHorizontalListAutoscroll },
+  name: 'HorizontalMovieRecomendationList',
   data () {
     return {
       movies: [],
-      soonMovies: [],
+      movieId: -1,
       options: {
         autoscroll: {
           enabled: true,
@@ -98,13 +67,10 @@ export default {
     }
   },
   created () {
+    this.movieId = this.$router.currentRoute.params.id
     MovieService.getAllSoon(1, 100, -1).then((response) => {
       this.movies = response.data.items
-    }).catch((error) => {
-      console.log(error.response.data)
-    })
-    MovieService.getAllSoon(1, 100, 1).then((response) => {
-      this.soonMovies = response.data.items
+      console.log(this.movieId)
     }).catch((error) => {
       console.log(error.response.data)
     })
@@ -115,11 +81,6 @@ export default {
       },
     onMovieClicked (movieId) {
       this.showMovieDetail(movieId)
-    },
-    substractMovieDate (date) {
-      let movieDate = moment(date)
-      let currentTime = moment()
-      return movieDate.diff(currentTime, 'days')
     }
   }
 }
@@ -134,13 +95,13 @@ export default {
     box-shadow:  0 0 3px rgba(0,0,0,0.1);
     transition: all 0.5s;
 }
-.movie-grid:hover{
-  box-shadow:  0 0 30px rgba(0,0,0,0.4);
-  transform: scale(1.05);
-}
 .movie-grid .movie-image img{
     width: 100%;
     height: 300px;
+}
+.movie-grid:hover{
+  box-shadow:  0 0 30px rgba(0,0,0,0.4);
+  transform: scale(1.05);
 }
 @media only screen and (min-width: 1px) and (max-width: 576px) {
   .movie-grid {

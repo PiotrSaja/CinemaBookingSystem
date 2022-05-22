@@ -3,8 +3,11 @@ import Axios from 'axios'
 const RESOURCE_NAME = '/movies'
 
 export default {
-  getAll (page, limit) {
-    return Axios.get(`${RESOURCE_NAME}?page=${page}&limit=${limit}`)
+  getAll (page, limit, searchString) {
+    return Axios.get(`${RESOURCE_NAME}?page=${page}&limit=${limit}&searchString=${searchString}`)
+  },
+  getAllSoon (page, limit, days) {
+    return Axios.get(`${RESOURCE_NAME}/soon/${days}?page=${page}&limit=${limit}`)
   },
   get (id) {
     return Axios.get(`${RESOURCE_NAME}/${id}`)

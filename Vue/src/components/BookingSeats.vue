@@ -49,10 +49,10 @@
         </table>
       </div>
       <div class="row mt-5">
-        <div class="col-md-6">
+        <div class="col-md-6 col-6">
           <p>Choosen seats:{{selectedIds}}</p>
         </div>
-        <div class="col-md-6 text-right">
+        <div class="col-md-6 col-6 text-right">
           <b-button v-on:click="goToBookingUserInformation">Next step</b-button>
         </div>
       </div>
@@ -75,7 +75,7 @@ export default {
           showAlert: false,
           alertMessage: 'Please select any seat!',
           lockData: {
-            SeanceSeatId: 0
+            ShowSeatId: 0
           },
           ok: false,
           lockedIds: [],
@@ -130,9 +130,9 @@ export default {
           await SeanceSeats.lock(this.lockData).then((response) => {
             this.ok = response.data
             if (this.ok) {
-              this.lockedIds.push(this.lockData.SeanceSeatId)
+              this.lockedIds.push(this.lockData.ShowSeatId)
             } else {
-              this.noLockedIds.push(this.lockData.SeanceSeatId)
+              this.noLockedIds.push(this.lockData.ShowSeatId)
             }
           }).catch(error => {
             console.log(error)
@@ -149,7 +149,7 @@ export default {
             }
     },
     reloadSeatsForShow () {
-      SeanceSeats.getBySeanceId(this.$router.currentRoute.params.id).then((response) => {
+      SeanceSeats.getByShowId(this.$router.currentRoute.params.id).then((response) => {
       this.seats = response.data
     }).catch(error => {
       if (error.response.status === 404) {

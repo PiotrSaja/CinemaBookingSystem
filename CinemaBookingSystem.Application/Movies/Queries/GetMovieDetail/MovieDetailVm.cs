@@ -23,6 +23,7 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMovieDetail
         public string Country { get; set; }
         public string PosterPath { get; set; }
         public string ImdbRating { get; set; }
+        public string BackgroundImagePath { get; set; }
 
         public void Mapping(Profile profile)
         {
@@ -35,7 +36,8 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMovieDetail
                 .ForMember(d => d.Released, map => map.MapFrom(src => src.Released))
                 .ForMember(d => d.Country, map => map.MapFrom(src => src.Country))
                 .ForMember(d => d.PosterPath, map => map.MapFrom(src => src.PosterPath))
-                .ForMember(d => d.ImdbRating, map => map.MapFrom(src => src.ImdbRating));
+                .ForMember(d => d.ImdbRating, map => map.MapFrom(src => src.ImdbRating))
+                .ForMember(d => d.BackgroundImagePath, map => map.MapFrom(src => src.BackgroundImagePath));
         }
     }
 }

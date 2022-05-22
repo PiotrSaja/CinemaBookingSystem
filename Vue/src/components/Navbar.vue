@@ -10,9 +10,9 @@
 
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
-        <b-nav-item  v-bind:class="{active: activeElement === 'Seances'}" :to="{name: 'Seances'}">Seances</b-nav-item>
-        <b-nav-item  v-bind:class="{active: activeElement === 'Cinemas'}">Cinemas</b-nav-item>
-        <b-nav-item  v-bind:class="{active: activeElement === 'Movies'}" :to="{name: 'Movies'}">Movies</b-nav-item>
+        <b-nav-item  v-bind:class="{active: activeElement === 'Seances' || activeElement === 'SeanceDetail'}" :to="{name: 'Seances'}">Seances</b-nav-item>
+        <b-nav-item  v-bind:class="{active: activeElement === 'Cinemas'}" :to="{name: 'Cinemas'}">Cinemas</b-nav-item>
+        <b-nav-item  v-bind:class="{active: activeElement === 'Movies' || activeElement === 'MovieDetail'}" :to="{name: 'Movies'}">Movies</b-nav-item>
         <b-nav-item  v-bind:class="{active: activeElement === 'Offers'}">Offers & Partnership</b-nav-item>
       </b-navbar-nav>
 
@@ -21,7 +21,7 @@
         <hr>
         <b-navbar-nav right>
         <b-nav-item v-if="!isUserLoggedIn" @click="onLogin()">Login</b-nav-item>
-        <b-nav-item v-if="!isUserLoggedIn">Sign-up</b-nav-item>
+        <b-nav-item v-if="!isUserLoggedIn" @click="onLogin()">Sign-up</b-nav-item>
         <b-nav-item v-bind:class="{active: activeElement === 'Profile'}" v-if="isUserLoggedIn" to="/profile">{{ profile.email }}</b-nav-item>
         <b-nav-item v-if="isUserLoggedIn" @click="onLogout()">Logout</b-nav-item>
         </b-navbar-nav>

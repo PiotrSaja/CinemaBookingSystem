@@ -1,21 +1,21 @@
 <template>
   <div class="page">
       <div class="row text-white" style="margin-top: 100px">
-      <div class="col-md-2">
-          <!--<span class="movie-label" v-if="seance.movie.imdbRating >= 7.5">Mega hit!</span> --->
+      <div class="col-xl-2 col-lg-3">
+          <span class="movie-label" v-if="seance.movie.imdbRating >= 7.5">Mega hit!</span>
           <img :src="seance.movie.posterPath" class="image-wrapper">
       </div>
-      <div class="col-md-4">
+      <div class="col-xl-4 col-lg-4">
           <h4>{{ seance.movie.title}}</h4>
           <h6>{{ seance.movie.imdbRating }}/10</h6>
           <h6><span v-for="genre in seance.movie.genres" :key="genre.id">{{ genre.name }}, </span></h6><br>
           <h6>{{ seance.movie.plot }}</h6>
           </div>
-          <div class="col-md-2"></div>
-          <div class="col-md-4">
+          <div class="col-xl-2 col-lg-1"></div>
+          <div class="col-xl-4 col-lg-4">
           <h6>{{ seance.cinemaHall.name }}</h6><br><br>
           <h6>{{ seance.date.replace('T', ' ') }}</h6><br>
-          <b-button class="mt-3" squared @click="onGoToBookingClicked(seance.id)">Go to booking</b-button>
+          <b-button class="mt-3" @click="onGoToBookingClicked(seance.id)">Go to booking</b-button>
           </div>
       </div>
       <hr>
@@ -42,11 +42,11 @@ export default {
     })
   },
   methods: {
-    showBookingSeats (seanceId) {
-      this.$router.push({name: 'BookingSeats', params: {id: seanceId}})
+    showBookingSeats (showId) {
+      this.$router.push({name: 'BookingSeats', params: {id: showId}})
       },
-    onGoToBookingClicked (seanceId) {
-      this.showBookingSeats(seanceId)
+    onGoToBookingClicked (showId) {
+      this.showBookingSeats(showId)
       }
   }
 }

@@ -2,17 +2,14 @@
   <div class="page">
     <div class="row" style="margin-top: 50px">
         <div class="col-md-12">
-          <b-alert v-if="!this.validate_errors.length && !this.booking_error_status && !this.confirm" variant="success" show class="text-center">
+          <b-alert v-if="!this.validate_errors.length && !this.booking_error_status" variant="success" show class="text-center">
             Seats was successful locked for 10 minutes.
           </b-alert>
-          <b-alert v-if="this.validate_errors.length && !this.booking_error_status && !this.confirm" variant="danger" show class="text-center">
+          <b-alert v-if="this.validate_errors.length" variant="danger" show class="text-center">
             <b>Please correct the following error(s):</b>
             <ul>
               <li v-for="error in this.validate_errors" :key="error">{{ error }}</li>
             </ul>
-          </b-alert>
-          <b-alert v-if="this.confirm" variant="success" show class="text-center">
-            All data validated.
           </b-alert>
           <b-alert v-if="this.booking_error_status" variant="danger" show class="text-center">
             Seats not locked in service. Please select new seats for reservation.
@@ -145,8 +142,8 @@ export default {
             firstName: '',
             lastName: '',
             phoneNumber: '',
-            seanceId: 0,
-            seanceSeatIds: []
+            showId: 0,
+            showSeatIds: []
           },
           booking_error_status: false
       }
@@ -203,7 +200,6 @@ export default {
       }
     },
     editFields () {
-      this.validate_errors = []
       this.input_disabled = !this.input_disabled
       this.confirm = !this.confirm
     },

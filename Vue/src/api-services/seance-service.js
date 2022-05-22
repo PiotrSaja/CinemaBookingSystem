@@ -17,5 +17,8 @@ export default {
   },
   delete (id) {
     return Axios.delete(`${RESOURCE_NAME}/${id}`)
+  },
+  getSeanceOfCurrentMovieOnGivenCinemaAndDay (movieId, cinemaId, date) {
+    return Axios.get(`${RESOURCE_NAME}/${movieId}/${cinemaId}/${date}`)
   }
 }
