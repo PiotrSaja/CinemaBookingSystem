@@ -4,14 +4,16 @@ using CinemaBookingSystem.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CinemaBookingSystem.Persistence.Migrations
 {
     [DbContext(typeof(CinemaDbContext))]
-    partial class CinemaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220522112127_Added_UserMovieVote_And_UserPreferencesMovie_Tables")]
+    partial class Added_UserMovieVote_And_UserPreferencesMovie_Tables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -585,8 +587,8 @@ namespace CinemaBookingSystem.Persistence.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Vote")
-                        .HasColumnType("float");
+                    b.Property<int>("Vote")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

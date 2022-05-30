@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
+using CinemaBookingSystem.Application.Common.Interfaces;
+using CinemaBookingSystem.Application.Movies.Commands.AddMovieVote;
+using CinemaBookingSystem.Application.Movies.Commands.AddPreferencesMovie;
 using CinemaBookingSystem.Application.Movies.Commands.CreateMovieFromExternalApi;
 using CinemaBookingSystem.Application.Movies.Commands.DeleteMovie;
 using CinemaBookingSystem.Application.Movies.Commands.UpdateMovie;
@@ -16,6 +20,13 @@ namespace CinemaBookingSystem.Api.Controllers
     [Route("api/movies")]
     public class MoviesController : BaseController
     {
+        private readonly IUserVoteService _userVoteService;
+
+        public MoviesController(IUserVoteService userVoteService)
+        {
+            _userVoteService = userVoteService;
+        }
+
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -95,6 +106,38 @@ namespace CinemaBookingSystem.Api.Controllers
                 DaysToPremiere = daysToPremiere
             });
             return Ok(vm);
+        }
+        [HttpPost("vote")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(Roles = "Administrator,User")]
+        public async Task<IActionResult> AddVote([FromBody] AddMovieVoteCommand moveVote)
+        {
+            var result = await Mediator.Send(moveVote);
+
+            return Ok(result);
+        }
+        [HttpPost("pref")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(Roles = "Administrator,User")]
+        public async Task<IActionResult> AddPrefMovie([FromBody] AddPreferencesMovieCommand movePref)
+        {
+            var result = await Mediator.Send(movePref);
+
+            return Ok(result);
+        }
+        [HttpGet("kmeans")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Kmeans()
+        {
+            await _userVoteService.Clustering(CancellationToken.None);
+
+            return Ok();
         }
     }
 }

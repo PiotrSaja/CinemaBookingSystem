@@ -37,6 +37,8 @@ namespace CinemaBookingSystem.Persistence
         public DbSet<Payment> Payments{ get; set; }
         public DbSet<Seance> Seances{ get; set; }
         public DbSet<SeanceSeat> SeanceSeats{ get; set; }
+        public DbSet<UserMovieVote> UserMovieVotes { get; set; }
+        public DbSet<UserPreferencesMovie> UserPreferencesMovies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

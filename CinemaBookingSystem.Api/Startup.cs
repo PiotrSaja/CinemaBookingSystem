@@ -64,6 +64,8 @@ namespace CinemaBookingSystem.Api
             //UserService DI
             services.TryAddScoped(typeof(IUserService), typeof(UserService));
 
+            services.TryAddScoped(typeof(IUserVoteService), typeof(UserVoteService));
+
             //SeatLockingService
             services.TryAddSingleton<ISeatLockingService, SeatLockingService>();
             services.AddSingleton<IHostedService, SeatLockingHostedService>();
