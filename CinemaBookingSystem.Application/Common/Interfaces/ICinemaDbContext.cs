@@ -24,6 +24,7 @@ namespace CinemaBookingSystem.Application.Common.Interfaces
         DbSet<SeanceSeat> SeanceSeats { get; set; }
         DbSet<UserMovieVote> UserMovieVotes { get; set; }
         DbSet<UserPreferencesMovie> UserPreferencesMovies { get; set; }
+        DbSet<UserCluster> UserClusters { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }

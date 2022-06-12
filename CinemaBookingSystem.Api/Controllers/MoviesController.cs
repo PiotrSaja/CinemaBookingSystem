@@ -21,10 +21,12 @@ namespace CinemaBookingSystem.Api.Controllers
     public class MoviesController : BaseController
     {
         private readonly IUserVoteService _userVoteService;
+        private readonly IUserService _userService;
 
-        public MoviesController(IUserVoteService userVoteService)
+        public MoviesController(IUserVoteService userVoteService, IUserService userService)
         {
             _userVoteService = userVoteService;
+            _userService = userService;
         }
 
         [HttpGet("{id}")]
@@ -138,6 +140,18 @@ namespace CinemaBookingSystem.Api.Controllers
             await _userVoteService.Clustering(CancellationToken.None);
 
             return Ok();
+        }
+
+        [HttpGet("get-predictions")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(Roles = "Administrator,User")]
+        public async Task<IActionResult> GetPredictions()
+        {
+            var result = await _userVoteService.GetPredictions(_userService.Id, CancellationToken.None);
+
+            return Ok(result);
         }
     }
 }

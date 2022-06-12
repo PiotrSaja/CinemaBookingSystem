@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 using CinemaBookingSystem.Application.Common.Interfaces;
@@ -61,6 +60,21 @@ namespace CinemaBookingSystem.Api.Services
 
             int[] result = GetClusters(rawDataFromDb, NUM_CLASTERS);
 
+            _context.UserClusters.RemoveRange(_context.UserClusters);
+
+            List<UserCluster> userResults = new List<UserCluster>();
+
+            for(var i=0; i < result.Length; i++)
+            {
+                _context.UserClusters.Add(new UserCluster()
+                {
+                    UserId = usersId[i],
+                    ClusterNumber = result[i]
+                });
+            }
+
+            await _context.SaveChangesAsync(cancellationToken);
+
             Console.WriteLine("Raw data by cluster:\n");
             ShowClustered(rawDataFromDb, result, NUM_CLASTERS, 1);
 
@@ -69,14 +83,62 @@ namespace CinemaBookingSystem.Api.Services
         #endregion
 
         #region GetPredictions()
-        public Task<List<int>> GetPredictions(CancellationToken cancellationToken)
+        public async Task<List<MovieResultAssign>> GetPredictions(string currentUserId, CancellationToken cancellationToken)
         {
-            /***
-             * Z klastrów trzeba wybrać najbardziej liczną wartość za pomocą miary ważonej odległości oraz wyboru użytwkoników w klastrze
-             */
-            throw new NotImplementedException();
+            var movies = _context.Movies.OrderBy(x => x.Id).Select(x => x.Id).ToList();
+
+            var currentUserMovieVote = GetRawDataFromDatabase(movies, new List<string>()
+            {
+                currentUserId
+            });
+
+            var currentUserCluster =
+                await _context.UserClusters.FirstOrDefaultAsync(x => x.UserId == currentUserId, cancellationToken);
+
+            var usersFromCluster =
+                await _context.UserClusters.Where(x => x.ClusterNumber == currentUserCluster.ClusterNumber && x.UserId != currentUserId).Select(x=>x.UserId).ToListAsync(cancellationToken);
+
+
+            var moviesVotesFromCluster = GetRawDataFromDatabase(movies, usersFromCluster);
+
+            var mostPopularMoviesTable = GetMostPopularMovie(moviesVotesFromCluster, currentUserMovieVote);
+
+            List<MovieResultAssign> movieResults = new List<MovieResultAssign>();
+
+            for (var i =0; i < mostPopularMoviesTable.Length; i++)
+            {
+                movieResults.Add(new MovieResultAssign()
+                {
+                    MovieId = movies[i],
+                    Result = mostPopularMoviesTable[i]
+                });
+            }
+
+            return movieResults;
         }
         #endregion
+
+        private double[] GetMostPopularMovie(double[][] moviesVotes, double[][] currentUserMovieVote)
+        {
+            var moviesCount = new double [moviesVotes[0].Length];
+
+            for(var i = 0; i < moviesVotes.Length; i++)
+            {
+                var userDistance = UserDistance(currentUserMovieVote[0], moviesVotes[i]);
+                userDistance = 1 / Math.Pow(userDistance, 2);
+                for (var j = 0; j < moviesVotes[i].Length; j++)
+                {
+                    if (moviesVotes[i][j] > 0)
+                    {
+                        moviesCount[j] += 1;
+                        moviesCount[j] *= userDistance;
+                    }
+                }
+
+                
+            }
+            return moviesCount;
+        }
 
         #region GetRawDataFromDatabase()
         private double[][] GetRawDataFromDatabase(List<int> moviesId, List<string> usersId)
@@ -271,6 +333,18 @@ namespace CinemaBookingSystem.Api.Services
             return true;
         }
 
+        private double UserDistance(double[] predictionUserVotes, double[] anotherUserFromClasterVotes)
+        {
+            var sum = 0.0;
+
+            for (var i = 0; i < predictionUserVotes.Length; i++)
+            {
+                sum += Math.Pow((predictionUserVotes[i] - anotherUserFromClasterVotes[i]), 2);
+            }
+
+            return Math.Sqrt(sum);
+        }
+
         private double Distance(double[] record, double[] mean)
         {
             var sum = 0.0;
@@ -279,7 +353,7 @@ namespace CinemaBookingSystem.Api.Services
             {
                 sum += Math.Pow((record[i] - mean[i]), 2);
             }
-                
+
             return Math.Sqrt(sum);
         }
 
