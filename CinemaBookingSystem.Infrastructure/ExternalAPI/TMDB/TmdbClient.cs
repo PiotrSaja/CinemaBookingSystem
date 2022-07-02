@@ -75,7 +75,7 @@ namespace CinemaBookingSystem.Infrastructure.ExternalAPI.TMDB
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }

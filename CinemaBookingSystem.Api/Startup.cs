@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using CinemaBookingSystem.Application;
 using CinemaBookingSystem.Infrastructure;
@@ -19,6 +20,8 @@ using CinemaBookingSystem.Persistence;
 using CinemaBookingSystem.Api.Extensions;
 using CinemaBookingSystem.Api.Services;
 using CinemaBookingSystem.Application.Common.Interfaces;
+using Hangfire;
+using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
@@ -113,10 +116,17 @@ namespace CinemaBookingSystem.Api
                     policy.RequireClaim("scope", "api");
                 });
             });
+            services.AddHangfire(config => config
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseDefaultTypeSerializer()
+                .UseMemoryStorage());
+
+            services.AddHangfireServer();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IRecurringJobManager recurringJobManager, IUserVoteService userVoteService)
         {
             if (env.IsDevelopment())
             {
@@ -148,6 +158,9 @@ namespace CinemaBookingSystem.Api
             {
                 endpoints.MapControllers();
             });
+            app.UseHangfireDashboard();
+
+            recurringJobManager.AddOrUpdate("Clustering for movie recommendation", () => userVoteService.Clustering(CancellationToken.None), "0 0 * * *");
         }
     }
 }

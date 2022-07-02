@@ -67,7 +67,7 @@ namespace CinemaBookingSystem.Infrastructure.ExternalAPI.OMDB
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -99,7 +99,7 @@ namespace CinemaBookingSystem.Infrastructure.ExternalAPI.OMDB
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }

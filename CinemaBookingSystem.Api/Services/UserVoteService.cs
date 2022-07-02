@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CinemaBookingSystem.Application.Common.Interfaces;
 using CinemaBookingSystem.Application.Common.Models;
 using CinemaBookingSystem.Domain.Entities;
+using Hangfire.Server;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace CinemaBookingSystem.Api.Services
 {
@@ -14,35 +17,53 @@ namespace CinemaBookingSystem.Api.Services
     {
         private readonly int NUM_CLASTERS = 3;
         private readonly ICinemaDbContext _context;
+        private readonly ILogger<UserVoteService> _logger;
 
         #region UserVoteService()
-        public UserVoteService(ICinemaDbContext context)
+
+        public UserVoteService(ICinemaDbContext context, ILogger<UserVoteService> logger)
         {
-            this._context = context;
+            _context = context;
+            _logger = logger;
         }
+
         #endregion
 
         #region Clustering()
         public async Task<bool> Clustering(CancellationToken cancellationToken)
         {
-            var movies = _context.Movies.OrderBy(x => x.Id).Select(x=>x.Id).ToList();
+            var timer = new Stopwatch();
+            _logger.LogInformation("Start clustering");
+            _logger.LogInformation("Job running at: {time}", DateTimeOffset.UtcNow);
 
-            var usersId = _context.UserMovieVotes.Select(x => x.UserId).Distinct().ToList();
+            timer.Start();
 
-            var rawDataFromDb = GetRawDataFromDatabase(movies, usersId);
-            ShowData(rawDataFromDb, 1, true, true);
+            var movies = await _context.Movies.OrderBy(x => x.Id).Select(x=>x.Id).ToListAsync(cancellationToken);
 
-            Console.WriteLine("Raw data:\n");
-            ShowData(rawDataFromDb, 1, true, true);
+            var usersId = await _context.UserMovieVotes.Select(x => x.UserId).Distinct().ToListAsync(cancellationToken);
+
+            _logger.LogInformation("1 step. Time: {elapsedTime}", timer.Elapsed);
+
+            timer.Restart();
+
+            var rawDataFromDb = await GetRawDataFromDatabase(movies, usersId, cancellationToken);
 
             int[] result = GetClusters(rawDataFromDb, NUM_CLASTERS);
 
             _context.UserClusters.RemoveRange(_context.UserClusters);
 
-            List<UserCluster> userResults = new List<UserCluster>();
+            _logger.LogInformation("2 step. Time: {elapsedTime}", timer.Elapsed);
 
-            for(var i=0; i < result.Length; i++)
+            timer.Restart();
+
+            var userClusters =
+                new Dictionary<string, int>();
+
+            //Przerobić na bulk copy
+            for (var i=0; i < result.Length; i++)
             {
+                userClusters.Add(usersId[i], result[i]);
+
                 _context.UserClusters.Add(new UserCluster()
                 {
                     UserId = usersId[i],
@@ -51,9 +72,9 @@ namespace CinemaBookingSystem.Api.Services
             }
 
             await _context.SaveChangesAsync(cancellationToken);
+            timer.Stop();
 
-            Console.WriteLine("Raw data by cluster:\n");
-            ShowClustered(rawDataFromDb, result, NUM_CLASTERS, 1);
+            _logger.LogInformation("Finished clustering. Time: {elapsedTime}", timer.Elapsed);
 
             return true;
         }
@@ -64,10 +85,10 @@ namespace CinemaBookingSystem.Api.Services
         {
             var movies = await _context.Movies.OrderBy(x => x.Id).Select(x => x.Id).ToListAsync(cancellationToken);
 
-            var currentUserMovieVote = GetRawDataFromDatabase(movies, new List<string>()
+            var currentUserMovieVote = await GetRawDataFromDatabase(movies, new List<string>()
             {
                 currentUserId
-            });
+            }, cancellationToken);
 
             var currentUserCluster =
                 await _context.UserClusters.FirstOrDefaultAsync(x => x.UserId == currentUserId, cancellationToken);
@@ -76,7 +97,7 @@ namespace CinemaBookingSystem.Api.Services
                 await _context.UserClusters.Where(x => x.ClusterNumber == currentUserCluster.ClusterNumber && x.UserId != currentUserId && x.StatusId == 1).Select(x => new string(x.UserId)).ToListAsync(cancellationToken);
 
 
-            var moviesVotesFromCluster = GetRawDataFromDatabase(movies, usersFromCluster);
+            var moviesVotesFromCluster = await GetRawDataFromDatabase(movies, usersFromCluster, cancellationToken);
 
             var mostPopularMoviesTable = GetMostPopularMovie(moviesVotesFromCluster, currentUserMovieVote);
 
@@ -115,9 +136,9 @@ namespace CinemaBookingSystem.Api.Services
             }
             return moviesCount;
         }
-
+        //Bardzo wolna metoda - pomyslec nad zmniejszeniem ilosci zapytań
         #region GetRawDataFromDatabase()
-        private double[][] GetRawDataFromDatabase(List<int> moviesId, List<string> usersId)
+        private async Task<double[][]> GetRawDataFromDatabase(List<int> moviesId, List<string> usersId, CancellationToken cancellationToken)
         {
             var voteUserList = new double[usersId.Count][];
             var i = 0;
@@ -128,7 +149,7 @@ namespace CinemaBookingSystem.Api.Services
                 var y = 0;
                 foreach (var movieId in moviesId)
                 {
-                    var vote = _context.UserMovieVotes.FirstOrDefault(x => x.UserId == userId && x.MovieId == movieId);
+                    var vote = await _context.UserMovieVotes.FirstOrDefaultAsync(x => x.UserId == userId && x.MovieId == movieId, cancellationToken);
 
                     if (vote != null)
                     {
@@ -152,7 +173,6 @@ namespace CinemaBookingSystem.Api.Services
         #region GetClusters()
         public int[] GetClusters(double[][] rawData, int numClusters)
         {
-            //double[][] data = NormalizedData(rawData); // normalizacja danych do napisania
             var data = rawData;
 
             var changed = true;
@@ -348,46 +368,5 @@ namespace CinemaBookingSystem.Api.Services
             return indexOfMinDistance;
         }
         #endregion
-
-        #region ShowDate - to delete
-
-        void ShowData(double[][] data, int decimals, bool indices, bool newLine)
-        {
-            for (int i = 0; i < data.Length; ++i)
-            {
-                if (indices) Console.Write(i.ToString().PadLeft(3) + " ");
-                for (int j = 0; j < data[i].Length; ++j)
-                {
-                    if (data[i][j] >= 0.0) Console.Write(" ");
-                    Console.Write(data[i][j].ToString("F" + decimals) + " ");
-                }
-                Console.WriteLine("");
-            }
-            if (newLine) Console.WriteLine("");
-        }
-
-        void ShowClustered(double[][] data, int[] clustering, int numClusters, int decimals)
-        {
-            for (int k = 0; k < numClusters; ++k)
-            {
-                Console.WriteLine("------------------------------------");
-                for (int i = 0; i < data.Length; ++i)
-                {
-                    int clusterID = clustering[i];
-                    if (clusterID != k) continue;
-                    Console.Write(i.ToString().PadLeft(3) + " ");
-                    for (int j = 0; j < data[i].Length; ++j)
-                    {
-                        if (data[i][j] >= 0.0) Console.Write(" ");
-                        Console.Write(data[i][j].ToString("F" + decimals) + " ");
-                    }
-                    Console.WriteLine("");
-                }
-                Console.WriteLine("------------------------------------------");
-            }
-        }
-
-        #endregion
-
     }
 }
