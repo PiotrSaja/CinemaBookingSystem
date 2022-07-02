@@ -32,5 +32,8 @@ export default {
   },
   getUserMovieVote (id) {
     return Axios.get(`${RESOURCE_NAME}/vote/${id}`)
+  },
+  getMoviesPrediction (page, limit) {
+    return Axios.get(`${RESOURCE_NAME}/predictions/?page=${page}&limit=${limit}`)
   }
 }

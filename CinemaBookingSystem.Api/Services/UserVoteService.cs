@@ -62,7 +62,7 @@ namespace CinemaBookingSystem.Api.Services
         #region GetPredictions()
         public async Task<List<MovieResultAssign>> GetPredictions(string currentUserId, CancellationToken cancellationToken)
         {
-            var movies = _context.Movies.OrderBy(x => x.Id).Select(x => x.Id).ToList();
+            var movies = await _context.Movies.OrderBy(x => x.Id).Select(x => x.Id).ToListAsync(cancellationToken);
 
             var currentUserMovieVote = GetRawDataFromDatabase(movies, new List<string>()
             {
@@ -73,7 +73,7 @@ namespace CinemaBookingSystem.Api.Services
                 await _context.UserClusters.FirstOrDefaultAsync(x => x.UserId == currentUserId, cancellationToken);
 
             var usersFromCluster =
-                await _context.UserClusters.Where(x => x.ClusterNumber == currentUserCluster.ClusterNumber && x.UserId != currentUserId).Select(x=>x.UserId).ToListAsync(cancellationToken);
+                await _context.UserClusters.Where(x => x.ClusterNumber == currentUserCluster.ClusterNumber && x.UserId != currentUserId && x.StatusId == 1).Select(x => new string(x.UserId)).ToListAsync(cancellationToken);
 
 
             var moviesVotesFromCluster = GetRawDataFromDatabase(movies, usersFromCluster);
@@ -107,8 +107,7 @@ namespace CinemaBookingSystem.Api.Services
                 {
                     if (moviesVotes[i][j] > 0)
                     {
-                        moviesCount[j] += 1;
-                        moviesCount[j] *= userDistance;
+                        moviesCount[j] += 1 * userDistance;
                     }
                 }
 

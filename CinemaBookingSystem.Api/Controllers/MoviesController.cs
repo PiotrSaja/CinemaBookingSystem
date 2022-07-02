@@ -10,6 +10,7 @@ using CinemaBookingSystem.Application.Movies.Commands.UpdateMovie;
 using CinemaBookingSystem.Application.Movies.Queries.GetMovieDetail;
 using CinemaBookingSystem.Application.Movies.Queries.GetMovies;
 using CinemaBookingSystem.Application.Movies.Queries.GetMoviesDaysToPremiere;
+using CinemaBookingSystem.Application.Movies.Queries.GetMoviesPrediciton;
 using CinemaBookingSystem.Application.Movies.Queries.GetMoviesWithSeanceOnCurrentCinemaAndDay;
 using CinemaBookingSystem.Application.Movies.Queries.GetUserMovieVote;
 using Microsoft.AspNetCore.Authorization;
@@ -143,14 +144,14 @@ namespace CinemaBookingSystem.Api.Controllers
             return Ok();
         }
 
-        [HttpGet("get-predictions")]
+        [HttpGet("predictions")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Authorize(Roles = "Administrator,User")]
-        public async Task<IActionResult> GetPredictions()
+        public async Task<IActionResult> GetMoviesPredictions(int page, int limit)
         {
-            var result = await _userVoteService.GetPredictions(_userService.Id, CancellationToken.None);
+            var result = await Mediator.Send(new GetMoviesPredictionQuery() { PageIndex = page, PageSize = limit});
 
             return Ok(result);
         }

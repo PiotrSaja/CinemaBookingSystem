@@ -68,9 +68,8 @@ export default {
   },
   created () {
     this.movieId = this.$router.currentRoute.params.id
-    MovieService.getAllSoon(1, 100, -1).then((response) => {
+    MovieService.getMoviesPrediction(1, 100).then((response) => {
       this.movies = response.data.items
-      console.log(this.movieId)
     }).catch((error) => {
       console.log(error.response.data)
     })

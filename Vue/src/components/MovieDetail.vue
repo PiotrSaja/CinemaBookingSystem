@@ -20,22 +20,29 @@
                 <span class="ml-3 text-white font-weight-bold">Released date</span><br>
                 <span class="ml-3 text-white font-weight-regular">{{ movie.released | truncate(10) }}</span><br><br>
                 <span class="ml-3 text-white font-weight-bold">Genre</span><br>
-                <span class="ml-3 text-white font-weight-regular"><span v-for="genre in movie.genres" :key="genre.id">{{ genre.name }}, </span></span>
+                <span class="ml-3 text-white font-weight-regular">
+                  <span v-for="(genre,index) in movie.genres" :key="genre.id">{{ genre.name }}<span v-if="index !== movie.genres.length-1">, </span>
+                    </span>
+                </span>
                 </div>
                 <div class="row" style="padding-top: 30px;">
                 <div class="col-md-12 col-12">
-                    <div v-if=ratingVisable>
-                      <span class="ml-3 text-white font-weight-bold">Your vote</span>
+                    <div v-if="ratingVisable">
+                      <span class="ml-3 text-white font-weight-bold" v-if="ratingDisabled">Your rate</span>
+                      <span class="ml-3 text-white font-weight-bold" v-else>Please rate the movie</span>
                       <star-rating class="ml-3"
                       :increment="1"
                       :star-size="25"
                       :show-rating="false"
                       :rating = voteRating
                       @rating-selected = "setRating"
-                      :read-only=ratingDisabled></star-rating><br>
+                      :read-only="ratingDisabled"></star-rating><br>
                     </div>
                     <span class="ml-3 text-white font-weight-bold">Actors</span><br>
-                    <p class="ml-3 text-white font-weight-regular"><span v-for="actor in movie.actors" :key="actor.id">{{ actor.fullName }}, </span>
+                    <p class="ml-3 text-white font-weight-regular">
+                      <span v-for="(actor, index) in movie.actors" :key="actor.id">{{ actor.fullName }}<span v-if="index !== movie.actors.length-1">, </span>
+
+                      </span>
                     </p><br><br>
                     <span class="ml-3 text-white font-weight-bold">Plot</span><br>
                     <p class="ml-3 text-white font-weight-regular">{{ movie.plot }}</p><br><br>
@@ -45,7 +52,7 @@
             <div class="row">
               <subsequent-seances/>
             </div>
-            <div class="row">
+            <div class="row" v-if="movieRecomendationVisable">
               <horizontal-movie-recomandation-list/>
             </div>
         </div>
@@ -68,7 +75,8 @@ export default {
       ratingDisabled: false,
       showDismissibleAlert: false,
       voteData: {},
-      ratingVisable: true
+      ratingVisable: true,
+      movieRecomendationVisable: true
     }
   },
   created () {
@@ -77,6 +85,7 @@ export default {
         this.profile = profile
         if (this.profile === null) {
           this.ratingVisable = false
+          this.movieRecomendationVisable = false
       }
       })
       .catch(error => {
