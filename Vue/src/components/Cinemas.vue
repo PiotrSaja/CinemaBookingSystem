@@ -72,6 +72,7 @@ min-height: 100vh;
    background-color: gray;
    margin: 3px;
    border-radius: 3px;
+   transition: 0.5s;
 }
 .background:hover{
    background-color: #FF9100;

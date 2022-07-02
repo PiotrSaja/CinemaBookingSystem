@@ -4,14 +4,13 @@
       <h5 class="text-white underline font-weight-bold">Profile information</h5>
       <div class="col-md-12">
         <template v-if="profile !== null">
-          <p>User name: {{ profile.email }}</p>
-          Roles:
-          <p>{{ profile.role }}</p>
+          <p>Account: {{ profile.email }}</p>
+          <p>Roles: {{ profile.role }}</p>
         </template>
       </div>
     </div>
     <div class="row mt-4">
-      <div class="col-md-12">
+      <div class="col-md-12" v-if="!newUser">
         <h5 class="text-white underline font-weight-bold">Last confirmed bookings</h5>
         <div class="row mt-4 booking-item"
         v-for="(booking, index) in userBookings.items"
@@ -47,7 +46,8 @@ export default {
       profile: null,
       userBookings: {},
       bookingsToShow: 3,
-      totalBookings: 0
+      totalBookings: 0,
+      newUser: false
     }
   },
   mounted () {
@@ -67,6 +67,7 @@ export default {
     BookingService.getUserBookings().then((response) => {
     this.userBookings = response.data
   }).catch(error => {
+    this.newUser = true
     console.log(error)
   })
 },

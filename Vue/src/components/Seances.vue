@@ -44,7 +44,8 @@
                     <b-collapse id="collapse-3">
                           <b-card>
                             <div>
-                              <h5 class="text-center">Filtering</h5>
+                              <h5 class="text-center mb-4">Filtering</h5>
+                              <b-form-input v-model="searchString" placeholder="Search movie" class="mt-2 mb-2"></b-form-input>
                               <v-select
                               class="style-chooser"
                               placeholder="Order by"
@@ -113,7 +114,8 @@ export default {
           { name: 'Sort by: Title', value: 'title' },
           { name: 'Sort by: Genre', value: 'genre' },
           { name: 'Sort by: Imdb Rating', value: 'imdbRating' }
-       ]
+         ],
+         searchString: ''
       }
   },
   created () {

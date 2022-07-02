@@ -3,7 +3,7 @@
     <movie-carousel/>
     <div class="row mt-4">
         <div class="col-12 col-md-2">
-            <b-form-input v-model="searchString" @keydown.native="fetchData()" placeholder="Seach movie" class="mt-2 mr-5"></b-form-input>
+            <b-form-input v-model="searchString" @keydown.native="fetchData()" placeholder="Search movie" class="mt-2 mr-5"></b-form-input>
         </div>
         <div class="col-12 col-md-8">
         <h5 class="text-white underline font-weight-bold">All movies</h5>
