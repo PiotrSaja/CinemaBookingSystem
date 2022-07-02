@@ -10,6 +10,7 @@ import Axios from 'axios'
 import auth from './auth'
 import { initAxios } from './api'
 import vSelect from 'vue-select'
+import VueStarRating from 'vue-star-rating'
 
 Vue.config.productionTip = false
 
@@ -20,6 +21,7 @@ Vue.use(BootstrapVue)
 Vue.use(auth)
 
 Vue.component('v-select', vSelect)
+Vue.component('star-rating', VueStarRating.default)
 
 new Vue({
   router,

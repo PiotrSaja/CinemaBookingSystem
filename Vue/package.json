@@ -20,6 +20,7 @@
     "vue-horizontal-list-autoscroll": "^1.1.14",
     "vue-router": "^3.0.1",
     "vue-select": "^3.16.0",
+    "vue-star-rating": "^1.7.0",
     "vueperslides": "^3.3.2"
   },
   "devDependencies": {

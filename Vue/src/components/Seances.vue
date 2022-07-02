@@ -94,7 +94,7 @@
         </div>
     </div>
 </template>
-
+<script src="https://unpkg.com/vue-star-rating/dist/VueStarRating.umd.min.js"></script>
 <script>
 import 'vue-select/dist/vue-select.css'
 import CinemaService from '@/api-services/cinema-service'

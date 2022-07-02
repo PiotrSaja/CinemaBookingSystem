@@ -13,5 +13,6 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMovies
         public int PageSize { get; set; }
 
         public string SearchString { get; set; }
+        public int? GenreId { get; set; }
     }
 }

@@ -11,6 +11,7 @@ using CinemaBookingSystem.Application.Common.Extensions;
 using CinemaBookingSystem.Application.Common.Interfaces;
 using CinemaBookingSystem.Application.Common.Models;
 using CinemaBookingSystem.Domain.Entities;
+using LinqKit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,28 +36,30 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMovies
             if (request.PageSize < 1) { throw new HttpStatusCodeException(HttpStatusCode.InternalServerError, "Page size can't be null or less than 1"); }
             if (request.PageIndex < 1) { throw new HttpStatusCodeException(HttpStatusCode.InternalServerError, "Page index can't be null or less than 1"); }
 
+            var prediction = PredicateBuilder.New<Movie>(true);
+
+            prediction.And(x => x.StatusId != 0);
+
             if (!String.IsNullOrEmpty(request.SearchString))
             {
-                movies = await _context.Movies
-                    .Where(x => x.StatusId != 0 &&
-                                x.Title.Contains(request.SearchString))
-                    .AsNoTracking()
-                    .OrderBy(p => p.Created)
-                    .PaginateAsync(request.PageIndex, request.PageSize, cancellationToken);
+                prediction.And(x => x.Title.Contains(request.SearchString));
             }
-            else
+            if (request.GenreId.HasValue)
             {
-                movies = await _context.Movies
-                    .Where(x => x.StatusId != 0)
-                    .Include(x => x.Genres)
-                    .AsNoTracking()
-                    .PaginateAsync(request.PageIndex, request.PageSize, cancellationToken);
+                prediction.And(x => x.Genres.Any(x=>x.Id == request.GenreId));
             }
+
+            movies = await _context.Movies
+                .Where(prediction)
+                .Include(x => x.Genres)
+                .AsNoTracking()
+                .PaginateAsync(request.PageIndex, request.PageSize, cancellationToken);
 
             if (movies == null)
             {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "Not exists records in database");
             }
+
             var moviesDto = _mapper.Map<List<Movie>, List<MoviesDto>>(movies.Items.ToList());
 
             var moviesVm = new MoviesVm()

@@ -32,29 +32,6 @@ namespace CinemaBookingSystem.Api.Services
             var rawDataFromDb = GetRawDataFromDatabase(movies, usersId);
             ShowData(rawDataFromDb, 1, true, true);
 
-
-            //double[][] rawData = new double[20][];
-            //rawData[0] = new double[] { 4.5, 5.0, 3.5, 4.0, 3.0 };
-            //rawData[1] = new double[] { 4.0, 4.0, 4.5, 4.0, 3.5 };
-            //rawData[2] = new double[] { 2.0, 3.0, 2.5, 5.0, 3.5 };
-            //rawData[3] = new double[] { 5.0, 2.0, 3.5, 2.0, 2.5 };
-            //rawData[4] = new double[] { 5.0, 4.0, 2.5, 1.0, 3.0 };
-            //rawData[5] = new double[] { 5.0, 3.0, 3.5, 3.0, 3.5 };
-            //rawData[6] = new double[] { 4.5, 4.0, 3.5, 2.0, 4.5 };
-            //rawData[7] = new double[] { 4.0, 4.0, 4.5, 4.0, 3.5 };
-            //rawData[8] = new double[] { 3.0, 4.0, 5.0, 4.0, 4.0 };
-            //rawData[9] = new double[] { 4.0, 5.0, 4.5, 5.0, 3.5 };
-            //rawData[10] = new double[] { 4.0, 2.0, 2.5, 1.0, 2.5 };
-            //rawData[11] = new double[] { 2.0, 1.0, 3.5, 1.0, 1.5 };
-            //rawData[12] = new double[] { 5.0, 5.0, 5.0, 5.0, 5.0 };
-            //rawData[13] = new double[] { 4.0, 4.0, 4.0, 4.0, 4.0 };
-            //rawData[14] = new double[] { 3.0, 3.0, 3.0, 3.0, 3.0 };
-            //rawData[15] = new double[] { 3.5, 4.0, 3.5, 4.0, 3.5 };
-            //rawData[16] = new double[] { 1.0, 2.0, 3.5, 4.0, 5.0 };
-            //rawData[17] = new double[] { 3.0, 4.0, 5.0, 1.0, 2.5 };
-            //rawData[18] = new double[] { 4.0, 4.5, 3.5, 2.0, 1.5 };
-            //rawData[19] = new double[] { 5.0, 3.0, 2.5, 3.0, 3.5 };
-
             Console.WriteLine("Raw data:\n");
             ShowData(rawDataFromDb, 1, true, true);
 

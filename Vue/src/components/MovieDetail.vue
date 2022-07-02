@@ -1,5 +1,8 @@
 <template>
     <div class="page">
+        <b-alert v-model="showDismissibleAlert" variant="success" dismissible>
+          Thanks you for voting!
+        </b-alert>
         <div class="movie-background-image" :style="{backgroundImage:`url(${movie.backgroundImagePath})`}">
         </div>
         <div class="container" style="margin-top: -120px">
@@ -21,6 +24,16 @@
                 </div>
                 <div class="row" style="padding-top: 30px;">
                 <div class="col-md-12 col-12">
+                    <div v-if=ratingVisable>
+                      <span class="ml-3 text-white font-weight-bold">Your vote</span>
+                      <star-rating class="ml-3"
+                      :increment="1"
+                      :star-size="25"
+                      :show-rating="false"
+                      :rating = voteRating
+                      @rating-selected = "setRating"
+                      :read-only=ratingDisabled></star-rating><br>
+                    </div>
                     <span class="ml-3 text-white font-weight-bold">Actors</span><br>
                     <p class="ml-3 text-white font-weight-regular"><span v-for="actor in movie.actors" :key="actor.id">{{ actor.fullName }}, </span>
                     </p><br><br>
@@ -40,24 +53,48 @@
 </template>
 
 <script>
+import StarRating from 'vue-star-rating'
 import MovieService from '@/api-services/movie-service'
 import HorizontalMovieRecomandationList from '@/components/HorizontalMovieRecomandationList.vue'
 import SubsequentSeances from '@/components/SubsequentSeances.vue'
 export default {
-  components: { HorizontalMovieRecomandationList, SubsequentSeances },
+  components: { HorizontalMovieRecomandationList, SubsequentSeances, StarRating },
   name: 'MovieDetail',
   data () {
     return {
       movie: {},
-      errorMessage: ''
+      errorMessage: '',
+      voteRating: 0,
+      ratingDisabled: false,
+      showDismissibleAlert: false,
+      voteData: {},
+      ratingVisable: true
     }
   },
   created () {
+    this.$auth.getProfile()
+      .then(profile => {
+        this.profile = profile
+        if (this.profile === null) {
+          this.ratingVisable = false
+      }
+      })
+      .catch(error => {
+        console.log(error)
+      })
     MovieService.get(this.$router.currentRoute.params.id).then((response) => {
       this.movie = response.data
     }).catch(error => {
       if (error.response.status === 404) {
       this.$router.replace({name: 'NotFound', params: {err: error.response.data.Message}})
+      }
+    })
+    MovieService.getUserMovieVote(this.$router.currentRoute.params.id).then((response) => {
+      this.voteRating = response.data.rating
+      this.ratingDisabled = true
+    }).catch(error => {
+      if (error.response.status === 404) {
+      this.voteRating = 0
       }
     })
   },
@@ -66,7 +103,25 @@ export default {
             const reqdString = data.toString().split('').slice(0, num).join('')
             return reqdString
         }
+  },
+  methods: {
+    setRating (rating) {
+      if (this.voteRating === 0) {
+          this.voteRating = rating
+          this.ratingDisabled = true
+          this.showDismissibleAlert = true
+
+          this.voteData.movieId = this.$router.currentRoute.params.id
+          this.voteData.vote = rating
+
+          MovieService.vote(this.voteData).then((response) => {
+            console.log(response.data)
+          }).catch(error => {
+            console.log(error)
+          })
+      }
     }
+  }
 }
 </script>
 

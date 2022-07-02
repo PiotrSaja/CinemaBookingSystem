@@ -26,28 +26,33 @@ namespace CinemaBookingSystem.Application.Movies.Commands.AddPreferencesMovie
 
         public async Task<int> Handle(AddPreferencesMovieCommand request, CancellationToken cancellationToken)
         {
-            var movie = await _context.Movies.Where(x => x.Id == request.MovieId)
-                .FirstOrDefaultAsync(cancellationToken);
+            UserPreferencesMovie userPreferencesMovie = null;
 
-            if (movie == null)
+            foreach (var movieId in request.MoviesIds)
             {
-                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "Not exists in database, check your id");
+                var movie = await _context.Movies.Where(x => x.Id == movieId)
+                    .FirstOrDefaultAsync(cancellationToken);
+
+                if (movie == null)
+                {
+                    throw new HttpStatusCodeException(HttpStatusCode.NotFound, "Not exists in database, check your id");
+                }
+                var userMovie =
+                    await _context.UserPreferencesMovies.FirstOrDefaultAsync(x =>
+                        x.MovieId == movieId && x.UserId == _userService.Id, cancellationToken);
+
+                if (userMovie != null)
+                    throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "You cannot add preferences of movies");
+
+                userPreferencesMovie = new UserPreferencesMovie()
+                {
+                    MovieId = movie.Id,
+                    UserId = _userService.Id,
+                };
+
+                await _context.UserPreferencesMovies.AddAsync(userPreferencesMovie, cancellationToken);
             }
 
-            var userMovie =
-                await _context.UserPreferencesMovies.FirstOrDefaultAsync(x =>
-                    x.MovieId == request.MovieId && x.UserId == _userService.Id, cancellationToken);
-
-            if (userMovie != null)
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "You cannot add preferences of movies");
-
-            var userPreferencesMovie = new UserPreferencesMovie()
-            {
-                MovieId = movie.Id,
-                UserId = _userService.Id,
-            };
-
-            await _context.UserPreferencesMovies.AddAsync(userPreferencesMovie, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
 
             return userPreferencesMovie.Id;

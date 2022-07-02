@@ -23,5 +23,14 @@ export default {
   },
   getMoviesWithSeances (cinemaId, date) {
     return Axios.get(`${RESOURCE_NAME}/${cinemaId}/${date}`)
+  },
+  vote (data) {
+    return Axios.post(`${RESOURCE_NAME}/vote`, data)
+  },
+  pref (data) {
+    return Axios.post(`${RESOURCE_NAME}/pref`, data)
+  },
+  getUserMovieVote (id) {
+    return Axios.get(`${RESOURCE_NAME}/vote/${id}`)
   }
 }

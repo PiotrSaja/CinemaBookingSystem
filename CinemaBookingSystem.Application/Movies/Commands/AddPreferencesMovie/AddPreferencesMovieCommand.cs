@@ -9,6 +9,6 @@ namespace CinemaBookingSystem.Application.Movies.Commands.AddPreferencesMovie
 {
     public class AddPreferencesMovieCommand : IRequest<int>
     {
-        public int MovieId { get; set; }
+        public List<int> MoviesIds { get; set; }
     }
 }
