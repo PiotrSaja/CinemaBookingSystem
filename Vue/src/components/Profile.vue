@@ -10,6 +10,7 @@
       </div>
     </div>
     <div class="row mt-4">
+      <movies-preferences-list></movies-preferences-list>
       <div class="col-md-12" v-if="!newUser">
         <h5 class="text-white underline font-weight-bold">Last confirmed bookings</h5>
         <div class="row mt-4 booking-item"
@@ -39,8 +40,10 @@
 
 <script>
 import BookingService from '@/api-services/booking-service'
+import MoviesPreferencesList from '@/components/MoviesPreferencesList'
 export default {
   name: 'Profile',
+  components: {MoviesPreferencesList},
   data () {
     return {
       profile: null,
