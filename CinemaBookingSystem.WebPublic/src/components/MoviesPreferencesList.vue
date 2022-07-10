@@ -67,6 +67,15 @@ export default {
           this.selectedList.splice(indexInList)
         }
         console.log(this.selectedList)
+      },
+      getUserBaseRecomendation () {
+          var response = {
+            moviesIds: this.selectedList
+          }
+
+          MovieService.pref(response).then((response) => {
+            console.log(response)
+        })
       }
   }
 }

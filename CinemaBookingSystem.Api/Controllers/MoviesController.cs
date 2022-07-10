@@ -12,6 +12,7 @@ using CinemaBookingSystem.Application.Movies.Queries.GetMovies;
 using CinemaBookingSystem.Application.Movies.Queries.GetMoviesDaysToPremiere;
 using CinemaBookingSystem.Application.Movies.Queries.GetMoviesPrediciton;
 using CinemaBookingSystem.Application.Movies.Queries.GetMoviesWithSeanceOnCurrentCinemaAndDay;
+using CinemaBookingSystem.Application.Movies.Queries.GetPrefMovies;
 using CinemaBookingSystem.Application.Movies.Queries.GetUserMovieVote;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -154,6 +155,17 @@ namespace CinemaBookingSystem.Api.Controllers
             var vm = await Mediator.Send(new GetUserMovieVoteQuery() { MovieId = id });
 
             return Ok(vm);
+        }
+        [HttpGet("pref")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(Roles = "Administrator,User")]
+        public async Task<IActionResult> GetPrefMovies()
+        {
+            var result = await Mediator.Send(new GetPrefMoviesQuery());
+
+            return Ok(result);
         }
     }
 }

@@ -45,7 +45,6 @@
                           <b-card>
                             <div>
                               <h5 class="text-center mb-4">Filtering</h5>
-                              <b-form-input v-model="searchString" placeholder="Search movie" class="mt-2 mb-2"></b-form-input>
                               <v-select
                               class="style-chooser"
                               placeholder="Order by"

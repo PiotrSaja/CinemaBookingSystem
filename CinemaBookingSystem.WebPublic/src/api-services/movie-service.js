@@ -30,6 +30,9 @@ export default {
   pref (data) {
     return Axios.post(`${RESOURCE_NAME}/pref`, data)
   },
+  getPrefList () {
+    return Axios.get(`${RESOURCE_NAME}/pref`)
+  },
   getUserMovieVote (id) {
     return Axios.get(`${RESOURCE_NAME}/vote/${id}`)
   },

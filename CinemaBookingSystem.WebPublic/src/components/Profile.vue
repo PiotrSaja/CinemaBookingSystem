@@ -10,7 +10,7 @@
       </div>
     </div>
     <div class="row mt-4">
-      <movies-preferences-list></movies-preferences-list>
+      <movies-preferences-list v-if="showMoviesPref"></movies-preferences-list>
       <div class="col-md-12" v-if="!newUser">
         <h5 class="text-white underline font-weight-bold">Last confirmed bookings</h5>
         <div class="row mt-4 booking-item"
@@ -40,6 +40,7 @@
 
 <script>
 import BookingService from '@/api-services/booking-service'
+import MoviesService from '@/api-services/movie-service'
 import MoviesPreferencesList from '@/components/MoviesPreferencesList'
 export default {
   name: 'Profile',
@@ -50,7 +51,9 @@ export default {
       userBookings: {},
       bookingsToShow: 3,
       totalBookings: 0,
-      newUser: false
+      newUser: false,
+      moviesPrefList: [],
+      showMoviesPref: true
     }
   },
   mounted () {
@@ -71,6 +74,14 @@ export default {
     this.userBookings = response.data
   }).catch(error => {
     this.newUser = true
+    console.log(error)
+  })
+   MoviesService.getPrefList().then((response) => {
+    this.moviesPrefList = response.data
+    if (this.moviesPrefList.items.length > 0) {
+      this.showMoviesPref = false
+    }
+  }).catch(error => {
     console.log(error)
   })
 },
