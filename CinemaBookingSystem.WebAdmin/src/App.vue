@@ -6,7 +6,7 @@
         <div class="row">
           <menubar1/>
         </div>
-        <div class="row">
+        <div class="row p-4">
           <router-view/>
         </div>
         
