@@ -1,13 +1,13 @@
 <template>
     <div>
-        <DataTable :value="cinemas" :paginator="true" class="p-datatable-customers" :rows="10"
-            dataKey="id" :rowHover="true" v-model:selection="selectedCinemas" v-model:filters="filters" filterDisplay="menu" :loading="loading"
+        <DataTable :value="seances" :paginator="true" class="p-datatable-customers" :rows="10"
+            dataKey="id" :rowHover="true" v-model:selection="selectedSeances" v-model:filters="filters" filterDisplay="menu" :loading="loading"
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[10,25,50]"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            :globalFilterFields="['name','city','street']" responsiveLayout="scroll">
+            :globalFilterFields="['movie.title','movie.language', 'date', 'cinemaHall.name']" responsiveLayout="scroll">
             <template #header>
                  <div class="flex justify-content-left align-items-center">
-                    <h5 class="m-0">Cinemas</h5>
+                    <h5 class="m-0">Seances</h5>
                     <span class="p-input-icon-left ml-5">
                         <i class="pi pi-search" />
                         <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
@@ -15,33 +15,41 @@
                  </div>
             </template>
             <template #empty>
-                No cinemas found.
+                No seances found.
             </template>
             <template #loading>
-                Loading cinemas data. Please wait.
+                Loading seances data. Please wait.
             </template>
-            <Column field="name" header="Name" sortable style="min-width: 14rem">
+            <Column field="title" header="Title" sortable style="min-width: 14rem">
                 <template #body="{data}">
-                   <span>{{data.name}}</span>
+                    {{data.movie.title}}
                 </template>
                 <template #filter="{filterModel}">
-                    <InputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Search by name"/>
+                    <InputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Search by title"/>
                 </template>
             </Column>
-            <Column field="city" header="City" sortable filterMatchMode="contains" style="min-width: 14rem">
+            <Column field="language" header="Language" sortable filterMatchMode="contains" style="min-width: 14rem">
                 <template #body="{data}">
-                    <span>{{data.city}}</span>
+                    <span>{{data.movie.language}}</span>
                 </template>
                 <template #filter="{filterModel}">
-                    <InputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Search by city"/>
+                    <InputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Search by language"/>
                 </template>
             </Column>
-            <Column field="street" header="Street" sortable filterMatchMode="contains" style="min-width: 14rem">
+            <Column field="cinema-hall" header="Cinema Hall" sortable filterMatchMode="contains" style="min-width: 14rem">
                 <template #body="{data}">
-                    <span>{{data.street}}</span>
+                    <span>{{data.cinemaHall.name}}</span>
                 </template>
                 <template #filter="{filterModel}">
-                    <InputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Search by street"/>
+                    <InputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Search by cinema hall"/>
+                </template>
+            </Column>
+             <Column field="date" header="Date" sortable dataType="date" style="min-width: 8rem">
+                <template #body="{data}">
+                    {{formatDate(new Date(Date.parse(data.date)))}}
+                </template>
+                <template #filter="{filterModel}">
+                    <Calendar v-model="filterModel.value" dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" />
                 </template>
             </Column>
             <Column headerStyle="width: 4rem; text-align: center" bodyStyle="text-align: center; overflow: visible">
@@ -55,36 +63,38 @@
 
 <script>
 import {FilterMatchMode, FilterOperator} from 'primevue/api';
-import CinemaService from '@/services/cinema-service';
+import SeanceService from '@/services/seance-service';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
+import Calendar from 'primevue/calendar';
 export default {
-    name: 'CinemasView',
+    name: 'SeancesView',
     components: {
         DataTable,
         Column,
         Button,
-        InputText
+        InputText,
+        Calendar
     },
     data() {
         return {
-            cinemas: null,
-            selectedCinemas: null,
+            seances: null,
+            selectedSeances: null,
             filters: {
                 'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
-                'name': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]},
-                'city': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]},
-                'street': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]}
+                'title': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]},
+                'language': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]},
+                'cinema-hall': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]},
+                'date': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.DATE_IS}]},
             },
             loading: true
         }
     },
-    productService: null,
      created () {
-        CinemaService.getAll().then((response) => {
-        this.cinemas = response.data.items
+        SeanceService.getAll(1, 1000000).then((response) => {
+        this.seances = response.data.items
         this.loading = false
         }).catch((error) => {
         console.log(error.response.data)
@@ -95,6 +105,15 @@ export default {
             this.filters = {
                 'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
             }
+        },
+        formatDate(value) {
+            return value.toLocaleDateString('en-US', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric'
+            });
         }
     }
 }
@@ -146,5 +165,9 @@ export default {
     .p-dropdown-label:not(.p-placeholder) {
         text-transform: uppercase;
     }
+    .movie-image {
+    width: 150px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
 }
 </style>

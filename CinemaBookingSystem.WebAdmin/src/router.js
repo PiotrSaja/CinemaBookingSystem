@@ -2,6 +2,11 @@ import { createRouter, createWebHistory }  from 'vue-router'
 import { authService } from '@/auth'
 import Home from '@/views/Home'
 import Cinemas from '@/views/Cinemas'
+import Cinema from '@/views/Cinema'
+import Movies from '@/views/Movies'
+import Seances from '@/views/Seances'
+import Bookings from '@/views/Bookings'
+import HealthCheck from '@/views/HealthCheck'
 
 const routes = [
   {
@@ -13,6 +18,31 @@ const routes = [
     path: '/cinemas',
     name: 'Cinemas',
     component: Cinemas
+  },
+  {
+    path: '/cinema',
+    name: 'Cinema',
+    component: Cinema
+  },
+  {
+    path: '/movies',
+    name: 'Movies',
+    component: Movies
+  },
+  {
+    path: '/seances',
+    name: 'Seances',
+    component: Seances
+  },
+  {
+    path: '/bookings',
+    name: 'Bookings',
+    component: Bookings
+  },
+  {
+    path: '/hc',
+    name: 'HealtCheck',
+    component: HealthCheck
   }
 ]
 

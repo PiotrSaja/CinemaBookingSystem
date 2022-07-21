@@ -6,7 +6,7 @@
         <div class="row">
           <menubar1/>
         </div>
-        <div class="row p-4">
+        <div class="row p-2">
           <router-view/>
         </div>
         
@@ -49,7 +49,6 @@ export default {
   font-family: 'Lobster', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
 </style>

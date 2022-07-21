@@ -1,13 +1,13 @@
 <template>
     <div>
-        <DataTable :value="cinemas" :paginator="true" class="p-datatable-customers" :rows="10"
-            dataKey="id" :rowHover="true" v-model:selection="selectedCinemas" v-model:filters="filters" filterDisplay="menu" :loading="loading"
+        <DataTable :value="movies" :paginator="true" class="p-datatable-customers" :rows="10"
+            dataKey="id" :rowHover="true" v-model:selection="selectedMovies" v-model:filters="filters" filterDisplay="menu" :loading="loading"
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[10,25,50]"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            :globalFilterFields="['name','city','street']" responsiveLayout="scroll">
+            :globalFilterFields="['title','plot']" responsiveLayout="scroll">
             <template #header>
                  <div class="flex justify-content-left align-items-center">
-                    <h5 class="m-0">Cinemas</h5>
+                    <h5 class="m-0">Movies</h5>
                     <span class="p-input-icon-left ml-5">
                         <i class="pi pi-search" />
                         <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
@@ -15,38 +15,35 @@
                  </div>
             </template>
             <template #empty>
-                No cinemas found.
+                No movies found.
             </template>
             <template #loading>
-                Loading cinemas data. Please wait.
+                Loading movies data. Please wait.
             </template>
-            <Column field="name" header="Name" sortable style="min-width: 14rem">
+             <Column header="Poster">
+                     <template #body="{data}">
+                        <img :src=data.posterPath :alt="data.posterPath" class="movie-image" />
+                    </template>
+            </Column>
+            <Column field="title" header="Title" sortable style="min-width: 14rem">
                 <template #body="{data}">
-                   <span>{{data.name}}</span>
+                    {{data.title}}
                 </template>
                 <template #filter="{filterModel}">
-                    <InputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Search by name"/>
+                    <InputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Search by title"/>
                 </template>
             </Column>
-            <Column field="city" header="City" sortable filterMatchMode="contains" style="min-width: 14rem">
+            <Column field="plot" header="Plot" sortable filterMatchMode="contains" style="min-width: 14rem">
                 <template #body="{data}">
-                    <span>{{data.city}}</span>
+                    <span>{{data.plot}}</span>
                 </template>
                 <template #filter="{filterModel}">
-                    <InputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Search by city"/>
-                </template>
-            </Column>
-            <Column field="street" header="Street" sortable filterMatchMode="contains" style="min-width: 14rem">
-                <template #body="{data}">
-                    <span>{{data.street}}</span>
-                </template>
-                <template #filter="{filterModel}">
-                    <InputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Search by street"/>
+                    <InputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Search by plot"/>
                 </template>
             </Column>
             <Column headerStyle="width: 4rem; text-align: center" bodyStyle="text-align: center; overflow: visible">
                 <template #body>
-                    <Button type="button" icon="pi pi-pencil"></Button>
+                    <Button type="button" icon="pi pi-trash" class="p-button-danger"></Button>
                 </template>
             </Column>
         </DataTable>
@@ -55,13 +52,13 @@
 
 <script>
 import {FilterMatchMode, FilterOperator} from 'primevue/api';
-import CinemaService from '@/services/cinema-service';
+import MovieService from '@/services/movie-service';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 export default {
-    name: 'CinemasView',
+    name: 'MoviesView',
     components: {
         DataTable,
         Column,
@@ -70,21 +67,20 @@ export default {
     },
     data() {
         return {
-            cinemas: null,
-            selectedCinemas: null,
+            movies: null,
+            selectedMovies: null,
             filters: {
                 'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
-                'name': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]},
-                'city': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]},
-                'street': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]}
+                'title': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]},
+                'plot': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]},
             },
             loading: true
         }
     },
     productService: null,
      created () {
-        CinemaService.getAll().then((response) => {
-        this.cinemas = response.data.items
+        MovieService.getAll(1, 1000000).then((response) => {
+        this.movies = response.data.items
         this.loading = false
         }).catch((error) => {
         console.log(error.response.data)
@@ -146,5 +142,9 @@ export default {
     .p-dropdown-label:not(.p-placeholder) {
         text-transform: uppercase;
     }
+    .movie-image {
+    width: 150px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
 }
 </style>

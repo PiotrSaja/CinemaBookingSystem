@@ -78,44 +78,6 @@ export default {
                                     label: 'List',
                                     icon: 'pi pi-fw pi-list',
                                     url: '/cinemas'
-                                },
-                                {
-                                    key: '1_1_2',
-                                    label: 'Seats',
-                                    icon: 'pi pi-fw pi-users',
-                                    items: [
-                                        {
-                                            key: '1_1_2_1',
-                                            label: 'New',
-                                            icon: 'pi pi-fw pi-plus',
-                                            url: '/cinemas/seats/new'
-                                        },
-                                        {
-                                            key: '1_1_2_2',
-                                            label: 'List',
-                                            icon: 'pi pi-fw pi-list',
-                                            url: '/cinemas/seats'
-                                        }
-                                        ]
-                                },
-                                {
-                                    key: '1_1_3',
-                                    label: 'Halls',
-                                    icon: 'pi pi-fw pi-building',
-                                    items: [
-                                        {
-                                            key: '1_1_3_1',
-                                            label: 'New',
-                                            icon: 'pi pi-fw pi-plus',
-                                            url: '/cinemas/halls/new'
-                                        },
-                                        {
-                                            key: '1_1_3_2',
-                                            label: 'List',
-                                            icon: 'pi pi-fw pi-list',
-                                            url: '/cinemas/halls'
-                                        }
-                                        ]
                                 }
                             ]
                         },
