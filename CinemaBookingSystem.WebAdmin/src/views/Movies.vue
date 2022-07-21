@@ -1,5 +1,6 @@
 <template>
     <div>
+        <ConfirmDialog></ConfirmDialog>
         <DataTable :value="movies" :paginator="true" class="p-datatable-customers" :rows="10"
             dataKey="id" :rowHover="true" v-model:selection="selectedMovies" v-model:filters="filters" filterDisplay="menu" :loading="loading"
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[10,25,50]"
@@ -42,8 +43,8 @@
                 </template>
             </Column>
             <Column headerStyle="width: 4rem; text-align: center" bodyStyle="text-align: center; overflow: visible">
-                <template #body>
-                    <Button type="button" icon="pi pi-trash" class="p-button-danger"></Button>
+                <template #body="{data}">
+                    <Button type="button" icon="pi pi-trash" class="p-button-danger" @click="deleteMovie(data.id)"></Button>
                 </template>
             </Column>
         </DataTable>
@@ -91,6 +92,22 @@ export default {
             this.filters = {
                 'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
             }
+        },
+        deleteMovie(id) {
+            MovieService.delete(id).then((response) => {
+                console.log(response.data)
+                this.getMovieList();
+                }).catch((error) => {
+                console.log(error.response.data)
+            })
+        },
+        getMovieList() {
+            MovieService.getAll(1, 1000000).then((response) => {
+            this.movies = response.data.items
+            this.loading = false
+            }).catch((error) => {
+            console.log(error.response.data)
+        })
         }
     }
 }

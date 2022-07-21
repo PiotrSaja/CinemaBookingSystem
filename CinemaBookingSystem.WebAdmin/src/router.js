@@ -4,6 +4,7 @@ import Home from '@/views/Home'
 import Cinemas from '@/views/Cinemas'
 import Cinema from '@/views/Cinema'
 import Movies from '@/views/Movies'
+import Movie from '@/views/Movie'
 import Seances from '@/views/Seances'
 import Bookings from '@/views/Bookings'
 import HealthCheck from '@/views/HealthCheck'
@@ -28,6 +29,11 @@ const routes = [
     path: '/movies',
     name: 'Movies',
     component: Movies
+  },
+  {
+    path: '/movies/new',
+    name: 'Movie',
+    component: Movie
   },
   {
     path: '/seances',

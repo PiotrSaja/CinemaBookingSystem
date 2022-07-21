@@ -51,6 +51,7 @@ namespace CinemaBookingSystem.Api
                 {
                     policy.AllowAnyOrigin();
                     policy.AllowAnyHeader();
+                    policy.AllowAnyMethod();
                 });
             });
             services.AddAuthentication("Bearer")

@@ -13,6 +13,6 @@ export default {
     return Axios.post(`${RESOURCE_NAME}/omdb`, data)
   },
   delete (id) {
-    return Axios.delete(`${RESOURCE_NAME}/${id}`)
+    return Axios.delete(`${RESOURCE_NAME}?id=${id}`)
   }
 }
