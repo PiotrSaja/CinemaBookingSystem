@@ -13,11 +13,15 @@ namespace CinemaBookingSystem.Application.Seances.Queries.GetSeanceDetail
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public int NumberOfColumns { get; set; }
+        public int NumberOfRows { get; set; }
         public void Mapping(Profile profile)
         {
             profile.CreateMap<CinemaHall, CinemaHallDto>()
                 .ForMember(x => x.Id, map => map.MapFrom(src => src.Id))
-                .ForMember(x => x.Name, map => map.MapFrom(src => src.Name));
+                .ForMember(x => x.Name, map => map.MapFrom(src => src.Name))
+                .ForMember(x => x.NumberOfColumns, map => map.MapFrom(src => src.NumberOfColumns))
+                .ForMember(x => x.NumberOfRows, map => map.MapFrom(src => src.NumberOfRows));
         }
     }
 }

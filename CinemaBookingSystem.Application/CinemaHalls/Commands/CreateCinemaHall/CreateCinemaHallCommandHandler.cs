@@ -35,7 +35,9 @@ namespace CinemaBookingSystem.Application.CinemaHalls.Commands.CreateCinemaHall
             {
                 Name = request.Name,
                 TotalSeats = request.TotalSeats,
-                CinemaId = request.CinemaId
+                CinemaId = request.CinemaId,
+                NumberOfColumns = request.NumberOfColumns,
+                NumberOfRows = request.NumberOfRows
             };
 
             _context.CinemaHalls.Add(cinemaHall);

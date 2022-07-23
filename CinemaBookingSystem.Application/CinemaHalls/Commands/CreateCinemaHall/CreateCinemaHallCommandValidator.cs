@@ -19,6 +19,10 @@ namespace CinemaBookingSystem.Application.CinemaHalls.Commands.CreateCinemaHall
                 .GreaterThanOrEqualTo(0);
             RuleFor(x => x.CinemaId)
                 .NotNull();
+            RuleFor(x => x.NumberOfColumns)
+                .NotNull();
+            RuleFor(x => x.NumberOfRows)
+                .NotNull();
         }
     }
 }

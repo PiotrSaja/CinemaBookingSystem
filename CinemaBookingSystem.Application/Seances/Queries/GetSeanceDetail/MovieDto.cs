@@ -19,6 +19,7 @@ namespace CinemaBookingSystem.Application.Seances.Queries.GetSeanceDetail
         public ICollection<GenreMDto> Genres { get; set; }
         public string ImdbRating { get; set; }
         public string PosterPath { get; set; }
+        public string BackgroundImagePath { get; set; }
 
         public void Mapping(Profile profile)
         {
@@ -29,6 +30,7 @@ namespace CinemaBookingSystem.Application.Seances.Queries.GetSeanceDetail
                 .ForMember(d => d.Language, map => map.MapFrom(src => src.Language))
                 .ForMember(d => d.Country, map => map.MapFrom(src => src.Country))
                 .ForMember(d => d.PosterPath, map => map.MapFrom(src => src.PosterPath))
+                .ForMember(d => d.BackgroundImagePath, map => map.MapFrom(src => src.BackgroundImagePath))
                 .ForMember(d => d.ImdbRating, map => map.MapFrom(src => src.ImdbRating));
         }
     }

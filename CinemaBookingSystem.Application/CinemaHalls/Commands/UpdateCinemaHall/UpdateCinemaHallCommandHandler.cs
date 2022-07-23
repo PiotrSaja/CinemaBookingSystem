@@ -41,6 +41,8 @@ namespace CinemaBookingSystem.Application.CinemaHalls.Commands.UpdateCinemaHall
             cinemaHallToUpdate.Name = request.Name;
             cinemaHallToUpdate.TotalSeats = request.TotalSeats;
             cinemaHallToUpdate.CinemaId = request.CinemaId;
+            cinemaHallToUpdate.NumberOfColumns = request.NumberOfColumns;
+            cinemaHallToUpdate.NumberOfRows = request.NumberOfRows;
 
             _context.CinemaHalls.Update(cinemaHallToUpdate);
             await _context.SaveChangesAsync(cancellationToken);
