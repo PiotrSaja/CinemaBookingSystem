@@ -1,7 +1,5 @@
 <template>
     <div class="card">
-        <span><a class="mr-3" :href="items[0].to + '/' + cinemaHall">{{items[0].label}}</a></span>
-        <span><a :href="items[1].to + cinemaHall + '/halls'">{{items[1].label}}</a></span>
         <Message severity="error" v-if="showError" :closable="false">{{errorMessage}}</Message>
         <h2>Please insert data</h2>
             <h3>General information:</h3>
@@ -66,7 +64,7 @@ import InputText from 'primevue/inputtext';
 import CinemaService from '@/services/cinema-service';
 import { useRoute } from 'vue-router'
 export default {
-    name: 'CinemaView',
+    name: 'BookingView',
     components: {
         Button,
         Dialog,

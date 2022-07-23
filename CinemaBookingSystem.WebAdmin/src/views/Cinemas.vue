@@ -45,8 +45,8 @@
                 </template>
             </Column>
             <Column headerStyle="width: 4rem; text-align: center" bodyStyle="text-align: center; overflow: visible">
-                <template #body>
-                    <Button type="button" icon="pi pi-pencil"></Button>
+                <template #body="{data}">
+                    <Button type="button" icon="pi pi-pencil" @click="showCinemaDetail(data.id)"></Button>
                 </template>
             </Column>
         </DataTable>
@@ -95,6 +95,9 @@ export default {
             this.filters = {
                 'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
             }
+        },
+        showCinemaDetail(cinemaId) {
+            this.$router.push({name: 'Cinema', params: {id: cinemaId}})
         }
     }
 }

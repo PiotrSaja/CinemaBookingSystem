@@ -9,7 +9,7 @@ namespace CinemaBookingSystem.Application.Cinemas.Commands.UpdateCinema
 {
     public class UpdateCinemaCommand : IRequest<int>
     {
-        public int CinemaId { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public int TotalCinemaHalls { get; set; }
         public string Street { get; set; }

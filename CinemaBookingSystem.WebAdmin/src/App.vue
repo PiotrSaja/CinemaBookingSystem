@@ -1,6 +1,6 @@
 <template>
   <div id="app" v-cloak>
-    <section class="layout">
+    <section class="layout" v-if="isUserLoggedIn">
       <div class="sidebar"><navbar/></div>
       <div class="body">
         <div class="row">
@@ -12,6 +12,9 @@
         
       </div>
     </section>
+    <div v-if="!isUserLoggedIn">
+        <router-view/>
+    </div>
   </div>
 </template>
 
@@ -24,7 +27,22 @@ export default {
   components: {
     Navbar,
     Menubar1
-}
+},
+data () {
+    return {
+      isUserLoggedIn: false,
+    }
+  },
+  created () {
+    this.$auth.isUserLoggedIn()
+      .then(isLoggedIn => {
+        this.isUserLoggedIn = isLoggedIn
+      })
+      .catch(error => {
+        console.log(error)
+        this.isUserLoggedIn = false
+      })
+  },
 }
 </script>
 

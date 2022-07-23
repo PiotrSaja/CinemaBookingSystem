@@ -53,7 +53,7 @@ export default {
                                     key: '1_0_0',
                                     label: 'New',
                                     icon: 'pi pi-fw pi-plus',
-                                    url: '/bokings/new'
+                                    url: '/bookings/new'
                                 },
                                 {
                                     key: '1_0_1',
@@ -114,26 +114,6 @@ export default {
                                     label: 'List',
                                     icon: 'pi pi-fw pi-list',
                                     url: '/seances'
-                                }
-                                ,
-                                {
-                                    key: '1_1_3',
-                                    label: 'Seats',
-                                    icon: 'pi pi-fw pi-users',
-                                    items: [
-                                        {
-                                            key: '1_1_3_1',
-                                            label: 'New',
-                                            icon: 'pi pi-fw pi-plus',
-                                            url: '/seances/seats/new'
-                                        },
-                                        {
-                                            key: '1_1_3_2',
-                                            label: 'List',
-                                            icon: 'pi pi-fw pi-list',
-                                            url: '/seances/seats'
-                                        }
-                                        ]
                                 }
                             ]
                         }

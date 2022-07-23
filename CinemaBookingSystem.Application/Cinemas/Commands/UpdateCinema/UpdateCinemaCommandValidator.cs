@@ -11,7 +11,7 @@ namespace CinemaBookingSystem.Application.Cinemas.Commands.UpdateCinema
     {
         public UpdateCinemaCommandValidator()
         {
-            RuleFor(x => x.CinemaId)
+            RuleFor(x => x.Id)
                 .NotNull();
             RuleFor(x => x.Name)
                 .NotEmpty()

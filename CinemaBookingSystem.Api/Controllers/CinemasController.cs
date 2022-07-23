@@ -58,7 +58,7 @@ namespace CinemaBookingSystem.Api.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> UpdateCinema(int id, UpdateCinemaCommand cinema)
         {
-            if (id != cinema.CinemaId)
+            if (id != cinema.Id)
             {
                 return BadRequest();
             }

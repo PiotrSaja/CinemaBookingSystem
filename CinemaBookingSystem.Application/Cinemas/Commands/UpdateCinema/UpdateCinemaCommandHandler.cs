@@ -24,7 +24,7 @@ namespace CinemaBookingSystem.Application.Cinemas.Commands.UpdateCinema
 
         public async Task<int> Handle(UpdateCinemaCommand request, CancellationToken cancellationToken)
         {
-            var cinemaToUpdate = await _context.Cinemas.Where(x => x.Id == request.CinemaId)
+            var cinemaToUpdate = await _context.Cinemas.Where(x => x.Id == request.Id)
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (cinemaToUpdate == null)
