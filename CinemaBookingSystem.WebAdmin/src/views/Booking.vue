@@ -7,12 +7,10 @@
                  <div class="field">
                         <label class="mr-2" for="cinemaName">Cinema name</label>
                         <InputText id="cinemaName" type="text" aria-describedby="username2-help" v-model="cinema.name"/>
-                        <small id="username2-help" class="p-error" v-if="false">Username is not available.</small>
                 </div>
                 <div class="field">
                         <label class="mr-2" for="imagePath">Image path</label>
                         <InputText id="imagePath" type="url" aria-describedby="username2-help" v-model="cinema.imagePath"/>
-                        <small id="username2-help" class="p-error" v-if="false">Username is not available.</small>
                 </div>
             </div>
             <h3 class="mt-5">Address:</h3>

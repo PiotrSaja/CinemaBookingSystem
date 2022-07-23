@@ -126,10 +126,10 @@ router.beforeEach((to, from, next) => {
         console.log(error)
       })
       next({
-        path: '/'
+        path: '/start'
       })
       return 
-  } else if (to.meta.admin && to.path !== '/start') {
+  } else if (to.meta.admin && (to.path !== '/start' || to.path !== '/login')) {
     authService.isUserLoggedIn()
       .then(isLoggedIn => {
         if (isLoggedIn === true) {
