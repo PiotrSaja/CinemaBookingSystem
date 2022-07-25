@@ -1,84 +1,99 @@
 <template>
-    <div class="card">
-        <span><a class="mr-3" :href="items[0].to + '/' + cinemaHall">{{items[0].label}}</a></span>
-        <span><a :href="items[1].to + cinemaHall + '/halls'">{{items[1].label}}</a></span>
-        <Message severity="error" v-if="showError" :closable="false">{{errorMessage}}</Message>
-        <h2>Please insert data</h2>
-            <h3>General information:</h3>
-            <div class="row">
-                 <div class="field">
-                        <label class="mr-2" for="cinemaName">Cinema name</label>
-                        <InputText id="cinemaName" type="text" aria-describedby="username2-help" v-model="cinema.name"/>
-                        <small id="username2-help" class="p-error" v-if="false">Username is not available.</small>
-                </div>
-                <div class="field">
-                        <label class="mr-2" for="imagePath">Image path</label>
-                        <InputText id="imagePath" type="url" aria-describedby="username2-help" v-model="cinema.imagePath"/>
-                        <small id="username2-help" class="p-error" v-if="false">Username is not available.</small>
-                </div>
-            </div>
-            <h3 class="mt-5">Address:</h3>
-            <div class="row">
-                <div class="field">
-                        <label class="mr-2" for="street">Street</label>
-                        <InputText id="street" type="text" aria-describedby="username2-help" v-model="cinema.street"/>
-                </div>
-                 <div class="field">
-                        <label class="mr-2" for="city">City</label>
-                        <InputText id="city" type="text" aria-describedby="username2-help" v-model="cinema.city"/>
-                </div>
-                 <div class="field">
-                        <label class="mr-2" for="zipCode">Zip Code</label>
-                        <InputText id="zipCode" type="text" aria-describedby="username2-help" v-model="cinema.zipCode"/>
-                </div>
-                 <div class="field">
-                        <label class="mr-2" for="state">State</label>
-                        <InputText id="state" type="text" aria-describedby="username2-help" v-model="cinema.state"/>
-                </div>
-                 <div class="field">
-                        <label class="mr-2" for="country">Country</label>
-                        <InputText id="country" type="text" aria-describedby="username2-help" v-model="cinema.country"/>
-                </div>
-            </div>
-            <div class="row ml-2 mt-3">
-                <Button label="Submit" icon="pi pi-check" iconPos="right" class="p-button-success mr-2"  @click="submit()"/>
-                <Button label="Cancel" icon="pi pi-times" iconPos="right" class="p-button-info mr-2" @click="goBack()" />
-                <Button label="Delete" icon="pi pi-trash" @click="openConfirmation" class="p-button-danger" />
-                <Dialog header="Delete" v-model:visible="displayConfirmation" :style="{width: '350px'}" :modal="true">
-                    <div class="confirmation-content">
-                        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-                        <span>Are you sure you want to delete ?</span>
+    <a :href="items[0].to + '/' + cinema.id"><Button class="p-button-raised p-button-rounded mr-3" disabled>{{items[0].label}}</Button></a>
+    <a :href="items[1].to + cinema.id + '/halls'"><Button class="p-button-raised p-button-rounded mr-3" >{{items[1].label}}</Button></a>
+    <card class="mt-3">
+        <template #title>
+            Update cinema
+        </template>
+        <template #content>
+            <div class="ml-2">
+                <Message severity="error" v-if="showError" :closable="false">{{errorMessage}}</Message>
+                    <div class="card">
+                        <h5>General information</h5>
+                        <div class="field grid">
+                            <label for="cinemaName" class="col-12 mb-2 md:col-2 md:mb-0">Name</label>
+                            <div class="col-12 md:col-10">
+                                <input id="cinemaName" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="cinema.name">
+                            </div>
+                        </div>
+                        <div class="field grid">
+                            <label for="imagePath" class="col-12 mb-2 md:col-2 md:mb-0">Image path</label>
+                            <div class="col-12 md:col-10">
+                                <input id="imagePath" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="cinema.imagePath">
+                            </div>
+                        </div>
+                        <h5>Address information</h5>
+                        <div class="field grid">
+                            <label for="street" class="col-12 mb-2 md:col-2 md:mb-0">Street</label>
+                            <div class="col-12 md:col-10">
+                                <input id="street" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="cinema.street">
+                            </div>
+                        </div>
+                        <div class="field grid">
+                            <label for="city" class="col-12 mb-2 md:col-2 md:mb-0">City</label>
+                            <div class="col-12 md:col-10">
+                                <input id="city" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="cinema.city">
+                            </div>
+                        </div>
+                        <div class="field grid">
+                            <label for="zipCode" class="col-12 mb-2 md:col-2 md:mb-0">Zip Code</label>
+                            <div class="col-12 md:col-10">
+                                <input id="zipCode" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="cinema.zipCode">
+                            </div>
+                        </div>
+                        <div class="field grid">
+                            <label for="state" class="col-12 mb-2 md:col-2 md:mb-0">State</label>
+                            <div class="col-12 md:col-10">
+                                <input id="state" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="cinema.state">
+                            </div>
+                        </div>
+                        <div class="field grid">
+                            <label for="country" class="col-12 mb-2 md:col-2 md:mb-0">Country</label>
+                            <div class="col-12 md:col-10">
+                                <input id="country" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="cinema.country">
+                            </div>
+                        </div>
                     </div>
-                    <template #footer>
-                        <Button label="No" icon="pi pi-times" @click="closeConfirmation" class="p-button-text"/>
-                        <Button label="Yes" icon="pi pi-check" @click="deleteCinema(cinema.id)" class="p-button-text" autofocus />
-                    </template>
-                </Dialog>
-            </div>
-    </div>
+                    <div class="text-right row mt-5">
+                        <Button label="Submit" icon="pi pi-check" iconPos="left" class="p-button-success mr-2"  @click="submit()"/>
+                        <Button label="Cancel" icon="pi pi-times" iconPos="left" class="p-button-info mr-2" @click="goBack()" />
+                        <Button label="Delete" icon="pi pi-trash" @click="openConfirmation" class="p-button-danger" />
+                        <Dialog header="Delete" v-model:visible="displayConfirmation" :style="{width: '350px'}" :modal="true">
+                            <div class="confirmation-content">
+                                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
+                                <span>Are you sure you want to delete ?</span>
+                            </div>
+                            <template #footer>
+                                <Button label="No" icon="pi pi-times" @click="closeConfirmation" class="p-button-text"/>
+                                <Button label="Yes" icon="pi pi-check" @click="deleteCinema(cinema.id)" class="p-button-text" autofocus />
+                            </template>
+                        </Dialog>
+                    </div>
+                </div>
+        </template>
+    </card>
 </template>
 
 <script>
 import Message from 'primevue/message';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
-import InputText from 'primevue/inputtext';
 import CinemaService from '@/services/cinema-service';
-import { useRoute } from 'vue-router'
+import { useRoute } from 'vue-router';
+import Card from 'primevue/card';
 export default {
     name: 'CinemaView',
     components: {
         Button,
         Dialog,
-        InputText,
-        Message
+        Message,
+        Card
     },
     data() {
         return {
             displayConfirmation: false,
             displayAddHall: false,
             active: 1,
-            cinemaHall: 1,
             cinema: {
                 id: null,
                 name: '',
@@ -91,14 +106,14 @@ export default {
             },
             items: [
                 {
-                    label: 'Cinema informations',
+                    label: 'Cinema information',
                     icon: 'pi pi-fw pi-home',
-                    to: '/cinema',
+                    to: '/cinemas',
                 },
                 {
-                    label: 'Cinema Halls',
+                    label: 'Halls',
                     icon: 'pi pi-fw pi-calendar',
-                    to: '/cinema/'
+                    to: '/cinemas/'
                 }
             ],
             showError: false,

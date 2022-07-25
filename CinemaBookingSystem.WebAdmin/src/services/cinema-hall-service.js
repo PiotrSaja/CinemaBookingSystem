@@ -6,6 +6,9 @@ export default {
   getAll () {
     return Axios.get(`${RESOURCE_NAME}`)
   },
+  getInCinema (cinemaId) {
+    return Axios.get(`${RESOURCE_NAME}/cinema/${cinemaId}`)
+  },
   get (id) {
     return Axios.get(`${RESOURCE_NAME}/${id}`)
   },
@@ -16,6 +19,6 @@ export default {
     return Axios.put(`${RESOURCE_NAME}/${id}`, data)
   },
   delete (id) {
-    return Axios.delete(`${RESOURCE_NAME}/${id}`)
+    return Axios.delete(`${RESOURCE_NAME}?id=${id}`)
   }
 }

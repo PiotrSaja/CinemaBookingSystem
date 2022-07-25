@@ -65,8 +65,8 @@
                 </template>
             </Column>
             <Column headerStyle="width: 4rem; text-align: center" bodyStyle="text-align: center; overflow: visible">
-                <template #body>
-                    <Button type="button" icon="pi pi-pencil"></Button>
+                <template #body="{data}">
+                    <Button type="button" icon="pi pi-info" @click="showBookingDetail(data.id)"></Button>
                 </template>
             </Column>
         </DataTable>
@@ -131,6 +131,9 @@ export default {
                 hour: 'numeric',
                 minute: 'numeric'
             });
+        },
+        showBookingDetail(bookingId) {
+            this.$router.push({name: 'Booking', params: {id: bookingId}})
         }
     }
 }

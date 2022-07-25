@@ -1,44 +1,49 @@
 <template>
-    <div class="card">
-        <Message severity="error" v-if="showError" :closable="false">{{errorMessage}}</Message>
-        <h2>Please insert data</h2>
-            <h3>General information:</h3>
-            <div class="row">
-                 <div class="field">
-                        <label class="mr-2" for="cinemaName">Cinema name</label>
-                        <InputText id="cinemaName" type="text" aria-describedby="username2-help" v-model="cinema.name"/>
+    <card>
+        <template #title>
+            Booking Information
+        </template>
+        <template #content>
+            <div class="card">
+                <h5>Personal information</h5>
+                <div class="field grid">
+                    <label for="firstName" class="col-12 mb-2 md:col-2 md:mb-0">First name</label>
+                    <div class="col-12 md:col-10">
+                        <input id="firstName" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="booking.personalName.firstName" disabled>
+                    </div>
                 </div>
-                <div class="field">
-                        <label class="mr-2" for="imagePath">Image path</label>
-                        <InputText id="imagePath" type="url" aria-describedby="username2-help" v-model="cinema.imagePath"/>
+                <div class="field grid">
+                    <label for="lastName" class="col-12 mb-2 md:col-2 md:mb-0">Last name</label>
+                    <div class="col-12 md:col-10">
+                        <input id="lastName" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="booking.personalName.lastName" disabled>
+                    </div>
                 </div>
+                <div class="field grid">
+                    <label for="phoneNumber" class="col-12 mb-2 md:col-2 md:mb-0">Phone number</label>
+                    <div class="col-12 md:col-10">
+                        <input id="phoneNumber" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="booking.personalName.phoneNumber" disabled>
+                    </div>
+                </div>
+                <h5>Seance information</h5>
+                <div class="field grid">
+                    <label for="date" class="col-12 mb-2 md:col-2 md:mb-0">Date</label>
+                    <div class="col-12 md:col-10">
+                        <input id="date" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="booking.seance.date" disabled>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label for="movieTitle" class="col-12 mb-2 md:col-2 md:mb-0">Movie title</label>
+                    <div class="col-12 md:col-10">
+                        <input id="movieTitle" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="booking.seance.date" disabled>
+                    </div>
+                </div>
+                <h5>Tickets</h5>
+                    <li v-for="item in booking.seanceSeats" :key="item.id">
+                    <span>Seat number: {{item.cinemaSeat.seatNumber}} Row: {{item.cinemaSeat.row}} Type: {{item.cinemaSeat.seatType}}</span>
+                </li >
             </div>
-            <h3 class="mt-5">Address:</h3>
-            <div class="row">
-                <div class="field">
-                        <label class="mr-2" for="street">Street</label>
-                        <InputText id="street" type="text" aria-describedby="username2-help" v-model="cinema.street"/>
-                </div>
-                 <div class="field">
-                        <label class="mr-2" for="city">City</label>
-                        <InputText id="city" type="text" aria-describedby="username2-help" v-model="cinema.city"/>
-                </div>
-                 <div class="field">
-                        <label class="mr-2" for="zipCode">Zip Code</label>
-                        <InputText id="zipCode" type="text" aria-describedby="username2-help" v-model="cinema.zipCode"/>
-                </div>
-                 <div class="field">
-                        <label class="mr-2" for="state">State</label>
-                        <InputText id="state" type="text" aria-describedby="username2-help" v-model="cinema.state"/>
-                </div>
-                 <div class="field">
-                        <label class="mr-2" for="country">Country</label>
-                        <InputText id="country" type="text" aria-describedby="username2-help" v-model="cinema.country"/>
-                </div>
-            </div>
-            <div class="row ml-2 mt-3">
-                <Button label="Submit" icon="pi pi-check" iconPos="right" class="p-button-success mr-2"  @click="submit()"/>
-                <Button label="Cancel" icon="pi pi-times" iconPos="right" class="p-button-info mr-2" @click="goBack()" />
+            <div class="text-right row mt-5">
+                <Button label="Back" icon="pi pi-arrow-left" iconPos="left" class="p-button-info mr-2" @click="goBack()" />
                 <Button label="Delete" icon="pi pi-trash" @click="openConfirmation" class="p-button-danger" />
                 <Dialog header="Delete" v-model:visible="displayConfirmation" :style="{width: '350px'}" :modal="true">
                     <div class="confirmation-content">
@@ -47,56 +52,33 @@
                     </div>
                     <template #footer>
                         <Button label="No" icon="pi pi-times" @click="closeConfirmation" class="p-button-text"/>
-                        <Button label="Yes" icon="pi pi-check" @click="deleteCinema(cinema.id)" class="p-button-text" autofocus />
+                        <Button label="Yes" icon="pi pi-check" @click="deleteBooking(booking.id)" class="p-button-text" autofocus />
                     </template>
                 </Dialog>
             </div>
-    </div>
+        </template>
+    </card>
 </template>
 
 <script>
-import Message from 'primevue/message';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
-import InputText from 'primevue/inputtext';
-import CinemaService from '@/services/cinema-service';
-import { useRoute } from 'vue-router'
+import BookingService from '@/services/booking-service';
+import { useRoute } from 'vue-router';
+import Card from 'primevue/card';
 export default {
     name: 'BookingView',
     components: {
         Button,
         Dialog,
-        InputText,
-        Message
+        Card
     },
     data() {
         return {
             displayConfirmation: false,
             displayAddHall: false,
             active: 1,
-            cinemaHall: 1,
-            cinema: {
-                id: null,
-                name: '',
-                street: '',
-                state: '',
-                country: '',
-                zipCode: '',
-                imagePath: '',
-                totalCinemaHalls: 1
-            },
-            items: [
-                {
-                    label: 'Cinema informations',
-                    icon: 'pi pi-fw pi-home',
-                    to: '/cinema',
-                },
-                {
-                    label: 'Cinema Halls',
-                    icon: 'pi pi-fw pi-calendar',
-                    to: '/cinema/'
-                }
-            ],
+            booking: {},
             showError: false,
             errorMessage: ''
         }
@@ -104,8 +86,8 @@ export default {
     created () {
         const route = useRoute(); 
         const id = route.params.id;
-        CinemaService.get(id).then((response) => {
-            this.cinema = response.data
+        BookingService.get(id).then((response) => {
+            this.booking = response.data
             }).catch(error => {
             if (error.response.status === 404) {
                 this.$router.replace({name: 'NotFound', params: {err: error.response.data.Message}})
@@ -120,44 +102,16 @@ export default {
             this.displayConfirmation = false;
         },
         goBack() {
-            this.$router.push({name: 'Cinemas'})
+            this.$router.replace({name: 'Bookings'})
         },
-        deleteCinema(id) {
-            CinemaService.delete(id).then((response) => {
+        deleteBooking(id) {
+            BookingService.delete(id).then((response) => {
                     console.log(response.data)
-                    this.$router.replace({name: 'Cinemas'})
+                    this.$router.replace({name: 'Bookings'})
                 }).catch((error) => {
                     console.log(error.response.data)
             })
             this.displayConfirmation = false;
-        },
-        createMovie () {
-            CinemaService.create(this.cinema).then((response) => {
-                console.log(response.data)
-                this.$router.replace({name: 'Cinemas'})
-            }).catch(error => {
-                console.log(error)
-                this.errorMessage = error.response.data.Message;
-                this.showError = true;
-            })
-        },
-        updateMovie () {
-            CinemaService.update(this.cinema.id,this.cinema).then((response) => {
-                console.log(response.data)
-                this.$router.replace({name: 'Cinemas'})
-            }).catch(error => {
-                console.log(error)
-                this.errorMessage = error.response.data.Message;
-                this.showError = true;
-            })
-        },
-        submit () {
-            if(this.cinema.id !== null){
-                this.updateMovie();
-            }else{
-                console.log
-                this.createMovie();
-            }
         }
     }
 }

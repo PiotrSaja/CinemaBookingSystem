@@ -14,6 +14,8 @@ import Logout from '@/views/Logout'
 import NotFound from '@/views/NotFound'
 import NotAuth from '@/views/NotAuth'
 import Welcome from '@/views/Welcome'
+import CinemaHalls from '@/views/CinemaHalls'
+import CinemaHall from '@/views/CinemaHall'
 
 const routes = [
   {
@@ -98,6 +100,24 @@ const routes = [
     name: 'Welcome',
     component: Welcome,
     props: true
+  },
+  {
+    path: '/cinemas/:id/halls',
+    name: 'CinemaHalls',
+    meta:{admin:true},
+    component: CinemaHalls
+  },
+  {
+    path: '/cinemas/:cinemaId/halls/:id',
+    name: 'CinemaHall',
+    meta:{admin:true},
+    component: CinemaHall
+  },
+  {
+    path: '/cinemas/:cinemaId/halls/new',
+    name: 'NewCinemaHall',
+    meta:{admin:true},
+    component: CinemaHall
   }
 ]
 
