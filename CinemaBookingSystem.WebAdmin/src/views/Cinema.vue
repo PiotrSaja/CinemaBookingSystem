@@ -150,7 +150,7 @@ export default {
             })
             this.displayConfirmation = false;
         },
-        createMovie () {
+        createCinema () {
             CinemaService.create(this.cinema).then((response) => {
                 console.log(response.data)
                 this.$router.replace({name: 'Cinemas'})
@@ -160,7 +160,7 @@ export default {
                 this.showError = true;
             })
         },
-        updateMovie () {
+        updateCinema () {
             CinemaService.update(this.cinema.id,this.cinema).then((response) => {
                 console.log(response.data)
                 this.$router.replace({name: 'Cinemas'})
@@ -172,10 +172,10 @@ export default {
         },
         submit () {
             if(this.cinema.id !== null){
-                this.updateMovie();
+                this.updateCinema();
             }else{
                 console.log
-                this.createMovie();
+                this.createCinema();
             }
         }
     }
