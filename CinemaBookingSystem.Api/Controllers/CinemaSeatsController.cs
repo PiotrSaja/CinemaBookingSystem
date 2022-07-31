@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using CinemaBookingSystem.Application.CinemaSeats.Commands.CreateCinemaSeat;
+using CinemaBookingSystem.Application.CinemaSeats.Commands.CreateCinemaSeats;
 using CinemaBookingSystem.Application.CinemaSeats.Commands.DeleteCinemaSeat;
 using CinemaBookingSystem.Application.CinemaSeats.Commands.UpdateCinemaSeat;
 using CinemaBookingSystem.Application.CinemaSeats.Queries.GetCinemaSeatDetail;
@@ -65,6 +66,16 @@ namespace CinemaBookingSystem.Api.Controllers
                 return BadRequest();
             }
             return Ok(await Mediator.Send(cinemaSeat));
+        }
+        [HttpPost("list")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> CreateCinemaSeats(CreateCinemaSeatsCommand cinemaSeats)
+        {
+            var result = await Mediator.Send(cinemaSeats);
+
+            return Ok(result);
         }
     }
 }

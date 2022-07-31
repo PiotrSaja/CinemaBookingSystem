@@ -16,6 +16,7 @@ namespace CinemaBookingSystem.Application.CinemaHalls.Queries.GetCinemaHallsInCi
         public int TotalSeats { get; set; }
         public int NumberOfColumns { get; set; }
         public int NumberOfRows { get; set; }
+        public bool IsSeatsCreated { get; set; }
 
         public void Mapping(Profile profile)
         {
@@ -24,7 +25,8 @@ namespace CinemaBookingSystem.Application.CinemaHalls.Queries.GetCinemaHallsInCi
                 .ForMember(x => x.Name, map => map.MapFrom(src => src.Name))
                 .ForMember(x => x.TotalSeats, map => map.MapFrom(src => src.TotalSeats))
                 .ForMember(x => x.NumberOfColumns, map => map.MapFrom(src => src.NumberOfColumns))
-                .ForMember(x => x.NumberOfRows, map => map.MapFrom(src => src.NumberOfRows));
+                .ForMember(x => x.NumberOfRows, map => map.MapFrom(src => src.NumberOfRows))
+                .ForMember(x => x.IsSeatsCreated, map => map.MapFrom(src => src.CinemaSeats.Count > 0));
         }
     }
 }

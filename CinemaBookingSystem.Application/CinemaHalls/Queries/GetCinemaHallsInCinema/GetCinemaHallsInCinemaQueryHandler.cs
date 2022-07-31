@@ -35,6 +35,7 @@ namespace CinemaBookingSystem.Application.CinemaHalls.Queries.GetCinemaHallsInCi
                 throw new HttpStatusCodeException(HttpStatusCode.InternalServerError, "Not exists cinema in database, check your CinemaId");
             }
             var cinemaHalls = await _context.CinemaHalls.Where(x => x.StatusId != 0 && x.CinemaId == request.CinemaId)
+                .Include(x=>x.CinemaSeats)
                 .ToListAsync(cancellationToken);
 
             if (cinemaHalls.Count == 0)

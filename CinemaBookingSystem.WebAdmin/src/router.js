@@ -16,10 +16,11 @@ import NotAuth from '@/views/NotAuth'
 import Welcome from '@/views/Welcome'
 import CinemaHalls from '@/views/CinemaHalls'
 import CinemaHall from '@/views/CinemaHall'
+import CinemaSeats from '@/views/CinemaSeats'
 
 const routes = [
   {
-    path: '/',
+    path: '/home',
     name: 'Home',
     meta:{admin:true},
     component: Home
@@ -96,7 +97,7 @@ const routes = [
     props: true
   },
   {
-    path: '/start',
+    path: '/',
     name: 'Welcome',
     component: Welcome,
     props: true
@@ -118,6 +119,12 @@ const routes = [
     name: 'NewCinemaHall',
     meta:{admin:true},
     component: CinemaHall
+  },
+  {
+    path: '/cinema-halls/:cinemaHallId/seats/new',
+    name: 'NewCinemaSeats',
+    meta:{admin:true},
+    component: CinemaSeats
   }
 ]
 
@@ -135,7 +142,7 @@ router.beforeEach((to, from, next) => {
         console.log(error)
       })
       next({
-        path: '/'
+        path: '/home'
       })
       return 
   } else if (to.path === '/logout') {
@@ -146,10 +153,10 @@ router.beforeEach((to, from, next) => {
         console.log(error)
       })
       next({
-        path: '/start'
+        path: '/'
       })
       return 
-  } else if (to.meta.admin && (to.path !== '/start' || to.path !== '/login')) {
+  } else if (to.meta.admin && (to.path !== '/' || to.path !== '/login')) {
     authService.isUserLoggedIn()
       .then(isLoggedIn => {
         if (isLoggedIn === true) {

@@ -56,9 +56,14 @@
                     <InputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Search by street"/>
                 </template>
             </Column>
+            <Column header="Seats created" style="min-width: 14rem">
+                <template #body="{data}">
+                    <span>{{data.isSeatsCreated}}</span>
+                </template>
+            </Column>
             <Column headerStyle="width: 3rem; text-align: center" bodyStyle="text-align: center; overflow: visible">
                 <template #body="{data}">
-                    <Button type="button" icon="pi pi-users" @click="showCinemaHallSeats(data.id)"></Button> 
+                    <Button type="button" icon="pi pi-users" @click="showCinemaHallSeats(data.id)" v-if="!data.isSeatsCreated"></Button> 
                 </template>
             </Column>
             <Column headerStyle="width: 3rem; text-align: center" bodyStyle="text-align: center; overflow: visible">
@@ -98,7 +103,7 @@ export default {
                 'numberOfRows': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]}
             },
             loading: true,
-            cinemaId: null
+            cinemaId: null,
         }
     },
     productService: null,
@@ -122,7 +127,7 @@ export default {
             this.$router.push({name: 'CinemaHall', params: {cinemaId: this.cinemaId, id: cinemaHallId}})
         },
         showCinemaHallSeats(cinemaHallId) {
-            this.$router.push({name: 'CinemaHall', params: {cinemaId: this.cinemaId, id: cinemaHallId}})
+            this.$router.push({name: 'NewCinemaSeats', params: {cinemaHallId: cinemaHallId}})
         },
         addNewHall() {
             this.$router.push({name: 'NewCinemaHall', params: {cinemaId: this.cinemaId}})

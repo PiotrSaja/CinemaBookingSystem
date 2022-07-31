@@ -25,7 +25,7 @@ export default {
                             key: '0_1',
                             label: 'Dashboard',
                             icon: 'pi pi-fw pi-home',
-                            url: '/'
+                            url: '/home'
                         },
                         {
                             key: '0_2',
@@ -129,18 +129,6 @@ export default {
                             label: 'List',
                             icon: 'pi pi-fw pi-list',
                             url: '/payments'
-                        }
-                    ]
-                },
-                {
-                    key: '3',
-                    label: 'Offers',
-                    icon: 'pi pi-fw pi-calendar',
-                    items: [{
-                            key: '3_0',
-                            label: 'Customize',
-                            icon: 'pi pi-fw pi-pencil',
-                            url: '/offers'
                         }
                     ]
                 }

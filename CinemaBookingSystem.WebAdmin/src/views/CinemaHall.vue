@@ -16,12 +16,6 @@
                         </div>
                         <h5>Seats information</h5>
                         <div class="field grid">
-                            <label for="imagePath" class="col-12 mb-2 md:col-2 md:mb-0">Total seats</label>
-                            <div class="col-12 md:col-10">
-                                <input id="imagePath" type="number" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="cinemaHall.totalSeats">
-                            </div>
-                        </div>
-                        <div class="field grid">
                             <label for="street" class="col-12 mb-2 md:col-2 md:mb-0">Number of rows</label>
                             <div class="col-12 md:col-10">
                                 <input id="street" type="number" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="cinemaHall.numberOfRows">
@@ -127,6 +121,8 @@ export default {
             this.displayConfirmation = false;
         },
         createCinemaHall () {
+            this.cinemaHall.totalSeats = this.cinemaHall.numberOfRows * this.cinemaHall.numberOfColumns;
+
             CinemaHallService.create(this.cinemaHall).then((response) => {
                 console.log(response.data)
                 this.$router.replace({name: 'CinemaHalls', params: {id: this.cinemaId}})
@@ -139,7 +135,7 @@ export default {
         updateCinemaHall () {
             this.cinemaHallForm.id = this.cinemaHall.id;
             this.cinemaHallForm.name = this.cinemaHall.name;
-            this.cinemaHallForm.totalSeats = this.cinemaHall.totalSeats;
+            this.cinemaHallForm.totalSeats = this.cinemaHall.numberOfRows * this.cinemaHall.numberOfColumns;
             this.cinemaHallForm.numberOfRows = this.cinemaHall.numberOfRows;
             this.cinemaHallForm.numberOfColumns = this.cinemaHall.numberOfColumns;
             this.cinemaHallForm.cinemaId = this.cinemaHall.cinema.id;
