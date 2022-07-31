@@ -36,7 +36,7 @@
         </div>
     </div>
     <div class="text-center p-3" style="background-color: #162232">
-        © 2021 Copyright:
+        © 2022 Copyright:
         <a class="text-white text-decoration-none" href="#">MyCinema</a>
     </div>
     </footer>

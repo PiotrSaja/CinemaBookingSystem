@@ -15,15 +15,6 @@
                     @input="fetchMoviesWithShows()"
                     ></v-select>
                 </div>
-                <div class="col-md-1 col-4 text-center">
-                    <a href="#">Price list</a>
-                </div>
-                <div class="col-md-1 col-4 text-center">
-                    <a href="#">Map</a>
-                </div>
-                <div class="col-md-1 col-4 text-center">
-                    <a href="#">Info</a>
-                </div>
             </div>
             <div class="row">
             </div>

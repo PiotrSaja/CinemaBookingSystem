@@ -13,7 +13,6 @@
         <b-nav-item  v-bind:class="{active: activeElement === 'Seances' || activeElement === 'SeanceDetail'}" :to="{name: 'Seances'}">Seances</b-nav-item>
         <b-nav-item  v-bind:class="{active: activeElement === 'Cinemas'}" :to="{name: 'Cinemas'}">Cinemas</b-nav-item>
         <b-nav-item  v-bind:class="{active: activeElement === 'Movies' || activeElement === 'MovieDetail'}" :to="{name: 'Movies'}">Movies</b-nav-item>
-        <b-nav-item  v-bind:class="{active: activeElement === 'Offers'}">Offers & Partnership</b-nav-item>
       </b-navbar-nav>
 
       <!-- Right aligned nav items -->
