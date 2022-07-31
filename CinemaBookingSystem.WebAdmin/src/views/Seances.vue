@@ -53,8 +53,8 @@
                 </template>
             </Column>
             <Column headerStyle="width: 4rem; text-align: center" bodyStyle="text-align: center; overflow: visible">
-                <template #body>
-                    <Button type="button" icon="pi pi-pencil"></Button>
+                <template #body="{data}">
+                    <Button type="button" icon="pi pi-pencil" @click="showSeanceDetail(data.id)"></Button>
                 </template>
             </Column>
         </DataTable>
@@ -114,7 +114,10 @@ export default {
                 hour: 'numeric',
                 minute: 'numeric'
             });
-        }
+        },
+        showSeanceDetail(seanceId) {
+            this.$router.push({name: 'SeanceDetail', params: {id: seanceId}})
+        },
     }
 }
 </script>
