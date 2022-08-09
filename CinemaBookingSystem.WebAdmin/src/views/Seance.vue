@@ -14,22 +14,22 @@
                         </div>
                         <label for="seanceType" class="col-12 mb-2 md:col-2 md:mb-0">Seance type</label>
                         <div class="col-12 md:col-10">
-                            <Dropdown v-model="seance.seanceType" :options="seanceTypes" optionLabel="name" placeholder="Select a seance type" required/>
+                            <Dropdown v-model="seance.seanceType" :options="seanceTypes" optionValue="code" optionLabel="name" placeholder="Select a seance type" required/>
                         </div>
                         <h5>Hall information</h5>
                         <label for="cinema" class="col-12 mb-2 md:col-2 md:mb-0">Cinema</label>
                         <div class="col-12 md:col-10">
-                            <AutoComplete v-model="selectedCountry" :suggestions="filteredCountriesBasic" @complete="searchCountry($event)" field="name" />
+                            <AutoComplete v-model="selectedCinema" :suggestions="filteredCinemas" @complete="searchCinema($event)" field="name" :dropdown="true" />
                         </div>
-                        <label for="hall" class="col-12 mb-2 md:col-2 md:mb-0">Cinema Hall</label>
-                        <div class="col-12 md:col-10">
-                            <AutoComplete v-model="selectedCountry" :suggestions="filteredCountriesBasic" @complete="searchCountry($event)" field="name" />
+                        <label for="hall" class="col-12 mb-2 md:col-2 md:mb-0" v-if="selectedCinema">Cinema Hall</label>
+                        <div class="col-12 md:col-10" v-if="selectedCinema">
+                            <AutoComplete v-model="selectedCinemaHall" :suggestions="filteredCinemaHalls" @complete="searchCinemaHall($event)" field="name" :dropdown="true" />
                         </div>
                        
                         <h5>Movie information</h5>
                         <label for="movie" class="col-12 mb-2 md:col-2 md:mb-0">Movie</label>
                         <div class="col-12 md:col-10">
-                            <AutoComplete v-model="selectedCountry" :suggestions="filteredCountriesBasic" @complete="searchCountry($event)" field="title" />
+                            <AutoComplete v-model="selectedMovie" :suggestions="filteredMovies" @complete="searchMovie($event)" field="title" :dropdown="true" />
                         </div>
                     </div>
                     <div class="text-right row mt-5">
@@ -58,6 +58,7 @@ import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import CinemaHallService from '@/services/cinema-hall-service';
 import CinemaService from '@/services/cinema-service';
+import MovieService from '@/services/movie-service';
 import SeanceService from '@/services/seance-service';
 import { useRoute } from 'vue-router';
 import Card from 'primevue/card';
@@ -73,7 +74,7 @@ export default {
         Card,
         Calendar,
         Dropdown,
-        AutoComplete
+        AutoComplete,
     },
     data() {
         return {
@@ -93,16 +94,26 @@ export default {
                 movieId: 0,
                 cinemaHallId: 0
             },
-            cinemas: [],
-            cinemaHalls: [],
-            selectedCinemaId: null,
+            cinemas: null,
+            cinemaHalls: null,
+            movies: null,
+            selectedCinema: null,
+            filteredCinemas: null,
+            selectedCinemaHall: null,
+            filteredCinemaHalls: null,
+            selectedMovie: null,
+            filteredMovies: null
         }
     },
     created () {
         const route = useRoute(); 
         const id = route.params.id;
+        
         SeanceService.get(id).then((response) => {
             this.seance = response.data
+            this.selectedCinemaHall = response.data.cinemaHall
+            this.selectedMovie = response.data.movie
+            this.selectedCinema = response.data.cinemaHall.cinema
             }).catch(error => {
             if (error.response.status === 404) {
                 this.$router.replace({name: 'NotFound', params: {err: error.response.data.Message}})
@@ -110,15 +121,15 @@ export default {
         })
 
         CinemaService.getAll().then((response) => {
-            this.cinemas = response.data
+            this.cinemas = response.data.items
             }).catch(error => {
             if (error.response.status === 404) {
                 this.$router.replace({name: 'NotFound', params: {err: error.response.data.Message}})
             }
         })
 
-        CinemaHallService.getInCinema(this.selectedCinemaId).then((response) => {
-            this.cinemaHalls = response.data
+        MovieService.getAll(1,10000000).then((response) => {
+            this.movies = response.data.items
             }).catch(error => {
             if (error.response.status === 404) {
                 this.$router.replace({name: 'NotFound', params: {err: error.response.data.Message}})
@@ -145,6 +156,9 @@ export default {
             this.displayConfirmation = false;
         },
         createSeance () {
+            this.seance.movieId =  this.selectedMovie.id;
+            this.seance.cinemaHallId = this.selectedCinemaHall.id;
+
             SeanceService.create(this.seance).then((response) => {
                 console.log(response.data)
                 this.$router.replace({name: 'Seances'})
@@ -155,16 +169,17 @@ export default {
             })
         },
         updateSeance () {
-            this.cinemaHallForm.id = this.cinemaHall.id;
-            this.cinemaHallForm.name = this.cinemaHall.name;
-            this.cinemaHallForm.totalSeats = this.cinemaHall.numberOfRows * this.cinemaHall.numberOfColumns;
-            this.cinemaHallForm.numberOfRows = this.cinemaHall.numberOfRows;
-            this.cinemaHallForm.numberOfColumns = this.cinemaHall.numberOfColumns;
-            this.cinemaHallForm.cinemaId = this.cinemaHall.cinema.id;
+            const request = {
+                seanceId: this.seance.id,
+                date: this.seance.date,
+                seanceType: this.seance.seanceType,
+                movieId: this.selectedMovie.id,
+                cinemaHallId: this.selectedCinemaHall.id
+            }
 
-            CinemaHallService.update(this.cinemaHallForm.id, this.cinemaHallForm).then((response) => {
+            SeanceService.update(this.seance.id, request).then((response) => {
                 console.log(response.data)
-                this.$router.replace({name: 'CinemaHalls', params: {id: this.cinemaId}})
+                this.$router.replace({name: 'Seances'})
             }).catch(error => {
                 console.log(error)
                 this.errorMessage = error.response.data.Message;
@@ -172,11 +187,60 @@ export default {
             })
         },
         submit () {
-            if(this.cinemaHall.id !== null){
+            if(this.seance.id === null){
+                console.log("create");
                 this.createSeance();
-            }else{
+            }
+            else {
+                console.log("update");
                 this.updateSeance();
             }
+        },
+        getCinemaHallsInCinema (cinemaId) {
+            CinemaHallService.getInCinema(cinemaId).then((response) => {
+                this.cinemaHalls = response.data.items
+                }).catch(error => {
+                if (error.response.status === 404) {
+                    this.$router.replace({name: 'NotFound', params: {err: error.response.data.Message}})
+                }
+            })
+        },
+        searchCinema(event) {
+            setTimeout(() => {
+                if (!event.query.trim().length) {
+                    this.filteredCinemas = [...this.cinemas];
+                }
+                else {
+                    this.filteredCinemas = this.cinemas.filter((cinema) => {
+                        return cinema.name.toLowerCase().startsWith(event.query.toLowerCase());
+                    });
+                }
+        }, 250);
+        },
+        searchCinemaHall(event) {
+            this.getCinemaHallsInCinema(this.selectedCinema.id);
+            setTimeout(() => {
+                if (!event.query.trim().length) {
+                    this.filteredCinemaHalls = [...this.cinemaHalls];
+                }
+                else {
+                    this.filteredCinemaHalls = this.cinemaHalls.filter((cinemaHall) => {
+                        return cinemaHall.name.toLowerCase().startsWith(event.query.toLowerCase());
+                    });
+                }
+        }, 250);
+        },
+        searchMovie(event) {
+            setTimeout(() => {
+                if (!event.query.trim().length) {
+                    this.filteredMovies = [...this.movies];
+                }
+                else {
+                    this.filteredMovies = this.movies.filter((movie) => {
+                        return movie.title.toLowerCase().startsWith(event.query.toLowerCase());
+                    });
+                }
+        }, 250);
         }
     }
 }

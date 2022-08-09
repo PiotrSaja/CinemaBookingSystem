@@ -18,13 +18,15 @@ namespace CinemaBookingSystem.Application.Seances.Queries.GetSeances
         public SeanceType SeanceType { get; set; }
         public CinemaHallDto CinemaHall { get; set; }
         public MovieDto Movie { get; set; }
+        public bool IsCompleted { get; set; }
 
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Seance, SeanceDto>()
                 .ForMember(x => x.Id, map => map.MapFrom(src => src.Id))
                 .ForMember(x => x.Date, map => map.MapFrom(src => src.Date))
-                .ForMember(x => x.SeanceType, map => map.MapFrom(src => src.SeanceType));
+                .ForMember(x => x.SeanceType, map => map.MapFrom(src => src.SeanceType))
+                .ForMember(x => x.IsCompleted, map => map.MapFrom(src => src.SeanceSeats.Count > 0));
         }
     }
 }

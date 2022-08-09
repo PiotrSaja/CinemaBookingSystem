@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using CinemaBookingSystem.Application.SeanceSeats.Commands.CreateSeanceSeat;
+using CinemaBookingSystem.Application.SeanceSeats.Commands.CreateSeanceSeats;
 using CinemaBookingSystem.Application.SeanceSeats.Commands.DeleteSeanceSeat;
 using CinemaBookingSystem.Application.SeanceSeats.Commands.LockSeanceSeat;
 using CinemaBookingSystem.Application.SeanceSeats.Commands.UpdateSeanceSeat;
@@ -80,6 +81,16 @@ namespace CinemaBookingSystem.Api.Controllers
         public async Task<ActionResult> LockSeanceSeat(LockSeanceSeatCommand lockSeanceSeat)
         {
             var result = await Mediator.Send(lockSeanceSeat);
+
+            return Ok(result);
+        }
+        [HttpPost("list")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> CreateCinemaSeats(CreateSeanceSeatsCommand seanceSeats)
+        {
+            var result = await Mediator.Send(seanceSeats);
 
             return Ok(result);
         }

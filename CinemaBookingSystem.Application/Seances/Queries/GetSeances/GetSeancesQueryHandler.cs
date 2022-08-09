@@ -37,6 +37,7 @@ namespace CinemaBookingSystem.Application.Seances.Queries.GetSeances
                 .OrderBy(p => p.Created)
                 .Include(x => x.Movie)
                 .Include(x => x.CinemaHall)
+                .Include(x=>x.SeanceSeats)
                 .PaginateAsync(request.PageIndex, request.PageSize, cancellationToken);
 
             if (!String.IsNullOrEmpty(request.SearchString))
@@ -47,6 +48,7 @@ namespace CinemaBookingSystem.Application.Seances.Queries.GetSeances
                     .OrderBy(p => p.Created)
                     .Include(x => x.Movie)
                     .Include(x => x.CinemaHall)
+                    .Include(x=>x.SeanceSeats)
                     .AsNoTracking()
                     .PaginateAsync(request.PageIndex, request.PageSize, cancellationToken);
             }

@@ -52,6 +52,16 @@
                     <Calendar v-model="filterModel.value" dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" />
                 </template>
             </Column>
+            <Column header="Completed" style="min-width: 14rem">
+                <template #body="{data}">
+                    <span>{{data.isCompleted}}</span>
+                </template>
+            </Column>
+            <Column headerStyle="width: 3rem; text-align: center" bodyStyle="text-align: center; overflow: visible">
+                <template #body="{data}">
+                    <Button type="button" icon="pi pi-users" @click="showSeanceSeats(data.id)" v-if="!data.isCompleted"></Button> 
+                </template>
+            </Column>
             <Column headerStyle="width: 4rem; text-align: center" bodyStyle="text-align: center; overflow: visible">
                 <template #body="{data}">
                     <Button type="button" icon="pi pi-pencil" @click="showSeanceDetail(data.id)"></Button>
@@ -89,7 +99,7 @@ export default {
                 'cinema-hall': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]},
                 'date': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.DATE_IS}]},
             },
-            loading: true
+            loading: true,
         }
     },
      created () {
@@ -117,6 +127,9 @@ export default {
         },
         showSeanceDetail(seanceId) {
             this.$router.push({name: 'SeanceDetail', params: {id: seanceId}})
+        },
+        showSeanceSeats(seanceId) {
+            this.$router.push({name: 'NewSeanceSeats', params: {id: seanceId}})
         },
     }
 }

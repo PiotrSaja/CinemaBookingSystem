@@ -31,6 +31,7 @@ namespace CinemaBookingSystem.Application.Seances.Queries.GetSeanceDetail
                 .Include(x => x.Movie)
                 .ThenInclude(x=>x.Genres)
                 .Include(x => x.CinemaHall)
+                .ThenInclude(x=>x.Cinema)
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (seance == null)
