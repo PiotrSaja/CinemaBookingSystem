@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using FluentValidation;
+
+namespace CinemaBookingSystem.Application.Bookings.Commands.ChangeStatusOfBooking
+{
+    public class ChangeStatusOfBookingCommandValidator : AbstractValidator<ChangeStatusOfBookingCommand>
+    {
+        public ChangeStatusOfBookingCommandValidator()
+        {
+            RuleFor(x => x.Status)
+                .NotNull();
+            RuleFor(x => x.BookingId)
+                .NotNull();
+        }
+    }
+}
