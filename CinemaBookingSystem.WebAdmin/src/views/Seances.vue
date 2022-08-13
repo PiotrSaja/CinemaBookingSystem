@@ -44,12 +44,9 @@
                     <InputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Search by cinema hall"/>
                 </template>
             </Column>
-             <Column field="date" header="Date" sortable dataType="date" style="min-width: 8rem">
+             <Column field="date" header="Date" dataType="date" style="min-width: 8rem">
                 <template #body="{data}">
                     {{formatDate(new Date(Date.parse(data.date)))}}
-                </template>
-                <template #filter="{filterModel}">
-                    <Calendar v-model="filterModel.value" dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" />
                 </template>
             </Column>
             <Column header="Completed" style="min-width: 14rem">
@@ -78,7 +75,6 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
-import Calendar from 'primevue/calendar';
 export default {
     name: 'SeancesView',
     components: {
@@ -86,7 +82,6 @@ export default {
         Column,
         Button,
         InputText,
-        Calendar
     },
     data() {
         return {
@@ -97,7 +92,6 @@ export default {
                 'title': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]},
                 'language': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]},
                 'cinema-hall': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]},
-                'date': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.DATE_IS}]},
             },
             loading: true,
         }

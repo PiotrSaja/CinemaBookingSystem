@@ -41,27 +41,14 @@
                     <InputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Search by last name"/>
                 </template>
             </Column>
-             <Column field="date" header="Created date" sortable dataType="date" style="min-width: 8rem">
+             <Column field="date" header="Created date" dataType="date" style="min-width: 8rem">
                 <template #body="{data}">
                     {{formatDate(new Date(Date.parse(data.createdDate)))}}
                 </template>
-                <template #filter="{filterModel}">
-                    <Calendar v-model="filterModel.value" dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" />
-                </template>
             </Column>
-            <Column field="status" header="Status" sortable :filterMenuStyle="{'width':'14rem'}" style="min-width: 10rem">
+            <Column field="status" header="Status" style="min-width: 10rem">
                 <template #body="{data}">
                     <span>{{data.bookingStatus}}</span>
-                </template>
-                <template #filter="{filterModel}">
-                    <Dropdown v-model="filterModel.value" :options="statuses" placeholder="Any" class="p-column-filter" :showClear="true">
-                        <template #value="slotProps">
-                            <span>{{slotProps.value}}</span>
-                        </template>
-                        <template #option="slotProps">
-                            <span>{{slotProps.option}}</span>
-                        </template>
-                    </Dropdown>
                 </template>
             </Column>
             <Column headerStyle="width: 4rem; text-align: center" bodyStyle="text-align: center; overflow: visible">
@@ -80,17 +67,13 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
-import Calendar from 'primevue/calendar';
-import Dropdown from 'primevue/dropdown';
 export default {
     name: 'BookingsView',
     components: {
         DataTable,
         Column,
         Button,
-        InputText,
-        Calendar,
-        Dropdown
+        InputText
     },
     data() {
         return {
@@ -100,13 +83,8 @@ export default {
                 'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
                 'firstName': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]},
                 'lastName': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]},
-                'status': {operator: FilterOperator.OR, constraints: [{value: null, matchMode: FilterMatchMode.EQUALS}]},
-                'date': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.DATE_IS}]},
             },
             loading: true,
-            statuses: [
-                'unqualified', 'qualified', 'new', 'negotiation', 'renewal', 'proposal'
-            ]
         }
     },
      created () {
