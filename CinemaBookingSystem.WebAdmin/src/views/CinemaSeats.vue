@@ -1,13 +1,15 @@
 <template>
     <card class="mt-3">
         <template #title>
-            Cinema seats configuration
+            Seats configuration
         </template>
         <template #content>
             <div class="ml-2">
                 <Message severity="error" v-if="showError" :closable="false">{{errorMessage}}</Message>
                     <div class="card">
-                        <h4>Cinema Hall ID: {{cinemaHallId}}</h4>
+                        <h4>Seance Information:</h4>
+                        <span>Cinema: {{cinemaHall.cinema.name}}</span>
+                        <span>Cinema Hall: {{cinemaHall.name}}</span><br>
                         <table class="mt-3">
                         <tr>
                             <th>Row number:</th>
