@@ -27,7 +27,7 @@ namespace CinemaBookingSystem.Application.CinemaSeats.Queries.GetCinemaSeats
 
         public async Task<CinemaSeatsVm> Handle(GetCinemaSeatsQuery request, CancellationToken cancellationToken)
         {
-            var cinemaSeats = await _context.CinemaSeats.Where(x => x.StatusId != 0).ToListAsync(cancellationToken);
+            var cinemaSeats = await _context.CinemaSeats.Where(x => x.StatusId != 0 && x.CinemaHallId == request.CinemaHallId).ToListAsync(cancellationToken);
 
             if (cinemaSeats == null)
             {

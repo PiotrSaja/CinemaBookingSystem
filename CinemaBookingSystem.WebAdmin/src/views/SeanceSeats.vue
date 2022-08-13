@@ -1,25 +1,31 @@
 <template>
     <card class="mt-3">
         <template #title>
-            Cinema seats configuration
+            Seats configuration
         </template>
         <template #content>
             <div class="ml-2">
                 <Message severity="error" v-if="showError" :closable="false">{{errorMessage}}</Message>
                     <div class="card">
-                        <h4>Cinema Hall ID: {{cinemaHallId}}</h4>
+                        <h4>Seance Information:</h4>
+                        <span>Date: {{seance.date}}</span><br>
+                        <span>Movie: {{seance.movie.title}}</span><br>
+                        <span>Cinema Hall: {{seance.cinemaHall.name}}</span>
                         <table class="mt-3">
                         <tr>
-                            <th>Row number:</th>
-                            <th>Quantity of seats in row</th>
+                            <th>Row</th>
+                            <th>Seat number</th>
                             <th>Seat Type</th>
+                            <th>Price</th>
                         </tr>
-                        <tr v-for="i in this.cinemaHall.numberOfRows" :key="i">
-                            <td>{{i}}</td>
-                            <td>{{this.cinemaHall.numberOfColumns}}</td>
+                        <tr v-for="(seat, index) in cinemaSeats.items" :key="seat.id">
+                            <td>{{seat.row}}</td>
+                            <td>{{seat.seatNumber}}</td>
                             <td>
-                               <Dropdown v-model="selectedSeatType[i]" :options="seatTypes" optionLabel="name" placeholder="Select a seat type" required/>
+                                <span v-if="seat.seatType === 1">Normal</span>
+                                <span v-else>Vip</span>
                             </td>
+                            <td><InputNumber id="price" v-model="seanceSeatsPrice[index]" mode="decimal" :minFractionDigits="2" :allowEmpty="false"/></td>
                         </tr>
                         </table>
                     </div>
@@ -33,52 +39,52 @@
 </template>
 
 <script>
-import Dropdown from 'primevue/dropdown';
+import InputNumber from 'primevue/inputnumber';
+
 import Message from 'primevue/message';
 import Button from 'primevue/button';
-import CinemaHallService from '@/services/cinema-hall-service';
+import SeanceService from '@/services/seance-service';
 import CinemaSeatsService from '@/services/cinema-seats-service';
+import SeanceSeatsService from '@/services/seance-seats-service';
 import { useRoute } from 'vue-router';
 import Card from 'primevue/card';
 export default {
-    name: 'CinemaSeatsView',
+    name: 'SeanceSeatsView',
     components: {
         Button,
         Message,
         Card,
-        Dropdown
+        InputNumber
     },
     data() {
         return {
-            rows: 5,
-            columns: 5,
             displayConfirmation: false,
-            cinemaHallId: 0,
-            selectedSeatType: [],
-            seatTypes: [
-                {name: 'Normal', code: 0},
-                {name: 'Vip', code: 1}
-            ],
             showError: false,
             errorMessage: '',
-            cinemaHall: {}
+            seance: {},
+            cinemaSeats: {},
+            seanceSeatsPrice: []
         }
     },
     created () {
         const route = useRoute(); 
-        const id = route.params.cinemaHallId;
-        this.cinemaHallId = route.params.cinemaHallId;
-        CinemaHallService.get(id).then((response) => {
-            this.cinemaHall = response.data
+        const id = route.params.id;
+        SeanceService.get(id).then((response) => {
+            this.seance = response.data
 
-            for (var i = 1; i <= this.cinemaHall.numberOfColumns; i++) {
-                this.selectedSeatType[i] = {name: 'Normal', code: 0};
-            }
+            CinemaSeatsService.getAll(response.data.cinemaHall.id).then((response) => {
+            this.cinemaSeats = response.data
             }).catch(error => {
             if (error.response.status === 404) {
                 this.$router.replace({name: 'NotFound', params: {err: error.response.data.Message}})
             }
         })
+            }).catch(error => {
+            if (error.response.status === 404) {
+                this.$router.replace({name: 'NotFound', params: {err: error.response.data.Message}})
+            }
+        })
+        
     },
     methods: {
         openConfirmation() {
@@ -88,30 +94,25 @@ export default {
             this.displayConfirmation = false;
         },
         goBack() {
-            this.$router.push({name: 'Cinemas'})
+            this.$router.push({name: 'Seances'})
         },
-        createCinemaSeats () {
-            const cinemaSeats = [];
+        createSeanceSeats () {
+            const seanceSeats = [];
 
-            for (var i = 1; i <= this.cinemaHall.numberOfRows; i++) {
-                for (var y = 1; y <= this.cinemaHall.numberOfColumns; y++) {
-                    var cinemaSeat = {
-                        cinemaHallId: this.cinemaHall.id,
-                        seatType: this.selectedSeatType[i].code,
-                        row: i,
-                        seatNumber: y
-                    }
-                    cinemaSeats.push(cinemaSeat)
+            for(var i=0; i < this.cinemaSeats.items.length; i++){
+                var seanceSeat = {
+                    cinemaSeatId: this.cinemaSeats.items[i].id,
+                    price: this.seanceSeatsPrice[i]
                 }
+                seanceSeats.push(seanceSeat)
             }
             const request = {
-                cinemaHallId: this.cinemaHall.id,
-                cinemaSeats: cinemaSeats
+                seanceId: this.seance.id,
+                seanceSeats: seanceSeats
             }
-
-            CinemaSeatsService.createSeats(request).then((response) => {
+            SeanceSeatsService.createSeats(request).then((response) => {
                 console.log(response.data)
-                this.$router.replace({name: 'CinemaHalls', params: {id: this.cinemaHallId}})
+                this.$router.replace({name: 'Seances'})
             }).catch(error => {
                 console.log(error)
                 this.errorMessage = error.response.data.Message;
@@ -119,7 +120,7 @@ export default {
             })
         },
         submit () {
-            this.createCinemaSeats();
+            this.createSeanceSeats();
         }
     }
 }

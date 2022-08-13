@@ -14,7 +14,7 @@
           <div class="col-xl-2 col-lg-1"></div>
           <div class="col-xl-4 col-lg-4">
           <h6>{{ seance.cinemaHall.name }}</h6><br><br>
-          <h6>{{ seance.date.replace('T', ' ') }}</h6><br>
+          <h6>{{ seance.date.replace('T', ' : ').slice(0, -3) }}</h6><br>
           <b-button class="mt-3" @click="onGoToBookingClicked(seance.id)">Go to booking</b-button>
           </div>
       </div>

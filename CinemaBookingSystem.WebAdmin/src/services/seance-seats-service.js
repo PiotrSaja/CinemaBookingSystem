@@ -17,5 +17,8 @@ export default {
   },
   delete (id) {
     return Axios.delete(`${RESOURCE_NAME}/${id}`)
-  }
+  },
+  createSeats (data) {
+    return Axios.post(`${RESOURCE_NAME}/list`, data)
+  },
 }

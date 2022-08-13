@@ -24,13 +24,13 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(vm);
         }
-        [HttpGet]
+        [HttpGet("cinema-hall/{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Authorize(Roles = "Administrator,User")]
-        public async Task<IActionResult> GetCinemaSeats()
+        public async Task<IActionResult> GetCinemaSeats(int id)
         {
-            var vm = await Mediator.Send(new GetCinemaSeatsQuery());
+            var vm = await Mediator.Send(new GetCinemaSeatsQuery() {CinemaHallId = id});
             return Ok(vm);
         }
         [HttpPost]

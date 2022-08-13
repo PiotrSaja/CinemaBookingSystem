@@ -18,6 +18,7 @@ import CinemaHalls from '@/views/CinemaHalls'
 import CinemaHall from '@/views/CinemaHall'
 import CinemaSeats from '@/views/CinemaSeats'
 import Seance from '@/views/Seance'
+import SeanceSeats from '@/views/SeanceSeats'
 
 const routes = [
   {
@@ -138,6 +139,12 @@ const routes = [
     name: 'Seance',
     meta:{admin:true},
     component: Seance
+  },
+  {
+    path: '/seances/:id/seats',
+    name: 'SeanceSeats',
+    meta:{admin:true},
+    component: SeanceSeats
   }
 ]
 

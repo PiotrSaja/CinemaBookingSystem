@@ -30,7 +30,7 @@
         <div class="col-md-2"></div>
           <div class="col-md-4">
           <h6>Hall: {{ seance.cinemaHall.name }}</h6><br>
-          <h6>Start time: {{ seance.date.replace('T', ' ') }}</h6><br>
+          <h6>Start time: {{ seance.date.replace('T', ' : ').slice(0, -3) }}</h6><br>
           </div>
       <hr>
       </div>

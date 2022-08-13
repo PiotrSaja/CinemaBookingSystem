@@ -3,8 +3,8 @@ import Axios from 'axios'
 const RESOURCE_NAME = 'https://localhost:44334/api/cinema-seats'
 
 export default {
-  getAll () {
-    return Axios.get(`${RESOURCE_NAME}`)
+  getAll (id) {
+    return Axios.get(`${RESOURCE_NAME}/cinema-hall/${id}`)
   },
   get (id) {
     return Axios.get(`${RESOURCE_NAME}/${id}`)

@@ -24,7 +24,7 @@ namespace CinemaBookingSystem.Application.CinemaSeats.Commands.CreateCinemaSeats
 
         public async Task<bool> Handle(CreateCinemaSeatsCommand request, CancellationToken cancellationToken)
         {
-            var cinemaHall = await _context.Cinemas.FirstOrDefaultAsync(x => x.Id == request.CinemaHallId, cancellationToken);
+            var cinemaHall = await _context.CinemaHalls.FirstOrDefaultAsync(x => x.Id == request.CinemaHallId, cancellationToken);
 
             if (cinemaHall == null)
                 throw new HttpStatusCodeException(HttpStatusCode.InternalServerError, "Not exists cinema hall in database, check your CinemaHallId");

@@ -14,7 +14,7 @@
           Please select seats
         </div>
         <div class="col-md-6 text-right">
-          <h5>{{ seance.date.replace('T', ' ')}}</h5>
+          <h5>{{ seance.date.replace('T', ' : ').slice(0, -3)}}</h5>
           <h5>{{ seance.cinemaHall.name}}</h5>
         </div>
       </div>
@@ -31,7 +31,7 @@
               <th class="pl-3 font-weight-normal">4</th>
               <th class="pl-3 font-weight-normal">5</th>
             </tr>-->
-            <tr v-for='index in 3' :key='index'>
+            <tr v-for='(item,index) in seance.cinemaHall.numberOfRows + 1' :key='index'>
               <!--<th class="pt-3 pr-5 font-weight-normal">Row: {{index}}</th>-->
                 <td v-for="seat in seats.items"
                 :key="seat.id" v-if='seat.cinemaSeat.row === index' class="pt-2" style="width: 30px">

@@ -129,7 +129,7 @@ export default {
             this.$router.push({name: 'SeanceDetail', params: {id: seanceId}})
         },
         showSeanceSeats(seanceId) {
-            this.$router.push({name: 'NewSeanceSeats', params: {id: seanceId}})
+            this.$router.push({name: 'SeanceSeats', params: {id: seanceId}})
         },
     }
 }
