@@ -132,9 +132,9 @@ export default {
           payment_method: null,
           payment_options: [
           { value: null, text: 'Please select an payment method' },
-          { value: 'paypal', text: 'PayPal' },
-          { value: 'payu', text: 'PayU' },
-          { value: 'cash', text: 'Cash in cinema', disabled: true }
+          { value: 'paypal', text: 'PayPal', disabled: true },
+          { value: 'payu', text: 'PayU', disabled: true },
+          { value: 'cash', text: 'Cash in cinema', disabled: false }
           ],
           confirm: false,
           input_disabled: false,

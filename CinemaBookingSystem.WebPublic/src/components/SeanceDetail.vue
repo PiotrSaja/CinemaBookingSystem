@@ -8,7 +8,8 @@
       <div class="col-xl-4 col-lg-4">
           <h4>{{ seance.movie.title}}</h4>
           <h6>{{ seance.movie.imdbRating }}/10</h6>
-          <h6><span v-for="genre in seance.movie.genres" :key="genre.id">{{ genre.name }}, </span></h6><br>
+          <h6><span v-for="(genre,index) in seance.movie.genres" :key="genre.id">{{ genre.name }}<span v-if="index !== seance.movie.genres.length-1">, </span>
+                    </span></h6><br>
           <h6>{{ seance.movie.plot }}</h6>
           </div>
           <div class="col-xl-2 col-lg-1"></div>

@@ -35,16 +35,16 @@
               <!--<th class="pt-3 pr-5 font-weight-normal">Row: {{index}}</th>-->
                 <td v-for="seat in seats.items"
                 :key="seat.id" v-if='seat.cinemaSeat.row === index' class="pt-2" style="width: 30px">
-                  <svg style="width:24px;height:24px; cursor: pointer" viewBox="0 0 24 24" v-if='seat.cinemaSeat.seatType === 1 && seat.seatStatus === false'>
+                  <svg style="width:26px;height:26px; cursor: pointer" viewBox="0 0 24 24" v-if='seat.cinemaSeat.seatType === 1 && seat.seatStatus === false'>
                   <path :style="selectedIds.indexOf(seat.id) !== -1 ? { 'fill': '#FF9100' } : null" @click="onSeatSelected(seat.id)" class="can-select" fill="currentColor" d="M5 9.15V7C5 5.9 5.9 5 7 5H17C18.1 5 19 5.9 19 7V9.16C17.84 9.57 17 10.67 17 11.97V14H7V11.96C7 10.67 6.16 9.56 5 9.15M20 10C18.9 10 18 10.9 18 12V15H6V12C6 10.9 5.11 10 4 10S2 10.9 2 12V17C2 18.1 2.9 19 4 19V21H6V19H18V21H20V19C21.1 19 22 18.1 22 17V12C22 10.9 21.1 10 20 10Z" />
                   </svg>
-                  <svg style="width:24px;height:24px" viewBox="0 0 24 24" v-else-if='seat.cinemaSeat.seatType === 1 && seat.seatStatus === true'>
+                  <svg style="width:26px;height:26px" viewBox="0 0 24 24" v-else-if='seat.cinemaSeat.seatType === 1 && seat.seatStatus === true'>
                   <path :style="selectedIds.indexOf(seat.id) !== -1 ? { 'fill': '#FF9100' } : null" fill="gray" d="M5 9.15V7C5 5.9 5.9 5 7 5H17C18.1 5 19 5.9 19 7V9.16C17.84 9.57 17 10.67 17 11.97V14H7V11.96C7 10.67 6.16 9.56 5 9.15M20 10C18.9 10 18 10.9 18 12V15H6V12C6 10.9 5.11 10 4 10S2 10.9 2 12V17C2 18.1 2.9 19 4 19V21H6V19H18V21H20V19C21.1 19 22 18.1 22 17V12C22 10.9 21.1 10 20 10Z" />
                   </svg>
-                  <svg style="width:24px;height:24px" viewBox="0 0 24 24" v-else-if='seat.seatStatus === true'>
+                  <svg style="width:26px;height:26px" viewBox="0 0 24 24" v-else-if='seat.seatStatus === true'>
                   <path :style="selectedIds.indexOf(seat.id) !== -1 ? { 'fill': '#FF9100' } : null" fill="gray" d="M4,18V21H7V18H17V21H20V15H4V18M19,10H22V13H19V10M2,10H5V13H2V10M17,13H7V5A2,2 0 0,1 9,3H15A2,2 0 0,1 17,5V13Z" />
                   </svg>
-                  <svg style="width:24px;height:24px;cursor: pointer" viewBox="0 0 24 24" v-else>
+                  <svg style="width:26px;height:26px;cursor: pointer" viewBox="0 0 24 24" v-else>
                   <path :style="selectedIds.indexOf(seat.id) !== -1 ? { 'fill': '#FF9100' } : null" @click="onSeatSelected(seat.id)" class="can-select" fill="currentColor" d="M4,18V21H7V18H17V21H20V15H4V18M19,10H22V13H19V10M2,10H5V13H2V10M17,13H7V5A2,2 0 0,1 9,3H15A2,2 0 0,1 17,5V13Z" />
                   </svg>
                 </td>

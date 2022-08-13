@@ -9,9 +9,9 @@
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-4 col-6 movie-detail-text">
                 <h2 class="ml ml-3 text-white font-weight-bold">{{ booking.seance.movie.title }}</h2>
-                <span class="ml ml-3 text-white font-weight-bold">Booking number:</span><br>
+                <span class="ml ml-3 text-white font-weight-bold">Booking number</span><br>
                 <span class="ml ml-3 text-white font-weight-regular">{{booking.bookingId}}</span><br>
-                <span class="ml ml-3 text-white font-weight-bold">Number of seats:</span><br>
+                <span class="ml ml-3 text-white font-weight-bold">Number of seats</span><br>
                 <span class="ml ml-3 text-white font-weight-regular">{{booking.numberOfSeats}}</span><br>
                 </div>
                 <div class="col-xl-6 col-lg-5 col-md-4 col-6 movie-detail-text" style="text-align: right;">
@@ -24,7 +24,7 @@
               </div>
               <div class="row" style="padding-top: 30px;">
                 <div class="col-md-12 col-12">
-                  <span class="text-white font-weight-bold">Seats:</span><br>
+                  <span class="text-white font-weight-bold">Seats</span><br>
                 </div>
               </div>
               <div v-for="seat in booking.seanceSeats"
