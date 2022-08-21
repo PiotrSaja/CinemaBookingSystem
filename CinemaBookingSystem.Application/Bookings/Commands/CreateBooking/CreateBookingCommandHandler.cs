@@ -81,7 +81,7 @@ namespace CinemaBookingSystem.Application.Bookings.Commands.CreateBooking
             return booking.Id;
         }
 
-        private async void ChangeStatusInShowSeat(List<SeanceSeat> items, CancellationToken cancellationToken)
+        private void ChangeStatusInShowSeat(List<SeanceSeat> items, CancellationToken cancellationToken)
         {
             foreach (var item in items)
             {
