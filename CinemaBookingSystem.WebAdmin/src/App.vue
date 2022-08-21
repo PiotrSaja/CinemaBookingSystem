@@ -35,8 +35,16 @@ data () {
   },
   created () {
     this.$auth.isUserLoggedIn()
-      .then(isLoggedIn => {
-        this.isUserLoggedIn = isLoggedIn
+      .then(() => {
+        this.$auth.getProfile().then(profile => {
+          if (profile.role !== 'Administrator'){
+            this.isUserLoggedIn = false
+          }else {
+            this.isUserLoggedIn = true
+          }
+        }).catch(error => {
+        console.log(error)
+      })
       })
       .catch(error => {
         console.log(error)
