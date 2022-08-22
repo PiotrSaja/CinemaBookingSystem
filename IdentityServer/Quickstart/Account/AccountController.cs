@@ -16,7 +16,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace IdentityServerHost.Quickstart.UI
 {
@@ -338,6 +342,48 @@ namespace IdentityServerHost.Quickstart.UI
             }
 
             return vm;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Register(string returnUrl)
+        {
+            return View(new RegisterInputModel()
+            {
+                ReturnUrl = returnUrl
+            });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterInputModel model, string button)
+        {
+            if (ModelState.IsValid)
+            {
+                if (_userManager.FindByNameAsync(model.Username).Result != null)
+                {
+                    ModelState.AddModelError(string.Empty, "Username exist in database");
+                    return View();
+                }
+
+                var user = new ApplicationUser()
+                {
+                    UserName = model.Username, 
+                    Email = model.Email, 
+                    EmailConfirmed = true
+                };
+
+                var createdUser = _userManager.CreateAsync(user, model.Password).Result;
+
+                if (!createdUser.Succeeded)
+                {
+                    ModelState.AddModelError(string.Empty, createdUser.Errors.FirstOrDefault().Description);
+                    return View();
+                }
+                await _userManager.AddToRoleAsync(user, "User");
+
+                return Redirect(model.ReturnUrl ?? "/");
+            }
+            return View();
         }
     }
 }
