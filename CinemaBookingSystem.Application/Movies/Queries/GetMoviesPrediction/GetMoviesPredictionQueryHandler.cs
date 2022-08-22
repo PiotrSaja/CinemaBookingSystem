@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -11,11 +9,10 @@ using Microsoft.EntityFrameworkCore;
 using CinemaBookingSystem.Application.Common.Exceptions;
 using CinemaBookingSystem.Application.Common.Extensions;
 using CinemaBookingSystem.Application.Common.Interfaces;
-using CinemaBookingSystem.Application.Movies.Queries.GetMoviesPrediction;
 using CinemaBookingSystem.Domain.Entities;
 using CinemaBookingSystem.Domain.Enums;
 
-namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesPrediciton
+namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesPrediction
 {
     public class GetMoviesPredictionQueryHandler : IRequestHandler<GetMoviesPredictionQuery, MoviesDetailVm>
     {

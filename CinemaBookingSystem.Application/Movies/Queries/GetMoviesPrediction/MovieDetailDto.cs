@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using CinemaBookingSystem.Application.Common.Mappings;
-using CinemaBookingSystem.Application.Movies.Queries.GetMovieDetail;
 using CinemaBookingSystem.Domain.Entities;
 
 namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesPrediction

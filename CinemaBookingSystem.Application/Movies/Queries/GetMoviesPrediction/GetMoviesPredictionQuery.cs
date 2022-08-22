@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using CinemaBookingSystem.Application.Movies.Queries.GetMoviesPrediction;
 using MediatR;
 
-namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesPrediciton
+namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesPrediction
 {
     public class GetMoviesPredictionQuery : IRequest<MoviesDetailVm>
     {
