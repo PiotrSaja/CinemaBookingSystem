@@ -155,6 +155,12 @@ export default {
     width: 100%;
     height: 215px;
 }
+.container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl /deep/{
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: auto;
+    margin-left: auto;
+  }
 }
 .movie-grid .movie-image{ position: relative; }
 .movie-grid .movie-image a.image{
