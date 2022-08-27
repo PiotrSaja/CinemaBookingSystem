@@ -30,7 +30,7 @@ export default {
 },
 data () {
     return {
-      isUserLoggedIn: false,
+      isUserLoggedIn: true,
     }
   },
   created () {
