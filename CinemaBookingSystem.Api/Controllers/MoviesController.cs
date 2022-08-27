@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 using CinemaBookingSystem.Application.Common.Interfaces;
 using CinemaBookingSystem.Application.Movies.Commands.AddMovieVote;
@@ -9,8 +8,9 @@ using CinemaBookingSystem.Application.Movies.Commands.DeleteMovie;
 using CinemaBookingSystem.Application.Movies.Commands.UpdateMovie;
 using CinemaBookingSystem.Application.Movies.Queries.GetMovieDetail;
 using CinemaBookingSystem.Application.Movies.Queries.GetMovies;
+using CinemaBookingSystem.Application.Movies.Queries.GetMoviesContentBasedPrediction;
 using CinemaBookingSystem.Application.Movies.Queries.GetMoviesDaysToPremiere;
-using CinemaBookingSystem.Application.Movies.Queries.GetMoviesPrediciton;
+using CinemaBookingSystem.Application.Movies.Queries.GetMoviesPrediction;
 using CinemaBookingSystem.Application.Movies.Queries.GetMoviesWithSeanceOnCurrentCinemaAndDay;
 using CinemaBookingSystem.Application.Movies.Queries.GetPrefMovies;
 using CinemaBookingSystem.Application.Movies.Queries.GetUserMovieVote;
@@ -23,14 +23,11 @@ namespace CinemaBookingSystem.Api.Controllers
     [Route("api/movies")]
     public class MoviesController : BaseController
     {
-        private readonly IUserVoteService _userVoteService;
-        private readonly IUserService _userService;
-
-        public MoviesController(IUserVoteService userVoteService, IUserService userService)
+        #region MoviesController()
+        public MoviesController()
         {
-            _userVoteService = userVoteService;
-            _userService = userService;
         }
+        #endregion
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -164,6 +161,17 @@ namespace CinemaBookingSystem.Api.Controllers
         public async Task<IActionResult> GetPrefMovies()
         {
             var result = await Mediator.Send(new GetPrefMoviesQuery());
+
+            return Ok(result);
+        }
+        [HttpGet("content-based/predictions")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(Roles = "Administrator,User")]
+        public async Task<IActionResult> GetMoviesContentBasedPredictions(int page, int limit)
+        {
+            var result = await Mediator.Send(new GetMoviesContentBasedPredictionQuery() { PageIndex = page, PageSize = limit });
 
             return Ok(result);
         }
