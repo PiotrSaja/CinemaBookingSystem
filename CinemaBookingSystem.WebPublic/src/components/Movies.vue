@@ -118,6 +118,12 @@ export default {
     padding-right: 10px;
     padding-left: 10px;
   }
+  .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl /deep/{
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: auto;
+    margin-left: auto;
+  }
 }
 .movie-grid:hover{
   box-shadow:  0 0 30px rgba(0,0,0,0.4);
