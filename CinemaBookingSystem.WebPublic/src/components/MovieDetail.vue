@@ -64,6 +64,7 @@ import StarRating from 'vue-star-rating'
 import MovieService from '@/api-services/movie-service'
 import HorizontalMovieRecomandationList from '@/components/HorizontalMovieRecomandationList.vue'
 import SubsequentSeances from '@/components/SubsequentSeances.vue'
+import RecommendationService from '@/api-services/recommendation-service'
 export default {
   components: { HorizontalMovieRecomandationList, SubsequentSeances, StarRating },
   name: 'MovieDetail',
@@ -91,6 +92,15 @@ export default {
       .catch(error => {
         console.log(error)
       })
+
+    RecommendationService.getType().then((response) => {
+      if (response.data === 2) {
+          this.movieRecomendationVisable = false
+      }
+    }).catch((error) => {
+      console.log(error.response.data)
+    })
+
     MovieService.get(this.$router.currentRoute.params.id).then((response) => {
       this.movie = response.data
     }).catch(error => {
@@ -98,6 +108,7 @@ export default {
       this.$router.replace({name: 'NotFound', params: {err: error.response.data.Message}})
       }
     })
+
     MovieService.getUserMovieVote(this.$router.currentRoute.params.id).then((response) => {
       this.voteRating = response.data.rating
       this.ratingDisabled = true

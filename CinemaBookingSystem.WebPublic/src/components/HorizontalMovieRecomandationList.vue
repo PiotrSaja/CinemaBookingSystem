@@ -23,6 +23,7 @@
 
 <script>
 import MovieService from '@/api-services/movie-service'
+import RecommendationService from '@/api-services/recommendation-service'
 import VueHorizontalListAutoscroll from 'vue-horizontal-list-autoscroll'
 export default {
   components: { VueHorizontalListAutoscroll },
@@ -31,6 +32,7 @@ export default {
     return {
       movies: [],
       movieId: -1,
+      type: null,
       options: {
         autoscroll: {
           enabled: true,
@@ -67,9 +69,23 @@ export default {
     }
   },
   created () {
-    this.movieId = this.$router.currentRoute.params.id
-    MovieService.getMoviesPrediction(1, 100).then((response) => {
-      this.movies = response.data.items
+    RecommendationService.getType().then((response) => {
+      this.type = response.data
+
+      if (this.type === 0) {
+          MovieService.getMoviesPrediction(1, 12).then((response) => {
+            this.movies = response.data.items
+          }).catch((error) => {
+            console.log(error.response.data)
+          })
+      } else if (this.type === 1) {
+          MovieService.getMoviesContentBasedPrediction(1, 12).then((response) => {
+            this.movies = response.data.items
+          }).catch((error) => {
+            console.log(error.response.data)
+          })
+      }
+      console.log(this.type)
     }).catch((error) => {
       console.log(error.response.data)
     })

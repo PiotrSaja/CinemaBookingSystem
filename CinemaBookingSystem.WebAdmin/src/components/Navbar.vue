@@ -29,12 +29,6 @@ export default {
                         },
                         {
                             key: '0_2',
-                            label: 'Statistic',
-                            icon: 'pi pi-fw pi-percentage',
-                            url: '/statistic'
-                        },
-                        {
-                            key: '0_3',
                             label: 'Status',
                             icon: 'pi pi-fw pi-info-circle',
                             url: '/hc'

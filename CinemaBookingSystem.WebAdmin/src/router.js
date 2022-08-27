@@ -157,12 +157,12 @@ router.beforeEach((to, from, next) => {
   if (to.path === '/login') {
     authService.handleLoginRedirect()
       .then(() =>{
+        next({
+          path: '/home'
+        })
       })
       .catch(error => {
         console.log(error)
-      })
-      next({
-        path: '/home'
       })
       return 
   } else if (to.path === '/logout') {
@@ -176,22 +176,20 @@ router.beforeEach((to, from, next) => {
         path: '/'
       })
       return 
-  } else if (to.meta.admin && (to.path !== '/' || to.path !== '/login')) {
+  } else if (to.meta.admin && (to.path !== '/' || !to.path.startsWith('/login'))) {
     authService.isUserLoggedIn()
       .then(isLoggedIn => {
+        console.log(isLoggedIn);
         if (isLoggedIn === true) {
           authService.getProfile()
           .then(profile => {
-            const role = profile.role
-    
-            if(role !== 'Administrator')
+            if(profile.role !== 'Administrator')
               next({path:'/401'})
             else
               next()
           })
           .catch(error => {
             console.log(error)
-            this.profile = {}
           })
         }
         else {

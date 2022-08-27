@@ -38,5 +38,8 @@ export default {
   },
   getMoviesPrediction (page, limit) {
     return Axios.get(`${RESOURCE_NAME}/predictions/?page=${page}&limit=${limit}`)
+  },
+  getMoviesContentBasedPrediction (page, limit) {
+    return Axios.get(`${RESOURCE_NAME}/content-based/predictions/?page=${page}&limit=${limit}`)
   }
 }

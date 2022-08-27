@@ -35,6 +35,7 @@ namespace IdentityServer
                     var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
                     context.Database.Migrate();
 
+                    #region Users
                     var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
                     var alice = userMgr.FindByNameAsync("alice").Result;
 
@@ -438,6 +439,339 @@ namespace IdentityServer
                         Log.Debug("user10 already exists");
                     }
 
+                    var user11 = userMgr.FindByNameAsync("user11").Result;
+                    if (user11 == null)
+                    {
+                        user11 = new ApplicationUser
+                        {
+                            UserName = "user11",
+                            Email = "user11@example.com",
+                            EmailConfirmed = true,
+                        };
+                        var result = userMgr.CreateAsync(user11, "Pass123$").Result;
+                        if (!result.Succeeded)
+                        {
+                            throw new Exception(result.Errors.First().Description);
+                        }
+
+                        result = userMgr.AddClaimsAsync(user11, new Claim[]
+                        {
+                            new Claim(JwtClaimTypes.Name, "User11 User11"),
+                            new Claim(JwtClaimTypes.GivenName, "User11"),
+                            new Claim(JwtClaimTypes.FamilyName, "User11"),
+                        }).Result;
+                        if (!result.Succeeded)
+                        {
+                            throw new Exception(result.Errors.First().Description);
+                        }
+
+                        Log.Debug("user11 created");
+                    }
+                    else
+                    {
+                        Log.Debug("user11 already exists");
+                    }
+
+                    var user12 = userMgr.FindByNameAsync("user12").Result;
+                    if (user12 == null)
+                    {
+                        user12 = new ApplicationUser
+                        {
+                            UserName = "user12",
+                            Email = "user12@example.com",
+                            EmailConfirmed = true,
+                        };
+                        var result = userMgr.CreateAsync(user12, "Pass123$").Result;
+                        if (!result.Succeeded)
+                        {
+                            throw new Exception(result.Errors.First().Description);
+                        }
+
+                        result = userMgr.AddClaimsAsync(user12, new Claim[]
+                        {
+                            new Claim(JwtClaimTypes.Name, "User12 User12"),
+                            new Claim(JwtClaimTypes.GivenName, "User12"),
+                            new Claim(JwtClaimTypes.FamilyName, "User12"),
+                        }).Result;
+                        if (!result.Succeeded)
+                        {
+                            throw new Exception(result.Errors.First().Description);
+                        }
+
+                        Log.Debug("user12 created");
+                    }
+                    else
+                    {
+                        Log.Debug("user12 already exists");
+                    }
+
+                    var user13 = userMgr.FindByNameAsync("user13").Result;
+                    if (user13 == null)
+                    {
+                        user13 = new ApplicationUser
+                        {
+                            UserName = "user13",
+                            Email = "user13@example.com",
+                            EmailConfirmed = true,
+                        };
+                        var result = userMgr.CreateAsync(user13, "Pass123$").Result;
+                        if (!result.Succeeded)
+                        {
+                            throw new Exception(result.Errors.First().Description);
+                        }
+
+                        result = userMgr.AddClaimsAsync(user13, new Claim[]
+                        {
+                            new Claim(JwtClaimTypes.Name, "User13 User13"),
+                            new Claim(JwtClaimTypes.GivenName, "User13"),
+                            new Claim(JwtClaimTypes.FamilyName, "User13"),
+                        }).Result;
+                        if (!result.Succeeded)
+                        {
+                            throw new Exception(result.Errors.First().Description);
+                        }
+
+                        Log.Debug("user13 created");
+                    }
+                    else
+                    {
+                        Log.Debug("user13 already exists");
+                    }
+
+                    var user14 = userMgr.FindByNameAsync("user14").Result;
+                    if (user14 == null)
+                    {
+                        user14 = new ApplicationUser
+                        {
+                            UserName = "user14",
+                            Email = "user14@example.com",
+                            EmailConfirmed = true,
+                        };
+                        var result = userMgr.CreateAsync(user14, "Pass123$").Result;
+                        if (!result.Succeeded)
+                        {
+                            throw new Exception(result.Errors.First().Description);
+                        }
+
+                        result = userMgr.AddClaimsAsync(user14, new Claim[]
+                        {
+                            new Claim(JwtClaimTypes.Name, "User14 User14"),
+                            new Claim(JwtClaimTypes.GivenName, "User14"),
+                            new Claim(JwtClaimTypes.FamilyName, "User14"),
+                        }).Result;
+                        if (!result.Succeeded)
+                        {
+                            throw new Exception(result.Errors.First().Description);
+                        }
+
+                        Log.Debug("user14 created");
+                    }
+                    else
+                    {
+                        Log.Debug("user14 already exists");
+                    }
+
+                    var user15 = userMgr.FindByNameAsync("user15").Result;
+                    if (user15 == null)
+                    {
+                        user15 = new ApplicationUser
+                        {
+                            UserName = "user15",
+                            Email = "user15@example.com",
+                            EmailConfirmed = true,
+                        };
+                        var result = userMgr.CreateAsync(user15, "Pass123$").Result;
+                        if (!result.Succeeded)
+                        {
+                            throw new Exception(result.Errors.First().Description);
+                        }
+
+                        result = userMgr.AddClaimsAsync(user15, new Claim[]
+                        {
+                            new Claim(JwtClaimTypes.Name, "User15 User15"),
+                            new Claim(JwtClaimTypes.GivenName, "User15"),
+                            new Claim(JwtClaimTypes.FamilyName, "User15"),
+                        }).Result;
+                        if (!result.Succeeded)
+                        {
+                            throw new Exception(result.Errors.First().Description);
+                        }
+
+                        Log.Debug("user15 created");
+                    }
+                    else
+                    {
+                        Log.Debug("user15 already exists");
+                    }
+
+                    var user16 = userMgr.FindByNameAsync("user16").Result;
+                    if (user16 == null)
+                    {
+                        user16 = new ApplicationUser
+                        {
+                            UserName = "user16",
+                            Email = "user16@example.com",
+                            EmailConfirmed = true,
+                        };
+                        var result = userMgr.CreateAsync(user16, "Pass123$").Result;
+                        if (!result.Succeeded)
+                        {
+                            throw new Exception(result.Errors.First().Description);
+                        }
+
+                        result = userMgr.AddClaimsAsync(user16, new Claim[]
+                        {
+                            new Claim(JwtClaimTypes.Name, "User16 User16"),
+                            new Claim(JwtClaimTypes.GivenName, "User16"),
+                            new Claim(JwtClaimTypes.FamilyName, "User16"),
+                        }).Result;
+                        if (!result.Succeeded)
+                        {
+                            throw new Exception(result.Errors.First().Description);
+                        }
+
+                        Log.Debug("user16 created");
+                    }
+                    else
+                    {
+                        Log.Debug("user16 already exists");
+                    }
+
+                    var user17 = userMgr.FindByNameAsync("user17").Result;
+                    if (user17 == null)
+                    {
+                        user17 = new ApplicationUser
+                        {
+                            UserName = "user17",
+                            Email = "user17@example.com",
+                            EmailConfirmed = true,
+                        };
+                        var result = userMgr.CreateAsync(user17, "Pass123$").Result;
+                        if (!result.Succeeded)
+                        {
+                            throw new Exception(result.Errors.First().Description);
+                        }
+
+                        result = userMgr.AddClaimsAsync(user17, new Claim[]
+                        {
+                            new Claim(JwtClaimTypes.Name, "User17 User17"),
+                            new Claim(JwtClaimTypes.GivenName, "User17"),
+                            new Claim(JwtClaimTypes.FamilyName, "User17"),
+                        }).Result;
+                        if (!result.Succeeded)
+                        {
+                            throw new Exception(result.Errors.First().Description);
+                        }
+
+                        Log.Debug("user17 created");
+                    }
+                    else
+                    {
+                        Log.Debug("user17 already exists");
+                    }
+
+                    var user18 = userMgr.FindByNameAsync("user18").Result;
+                    if (user18 == null)
+                    {
+                        user18 = new ApplicationUser
+                        {
+                            UserName = "user18",
+                            Email = "user18@example.com",
+                            EmailConfirmed = true,
+                        };
+                        var result = userMgr.CreateAsync(user18, "Pass123$").Result;
+                        if (!result.Succeeded)
+                        {
+                            throw new Exception(result.Errors.First().Description);
+                        }
+
+                        result = userMgr.AddClaimsAsync(user18, new Claim[]
+                        {
+                            new Claim(JwtClaimTypes.Name, "User18 User18"),
+                            new Claim(JwtClaimTypes.GivenName, "User18"),
+                            new Claim(JwtClaimTypes.FamilyName, "User18"),
+                        }).Result;
+                        if (!result.Succeeded)
+                        {
+                            throw new Exception(result.Errors.First().Description);
+                        }
+
+                        Log.Debug("user18 created");
+                    }
+                    else
+                    {
+                        Log.Debug("user18 already exists");
+                    }
+
+                    var user19 = userMgr.FindByNameAsync("user19").Result;
+                    if (user19 == null)
+                    {
+                        user19 = new ApplicationUser
+                        {
+                            UserName = "user19",
+                            Email = "user19@example.com",
+                            EmailConfirmed = true,
+                        };
+                        var result = userMgr.CreateAsync(user19, "Pass123$").Result;
+                        if (!result.Succeeded)
+                        {
+                            throw new Exception(result.Errors.First().Description);
+                        }
+
+                        result = userMgr.AddClaimsAsync(user19, new Claim[]
+                        {
+                            new Claim(JwtClaimTypes.Name, "User19 User19"),
+                            new Claim(JwtClaimTypes.GivenName, "User19"),
+                            new Claim(JwtClaimTypes.FamilyName, "User19"),
+                        }).Result;
+                        if (!result.Succeeded)
+                        {
+                            throw new Exception(result.Errors.First().Description);
+                        }
+
+                        Log.Debug("user19 created");
+                    }
+                    else
+                    {
+                        Log.Debug("user19 already exists");
+                    }
+
+                    var user20 = userMgr.FindByNameAsync("user20").Result;
+                    if (user20 == null)
+                    {
+                        user20 = new ApplicationUser
+                        {
+                            UserName = "user20",
+                            Email = "user20@example.com",
+                            EmailConfirmed = true,
+                        };
+                        var result = userMgr.CreateAsync(user20, "Pass123$").Result;
+                        if (!result.Succeeded)
+                        {
+                            throw new Exception(result.Errors.First().Description);
+                        }
+
+                        result = userMgr.AddClaimsAsync(user20, new Claim[]
+                        {
+                            new Claim(JwtClaimTypes.Name, "User20 User20"),
+                            new Claim(JwtClaimTypes.GivenName, "User20"),
+                            new Claim(JwtClaimTypes.FamilyName, "User20"),
+                        }).Result;
+                        if (!result.Succeeded)
+                        {
+                            throw new Exception(result.Errors.First().Description);
+                        }
+
+                        Log.Debug("user20 created");
+                    }
+                    else
+                    {
+                        Log.Debug("user20 already exists");
+                    }
+
+                    #endregion
+
+                    #region Roles
                     //Creating roles:
                     var roleMgr = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
                     var user = roleMgr.FindByNameAsync("User").Result;
@@ -533,6 +867,67 @@ namespace IdentityServer
                         Log.Debug("Adding user10 to user role");
                         _ = userMgr.AddToRoleAsync(user10, user.Name).Result;
                     }
+
+                    if (!userMgr.IsInRoleAsync(user11, user.Name).Result)
+                    {
+                        Log.Debug("Adding user11 to user role");
+                        _ = userMgr.AddToRoleAsync(user11, user.Name).Result;
+                    }
+
+                    if (!userMgr.IsInRoleAsync(user12, user.Name).Result)
+                    {
+                        Log.Debug("Adding user12 to user role");
+                        _ = userMgr.AddToRoleAsync(user12, user.Name).Result;
+                    }
+
+                    if (!userMgr.IsInRoleAsync(user13, user.Name).Result)
+                    {
+                        Log.Debug("Adding user13 to user role");
+                        _ = userMgr.AddToRoleAsync(user13, user.Name).Result;
+                    }
+
+                    if (!userMgr.IsInRoleAsync(user14, user.Name).Result)
+                    {
+                        Log.Debug("Adding user14 to user role");
+                        _ = userMgr.AddToRoleAsync(user14, user.Name).Result;
+                    }
+
+                    if (!userMgr.IsInRoleAsync(user15, user.Name).Result)
+                    {
+                        Log.Debug("Adding user15 to user role");
+                        _ = userMgr.AddToRoleAsync(user15, user.Name).Result;
+                    }
+
+                    if (!userMgr.IsInRoleAsync(user16, user.Name).Result)
+                    {
+                        Log.Debug("Adding user16 to user role");
+                        _ = userMgr.AddToRoleAsync(user16, user.Name).Result;
+                    }
+
+                    if (!userMgr.IsInRoleAsync(user17, user.Name).Result)
+                    {
+                        Log.Debug("Adding user17 to user role");
+                        _ = userMgr.AddToRoleAsync(user17, user.Name).Result;
+                    }
+
+                    if (!userMgr.IsInRoleAsync(user18, user.Name).Result)
+                    {
+                        Log.Debug("Adding user18 to user role");
+                        _ = userMgr.AddToRoleAsync(user18, user.Name).Result;
+                    }
+
+                    if (!userMgr.IsInRoleAsync(user19, user.Name).Result)
+                    {
+                        Log.Debug("Adding user19 to user role");
+                        _ = userMgr.AddToRoleAsync(user19, user.Name).Result;
+                    }
+
+                    if (!userMgr.IsInRoleAsync(user20, user.Name).Result)
+                    {
+                        Log.Debug("Adding user20 to user role");
+                        _ = userMgr.AddToRoleAsync(user20, user.Name).Result;
+                    }
+                    #endregion
                 }
             }
         }

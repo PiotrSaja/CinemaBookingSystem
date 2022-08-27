@@ -39,5 +39,33 @@ namespace CinemaBookingSystem.Application.Common.Extensions
 
             return paged;
         }
+        public static PagedModel<TModel> Paginate<TModel>(
+            this IEnumerable<TModel> query,
+            int page,
+            int limit,
+            CancellationToken cancellationToken)
+            where TModel : class
+        {
+
+            var paged = new PagedModel<TModel>();
+
+            page = (page < 0) ? 1 : page;
+
+            paged.CurrentPage = page;
+            paged.PageSize = limit;
+
+            var startRow = (page - 1) * limit;
+            paged.Items = query
+                .Skip(startRow)
+                .Take(limit)
+                .ToList();
+
+            var totalItemsCountTask = query.Count();
+
+            paged.TotalItems = totalItemsCountTask;
+            paged.TotalPages = (int)Math.Ceiling(paged.TotalItems / (double)limit);
+
+            return paged;
+        }
     }
 }

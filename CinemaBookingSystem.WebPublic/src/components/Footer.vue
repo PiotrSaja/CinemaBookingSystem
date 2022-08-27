@@ -11,7 +11,7 @@
                 <a href="#!" class="text-white">Price-list</a>
             </li>
             <li>
-                <a href="#!" class="text-white">Our cinemas</a>
+                <a href="/cinemas" class="text-white">Our cinemas</a>
             </li>
             <li>
                 <a href="#!" class="text-white">Job</a>
@@ -29,7 +29,7 @@
                 <a href="#!" class="text-white">Statue</a>
             </li>
             <li>
-                <a href="#!" class="text-white">Contact</a>
+                <a href="https://github.com/PiotrSaja" class="text-white">Contact</a>
             </li>
             </ul>
         </div>
