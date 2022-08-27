@@ -1,14 +1,13 @@
 @model RegisterInputModel
-
-<div class="login-page">
-    <partial name="_ValidationSummary" />
+<partial name="_ValidationSummary" />
+<div class="login-page panel-page">
 
     <div class="row">
-        <div class="col-sm-2"></div>
-            <div class="col-sm-8">
+        <div class="col-sm-3"></div>
+            <div class="col-sm-6">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="text-center">Cinema Booking System</h3>
+                        <h3 class="text-center p-3">Cinema Booking System</h3>
                     </div>
 
                     <div class="card-body">
@@ -31,15 +30,17 @@
                             </div>
                             
                             <div class="form-group">
-                                <label asp-for="ConfirmPassword"></label>
+                                <label asp-for="ConfirmPassword">Confirm Password</label>
                                 <input type="password" class="form-control" placeholder="Confirm Password" asp-for="ConfirmPassword" autocomplete="off">
                             </div>
 
-                            <button class="btn btn-primary" name="button" value="login">Register</button>
+                            <div class="text-center pt-3">
+                                <button class="btn btn-primary button button-success text-center" name="button" value="login">Register</button>
+                            </div>
                         </form>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-2"></div>
+            <div class="col-sm-3"></div>
     </div>
 </div>

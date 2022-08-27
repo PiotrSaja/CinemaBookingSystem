@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CinemaBookingSystem.Application.Common.Exceptions;
 using CinemaBookingSystem.Application.Common.Interfaces;
-using CinemaBookingSystem.Application.Movies.Queries.GetMoviesPrediciton;
+using CinemaBookingSystem.Application.Movies.Queries.GetMoviesPrediction;
 using CinemaBookingSystem.Domain.Entities;
 using CinemaBookingSystem.Domain.Enums;
 using MediatR;

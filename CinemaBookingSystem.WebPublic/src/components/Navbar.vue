@@ -20,12 +20,12 @@
         <hr>
         <b-navbar-nav right>
         <b-nav-item v-if="!isUserLoggedIn" @click="onLogin()">Login</b-nav-item>
-        <b-nav-item v-if="!isUserLoggedIn" @click="onLogin()">Sign-up</b-nav-item>
+        <b-nav-item v-if="!isUserLoggedIn" href="https://localhost:5001/Account/Register?ReturnUrl=http://localhost:8080">Sign-up</b-nav-item>
         <b-nav-item v-bind:class="{active: activeElement === 'Profile'}" v-if="isUserLoggedIn" to="/profile">{{ profile.email }}</b-nav-item>
         <b-nav-item v-if="isUserLoggedIn" @click="onLogout()">Logout</b-nav-item>
         </b-navbar-nav>
       </b-navbar-nav>
-    </b-collapse>
+    </b-collapse>w
   </b-navbar>
 </div>
 </template>

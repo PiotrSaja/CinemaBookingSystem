@@ -1,0 +1,36 @@
+﻿body {
+    background: linear-gradient(135deg, rgba(6, 18, 36, 1) 0%, rgba(88, 96, 108, 1) 100%);
+    height: 100vh;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: "Open Sans", sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    background: #162232;
+    margin-top: auto;
+    clear: both;
+}
+.page {
+    min-height: 100vh;
+}
+.button {
+    width: 100% !important;
+}
+.button-success {
+    background-color: #FF9100;
+    border-color: #FF9100;
+}
+.button-success:hover {
+    background-color: #cc7604;
+    border-color: #cc7604;
+}
+.panel {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
+}
+.panel-page {
+    padding-top: 15% !important;
+}
