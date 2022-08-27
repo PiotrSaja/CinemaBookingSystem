@@ -1,17 +1,16 @@
 @model LoginViewModel
-
-<div class="login-page">
-    <partial name="_ValidationSummary" />
+<partial name="_ValidationSummary" />
+<div class="login-page panel-page">
 
     <div class="row">
 
         @if (Model.EnableLocalLogin)
         {
-            <div class="col-sm-2"></div>
-            <div class="col-sm-8">
-                <div class="card">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+                <div class="card panel">
                     <div class="card-header">
-                        <h3 class="text-center">Cinema Booking System</h3>
+                        <h3 class="text-center p-3">Cinema Booking System</h3>
                     </div>
 
                     <div class="card-body">
@@ -28,27 +27,24 @@
                             </div>
                             @if (Model.AllowRememberLogin)
                             {
-                                <div class="form-group">
+                                <div class="form-group pt-2">
                                     <div class="form-check">
                                         <input class="form-check-input" asp-for="RememberLogin">
                                         <label class="form-check-label" asp-for="RememberLogin">
-                                            Remember My Login
+                                            Remember me
                                         </label>
                                     </div>
                                 </div>
                             }
-
-                            <div>
-                                <p>The default users are alice/bob, password: Pass123$</p>
+                            <div class="text-center pt-3">
+                                <button class="btn btn-primary button button-success mb-1" name="button" value="login">Login</button>
+                                <button class="btn btn-secondary button" name="button" value="cancel">Cancel</button>
                             </div>
-
-                            <button class="btn btn-primary" name="button" value="login">Login</button>
-                            <button class="btn btn-secondary" name="button" value="cancel">Cancel</button>
                         </form>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-2"></div>
+            <div class="col-sm-3"></div>
         }
 
         @if (!Model.EnableLocalLogin && !Model.VisibleExternalProviders.Any())
