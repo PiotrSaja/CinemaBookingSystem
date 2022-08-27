@@ -25,7 +25,7 @@
         <b-nav-item v-if="isUserLoggedIn" @click="onLogout()">Logout</b-nav-item>
         </b-navbar-nav>
       </b-navbar-nav>
-    </b-collapse>w
+    </b-collapse>
   </b-navbar>
 </div>
 </template>
