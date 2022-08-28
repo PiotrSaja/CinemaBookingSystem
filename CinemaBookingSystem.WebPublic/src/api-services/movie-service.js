@@ -41,5 +41,8 @@ export default {
   },
   getMoviesContentBasedPrediction (page, limit) {
     return Axios.get(`${RESOURCE_NAME}/content-based/predictions/?page=${page}&limit=${limit}`)
+  },
+  getForSelectingFavorite () {
+    return Axios.get(`${RESOURCE_NAME}/selecting-favorite`)
   }
 }
