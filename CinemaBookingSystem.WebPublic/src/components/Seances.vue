@@ -2,11 +2,11 @@
   <div class="page">
         <div class="container">
             <div class="row text-white mt-5">
-                <div class="col-md-9 col-12">
+                <div class="col-md-3 col-12">
                     <v-select
                     class="style-chooser"
                     placeholder="Choose a Cinema"
-                    style="width:250px"
+                    style="width:100%"
                     :options="cinemas.items"
                     v-model="selectedCinema"
                     label="name"
@@ -21,12 +21,12 @@
             <div class="container text-white mt-5">
                 <div class="row">
                     <div class="col-md-3 col-3 d-none d-sm-block font-weight-bold">Now showing</div>
-                    <div class="col-md-6 col-12 col-sm-12 text-center">
+                    <div class="col-md-6 col-9 col-sm-12 text-center">
                       <b-button class="mr-2" @click="prevDay()" style="border-radius: 3px">&lt;</b-button>
                       {{currentDateString}}
                       <b-button class="ml-2" @click="nextDay()" style="border-radius: 3px">&gt;</b-button>
                       </div>
-                    <div class="col-md-3 col-12 col-sm-12 text-right">
+                    <div class="col-md-3 col-3 col-sm-12 text-right">
                         <b-button v-b-toggle.collapse-3>Filter</b-button>
                     </div>
                 </div>
