@@ -10,6 +10,7 @@ using CinemaBookingSystem.Application.Movies.Queries.GetMovieDetail;
 using CinemaBookingSystem.Application.Movies.Queries.GetMovies;
 using CinemaBookingSystem.Application.Movies.Queries.GetMoviesContentBasedPrediction;
 using CinemaBookingSystem.Application.Movies.Queries.GetMoviesDaysToPremiere;
+using CinemaBookingSystem.Application.Movies.Queries.GetMoviesForSelectingFavorite;
 using CinemaBookingSystem.Application.Movies.Queries.GetMoviesPrediction;
 using CinemaBookingSystem.Application.Movies.Queries.GetMoviesWithSeanceOnCurrentCinemaAndDay;
 using CinemaBookingSystem.Application.Movies.Queries.GetPrefMovies;
@@ -174,6 +175,19 @@ namespace CinemaBookingSystem.Api.Controllers
             var result = await Mediator.Send(new GetMoviesContentBasedPredictionQuery() { PageIndex = page, PageSize = limit });
 
             return Ok(result);
+        }
+        [HttpGet("selecting-favorite")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetMoviesForSelectingFavorite()
+        {
+            var vm = await Mediator.Send(new GetMoviesForSelectingFavoriteQuery()
+            {
+                PageIndex = 1,
+                PageSize = 24,
+                SearchString = String.Empty
+            });
+            return Ok(vm);
         }
     }
 }

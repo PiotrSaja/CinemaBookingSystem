@@ -27,6 +27,7 @@ namespace CinemaBookingSystem.Application.Cinemas.Queries.GetCinemaDetail
         public async Task<CinemaDetailVm> Handle(GetCinemaDetailQuery request, CancellationToken cancellationToken)
         {
             var cinema = await _context.Cinemas.Where(x => x.Id == request.CinemaId && x.StatusId != 0)
+                .Include(x=>x.CinemaHalls)
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (cinema == null)

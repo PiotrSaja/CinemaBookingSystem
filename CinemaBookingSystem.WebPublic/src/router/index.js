@@ -27,71 +27,110 @@ const routes = [
   {
     path: '/movies',
     name: 'Movies',
-    component: Movies
+    component: Movies,
+    meta: {
+      title: 'MyCinema - Movies'
+    }
   },
   {
     path: '/movie/:id',
     name: 'MovieDetail',
-    component: MovieDetail
+    component: MovieDetail,
+    meta: {
+      title: 'MyCinema - Movies'
+    }
   },
   {
     path: '/profile',
     name: 'Profile',
-    component: Profile
+    component: Profile,
+    meta: {
+      title: 'MyCinema - Profile'
+    }
   },
   {
     path: '/profile/booking/:id',
     name: 'BookingDetail',
-    component: BookingDetail
+    component: BookingDetail,
+    meta: {
+      title: 'MyCinema - Bookings'
+    }
   },
   {
     path: '/404',
     name: 'NotFound',
     component: NotFound,
-    props: true
+    props: true,
+    meta: {
+      title: 'MyCinema - Not Found'
+    }
   },
   {
     path: '/401',
     name: 'NotAuth',
     component: NotAuth,
-    props: true
+    props: true,
+    meta: {
+      title: 'MyCinema - Not Authorized'
+    }
   },
   {
     path: '/seances',
     name: 'Seances',
-    component: Seances
+    component: Seances,
+    meta: {
+      title: 'MyCinema - Seances'
+    }
   },
   {
     path: '/seance/:id',
     name: 'SeanceDetail',
-    component: SeanceDetail
+    component: SeanceDetail,
+    meta: {
+      title: 'MyCinema - Seances'
+    }
   },
   {
     path: '/booking-seats/:id',
     name: 'BookingSeats',
-    component: BookingSeats
+    component: BookingSeats,
+    meta: {
+      title: 'MyCinema - Seats'
+    }
   },
   {
     path: '/booking/user-information',
     name: 'BookingUserInformation',
     component: BookingUserInformation,
-    props: true
+    props: true,
+    meta: {
+      title: 'MyCinema - Booking Information'
+    }
   },
   {
     path: '/booking/confirmation',
     name: 'BookingConfirmation',
     component: BookingConfirmation,
-    props: true
+    props: true,
+    meta: {
+      title: 'MyCinema - Booking Confirmation'
+    }
   },
   {
     path: '/cinemas',
     name: 'Cinemas',
-    component: Cinemas
+    component: Cinemas,
+    meta: {
+      title: 'MyCinema - Cinemas'
+    }
   },
   {
     path: '/cinema/:id',
     name: 'CinemaDetail',
-    component: CinemaDetail
+    component: CinemaDetail,
+    meta: {
+      title: 'MyCinema - Cinemas'
+    }
   }
 ]
 
@@ -102,6 +141,8 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
+  window.document.title = to.meta && to.meta.title ? to.meta.title : 'MyCinema - Home'
+
   if (to.path === '/login') {
     authService.handleLoginRedirect()
       .then(() => next('/'))

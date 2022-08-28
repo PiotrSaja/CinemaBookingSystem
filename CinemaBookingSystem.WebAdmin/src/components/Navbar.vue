@@ -1,6 +1,6 @@
 <template>
 <nav class="text-center">
-    <h2>Cinema System</h2>
+    <h2>MyCinema</h2>
     <span>Admin Panel</span>
     <PanelMenu :model="items" v-model:expandedKeys="expandedKeys" class="mr-2 mt-3"/>
 </nav>
