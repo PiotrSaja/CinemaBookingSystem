@@ -51,7 +51,7 @@
             </tr>
         </table>
       </div>
-      <div class="row mt-5">
+      <div class="row mt-5 mb-3">
         <div class="col-md-6 col-6">
           <p>Choosen seats:{{selectedIds}}</p>
         </div>
