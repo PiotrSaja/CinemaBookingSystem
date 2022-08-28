@@ -4,7 +4,7 @@
         <div class="xs-12 md-6 mx-auto">
             <div id="text-container">
                 <div class="number">Welcome</div>
-                <div class="text">Cinema System - Admin Panel</div>
+                <div class="text">MyCinema - Admin Panel</div>
                 <div class="text">Probably you not logged in system. Please click button below.</div>
                 <div class="text"> <Button @click="onLogin()">Login</Button></div>
             </div>
