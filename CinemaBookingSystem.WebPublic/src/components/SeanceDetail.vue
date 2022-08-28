@@ -81,4 +81,19 @@ min-height: 100vh;
     transform: translateX(-50%);
     top: -3px;
 }
+
+@media only screen and (min-width: 1px) and (max-width: 576px) {
+  .movie-label{
+    color: #fff;
+    background: #FF5555;
+    font-size: 13px;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 3px;
+    position: absolute;
+    left: 5%;
+    transform: translateX(-5%);
+    top: -3px;
+}
+}
 </style>

@@ -19,9 +19,9 @@
         </div>
       </div>
       <div class="row mt-5">
-        <div style="width: 30%"></div>
-        <div class="screen" :style="{backgroundImage:`url(${seance.movie.backgroundImagePath})`}"></div>
-        <div style="width: 30%"></div>
+        <div class="col-0 col-sm-2 col-md-3 col-lg-3 col-xl-3"></div>
+        <div class="screen col-12 col-sm-8 col-md-6 col-lg-6 col-xl-6" :style="{backgroundImage:`url(${seance.movie.backgroundImagePath})`}"></div>
+        <div class="col-0 col-sm-2 col-md-3 col-lg-3 col-xl-3"></div>
         <table class="mx-auto">
             <!--<tr>
               <th></th>
@@ -174,7 +174,6 @@ min-height: 100vh;
 .screen {
   background-color: #fff;
   height: 235px;
-  width: 40%;
   margin: 15px 0;
   transform: rotateX(-45deg);
   box-shadow: 0 3px 10px rgba(255, 255, 255, 0.75);
