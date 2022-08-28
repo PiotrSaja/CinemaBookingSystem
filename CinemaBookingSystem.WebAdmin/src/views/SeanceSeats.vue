@@ -22,7 +22,7 @@
                             <td>{{seat.row}}</td>
                             <td>{{seat.seatNumber}}</td>
                             <td>
-                                <span v-if="seat.seatType === 1">Normal</span>
+                                <span v-if="seat.seatType === 0">Normal</span>
                                 <span v-else>Vip</span>
                             </td>
                             <td><InputNumber id="price" v-model="seanceSeatsPrice[index]" mode="decimal" :minFractionDigits="2" :allowEmpty="false"/></td>
