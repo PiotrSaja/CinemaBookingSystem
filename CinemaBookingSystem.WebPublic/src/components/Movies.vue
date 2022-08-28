@@ -8,7 +8,7 @@
         <div class="col-12 col-md-8">
         <h5 class="text-white underline font-weight-bold">All movies</h5>
         </div>
-        <div class="col-12 col-md-2">
+        <div class="col-12 col-md-2 hideRecordsNumberOnMobile">
             <b-dropdown text="Records number" class="mt-2 mr-5">
             <b-dropdown-item @click="updateLimitOnPage(8)">8</b-dropdown-item>
             <b-dropdown-item @click="updateLimitOnPage(16)">16</b-dropdown-item>
@@ -123,6 +123,10 @@ export default {
     padding-left: 0px;
     margin-right: auto;
     margin-left: auto;
+  }
+
+  .hideRecordsNumberOnMobile {
+    display: none
   }
 }
 .movie-grid:hover{
