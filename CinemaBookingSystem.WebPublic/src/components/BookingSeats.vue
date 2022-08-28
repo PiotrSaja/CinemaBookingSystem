@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <div class="container text-white" style="margin-top: 100px">
+    <div class="container text-white custom-margin-top">
       <div class="row">
         <div class="col-md-12">
           <b-alert v-model="showAlert" variant="danger" dismissible>
@@ -181,6 +181,16 @@ min-height: 100vh;
   background-repeat: no-repeat;
   background-position: top center;
   background-size: cover;
+}
+
+.custom-margin-top {
+  margin-top: 100px
+}
+
+@media only screen and (min-width: 1px) and (max-width: 576px) {
+.custom-margin-top {
+  margin-top: 10px
+}
 }
 
 </style>

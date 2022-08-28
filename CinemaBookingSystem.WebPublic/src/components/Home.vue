@@ -24,7 +24,7 @@
           </vue-horizontal-list-autoscroll>
         </div>
       </div>
-      <div class="row mt-3" v-if="soonMovies.length > 0">
+      <div class="row mt-3 mb-3" v-if="soonMovies.length > 0">
         <div class="col-md-12">
           <h5 class="text-white underline font-weight-bold">Comming soon</h5>
           <vue-horizontal-list-autoscroll :items="soonMovies" :options="options">
