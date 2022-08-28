@@ -2,7 +2,7 @@
   <div>
   <b-navbar toggleable="lg" type="dark">
     <b-navbar-brand :to="{name: 'Home'}"  @click="activeElement = ''">
-        <img src="@/assets/logo.png" class="d-inline-block align-top" alt="Logo">
+        <img src="@/assets/logo.png" class="d-inline-block align-top" alt="Logo" style="width: 36px;">
         MyCinema
     </b-navbar-brand>
 
