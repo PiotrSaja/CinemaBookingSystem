@@ -23,7 +23,7 @@
           </div>
         </div>
       </div>
-      <div class="row mt-4 mb-4 text-right underline">
+      <div class="row mt-4 mb-4 text-right underline" v-if="this.selectedList.length > 0">
          <b-button class="btn-success" v-on:click="getUserBaseRecomendation">Save favorite movies</b-button>
       </div>
     </div>
@@ -73,9 +73,12 @@ export default {
             moviesIds: this.selectedList
           }
 
-          MovieService.pref(response).then((response) => {
-            console.log(response)
-        })
+          if (this.selectedList.length > 0) {
+                MovieService.pref(response).then((response) => {
+                console.log(response)
+                this.$router.go()
+            })
+          }
       }
   }
 }
