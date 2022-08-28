@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <div class="row" style="margin-top: 50px">
+    <div class="row custom-margin-top">
         <div class="col-md-12">
           <b-alert v-if="!this.validate_errors.length && !this.booking_error_status" variant="success" show class="text-center">
             Seats was successful locked for 10 minutes.
@@ -257,5 +257,27 @@ min-height: 100vh;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   background-color: gray;
   border-radius: 25px;
+}
+
+.custom-margin-top {
+  margin-top: 50px
+}
+
+@media only screen and (min-width: 1px) and (max-width: 576px) {
+.movie-label{
+  color: #fff;
+  background: #FF5555;
+  font-size: 13px;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 3px;
+  position: absolute;
+  left: 5%;
+  transform: translateX(-5%);
+  top: -3px;
+}
+.custom-margin-top {
+  margin-top: 10px
+}
 }
 </style>
