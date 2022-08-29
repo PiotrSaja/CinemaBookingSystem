@@ -20,6 +20,7 @@ using CinemaBookingSystem.Persistence;
 using CinemaBookingSystem.Api.Extensions;
 using CinemaBookingSystem.Api.Services;
 using CinemaBookingSystem.Application.Common.Interfaces;
+using CinemaBookingSystem.Common;
 using Hangfire;
 using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Http;
@@ -43,6 +44,8 @@ namespace CinemaBookingSystem.Api
             services.AddApplication();
             services.AddInfrastructure(Configuration);
             services.AddPersistence(Configuration);
+            services.AddCommon(Configuration);
+
             services.AddControllers();
 
             services.AddCors(options =>

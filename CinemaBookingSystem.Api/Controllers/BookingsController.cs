@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using CinemaBookingSystem.Application.Bookings.Commands.ChangeStatusOfBooking;
 using CinemaBookingSystem.Application.Bookings.Commands.CreateBooking;
 using CinemaBookingSystem.Application.Bookings.Commands.DeleteBooking;
@@ -6,17 +8,29 @@ using CinemaBookingSystem.Application.Bookings.Queries.GetBookingDetail;
 using CinemaBookingSystem.Application.Bookings.Queries.GetBookings;
 using CinemaBookingSystem.Application.Bookings.Queries.GetUserBookingDetail;
 using CinemaBookingSystem.Application.Bookings.Queries.GetUserBookings;
+using CinemaBookingSystem.Common.Mailer.Abstractions;
+using CinemaBookingSystem.Common.Mailer.Models;
+using CinemaBookingSystem.Common.Mailer.Models.Emails;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using RazorEngineCore;
 
 namespace CinemaBookingSystem.Api.Controllers
 {
     [Route("api/bookings")]
     public class BookingsController : BaseController
     {
-        
+        protected IMailService MailService { get; set; }
+
+        #region BookingsController()
+        public BookingsController(IMailService mailService)
+        {
+            MailService = mailService;
+        }
+        #endregion
+
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -67,6 +81,22 @@ namespace CinemaBookingSystem.Api.Controllers
         public async Task<ActionResult> CreateBooking(CreateBookingCommand booking)
         {
             var result = await Mediator.Send(booking);
+
+            var bookingMail = new BookingMail()
+            {
+                BookingId = result.BookingId,
+                Date = result.Date,
+                Tittle = result.Title,
+                Firstname = result.Firstname,
+                Surname = result.Surname,
+                Email = result.Email
+            };
+
+            MailData mailData = new MailData(
+                new List<string> { bookingMail.Email },
+                "MyCinema - Thank you for booking a seats",
+                MailService.GetEmailTemplate("example", bookingMail));
+            bool sendResult = await MailService.SendAsync(mailData, new CancellationToken());
 
             return Ok(result);
         }

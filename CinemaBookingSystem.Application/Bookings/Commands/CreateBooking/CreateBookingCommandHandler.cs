@@ -15,7 +15,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CinemaBookingSystem.Application.Bookings.Commands.CreateBooking
 {
-    public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand, int>
+    public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand, CreateBookingCommandHandler.Result>
     {
         private readonly ICinemaDbContext _context;
         private readonly IUserService _userService;
@@ -28,7 +28,7 @@ namespace CinemaBookingSystem.Application.Bookings.Commands.CreateBooking
             _seatLockingService = seatLockingService;
         }
 
-        public async Task<int> Handle(CreateBookingCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(CreateBookingCommand request, CancellationToken cancellationToken)
         {
             var seance = await _context.Seances.Where(x => x.Id == request.SeanceId).FirstOrDefaultAsync(cancellationToken);
 
@@ -78,7 +78,20 @@ namespace CinemaBookingSystem.Application.Bookings.Commands.CreateBooking
             _context.Bookings.Add(booking);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return booking.Id;
+            var newBooking = await _context.Bookings
+                .Include(x=>x.Seance)
+                .ThenInclude(x=>x.Movie)
+                .FirstOrDefaultAsync(x => x.Id == booking.Id, cancellationToken);
+
+            return new Result()
+            {
+                BookingId = newBooking.Id.ToString(),
+                Firstname = newBooking.PersonalName.FirstName,
+                Surname = newBooking.PersonalName.LastName,
+                Title = newBooking.Seance.Movie.Title,
+                Date = newBooking.Seance.Date.ToShortDateString(),
+                Email = _userService.Email
+            };
         }
 
         private void ChangeStatusInShowSeat(List<SeanceSeat> items, CancellationToken cancellationToken)
@@ -88,6 +101,16 @@ namespace CinemaBookingSystem.Application.Bookings.Commands.CreateBooking
                 item.SeatStatus = true;
                 _context.SeanceSeats.Update(item);
             }
+        }
+
+        public class Result
+        {
+            public string BookingId { get; set; }
+            public string Firstname { get; set; }
+            public string Surname { get; set; }
+            public string Title { get; set; }
+            public string Date { get; set; }
+            public string Email { get; set; }
         }
     }
 }
