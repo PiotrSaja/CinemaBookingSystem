@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Mailer\Template\example.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.30" />
     <PackageReference Include="Hangfire.Core" Version="1.7.30" />
     <PackageReference Include="Hangfire.MemoryStorage" Version="1.7.0" />
@@ -19,8 +23,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CinemaBookingSystem.Common\CinemaBookingSystem.Common.csproj" />
     <ProjectReference Include="..\CinemaBookingSystem.Infrastructure\CinemaBookingSystem.Infrastructure.csproj" />
     <ProjectReference Include="..\CinemaBookingSystem.Persistence\CinemaBookingSystem.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Mailer\Template\example.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
