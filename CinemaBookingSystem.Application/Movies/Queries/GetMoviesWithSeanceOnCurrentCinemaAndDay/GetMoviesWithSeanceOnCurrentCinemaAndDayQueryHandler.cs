@@ -25,7 +25,7 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesWithSeanceOnCu
 
         public async Task<MoviesVm> Handle(GetMoviesWithSeanceOnCurrentCinemaAndDayQuery request, CancellationToken cancellationToken)
         {
-            var movies = await _context.Movies.Include(x => x.Seances.Where(x => x.Date.Date == request.Date.Date && x.CinemaHall.CinemaId == request.CinemaId)).ToListAsync(cancellationToken);
+            var movies = await _context.Movies.Include(x => x.Seances.Where(x => x.Date.Date == request.Date.Date && x.CinemaHall.CinemaId == request.CinemaId && x.StatusId != 0)).ToListAsync(cancellationToken);
 
             var moviesWithSeances = movies.Where(x => x.Seances.Count > 0).ToList();
 
