@@ -37,7 +37,7 @@
                     </a>
                     <span class="movie-label-soon" v-if="substractMovieDate(item.releasedDate) <= 14">Soon</span>
                   </div>
-                  <div class="movie-content">
+                  <div class="movie-content" v-resize-text>
                     <h3 class="title"><a href="#">{{ item.title }}</a></h3>
                   </div>
                 </div>
@@ -51,12 +51,13 @@
 </template>
 
 <script>
+import VueResizeText from 'vue-resize-text'
 import moment from 'moment'
 import MovieService from '@/api-services/movie-service'
 import MovieCarousel from '@/components/MovieCarousel'
 import VueHorizontalListAutoscroll from 'vue-horizontal-list-autoscroll'
 export default {
-  components: { MovieCarousel, VueHorizontalListAutoscroll },
+  components: { MovieCarousel, VueHorizontalListAutoscroll, VueResizeText },
   name: 'Home',
   data () {
     return {
@@ -195,15 +196,19 @@ export default {
 .movie-grid .movie-content{
     background-color: #fff;
     text-align: left;
-    padding: 15px 10px;
+    padding: 5px 5px;
     border-top: 1px solid transparent;
     border-radius: 0 0 10px 10px;
     transition: all 0.3s;
+    min-height: 67px;
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center; /* align vertical */
 }
 .movie-grid:hover .movie-content{ border-top-color: #dbdbdb; }
 .movie-grid .title{
     text-align: center;
-    font-size: 15px;
+    font-size: 15.5px;
     font-weight: bold;
     text-transform: capitalize;
     margin: 0;
