@@ -30,7 +30,7 @@
               </a>
               <span class="movie-label" v-if="movie.imdbRating >= 7.5">Mega hit!</span>
             </div>
-            <div class="movie-content">
+            <div class="movie-content" v-resize-text>
               <h3 class="title"><a href="#">{{ movie.title }}</a></h3>
             </div>
           </div>
@@ -52,10 +52,11 @@
 </template>
 
 <script>
+import VueResizeText from 'vue-resize-text'
 import MovieService from '@/api-services/movie-service'
 import MovieCarousel from '@/components/MovieCarousel'
 export default {
-  components: { MovieCarousel },
+  components: { MovieCarousel, VueResizeText },
   name: 'Movies',
   data () {
     return {
@@ -154,15 +155,19 @@ export default {
 .movie-grid .movie-content{
     background-color: #fff;
     text-align: left;
-    padding: 15px 10px;
+    padding: 5px 5px;
     border-top: 1px solid transparent;
     border-radius: 0 0 10px 10px;
     transition: all 0.3s;
+    min-height: 67px;
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center; /* align vertical */
 }
 .movie-grid:hover .movie-content{ border-top-color: #dbdbdb; }
 .movie-grid .title{
     text-align: center;
-    font-size: 15px;
+    font-size: 15.5px;
     font-weight: bold;
     text-transform: capitalize;
     margin: 0;

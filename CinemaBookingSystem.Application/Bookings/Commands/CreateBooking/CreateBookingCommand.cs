@@ -7,7 +7,7 @@ using MediatR;
 
 namespace CinemaBookingSystem.Application.Bookings.Commands.CreateBooking
 {
-    public class CreateBookingCommand : IRequest<int>
+    public class CreateBookingCommand : IRequest<CreateBookingCommandHandler.Result>
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

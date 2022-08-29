@@ -214,7 +214,7 @@ export default {
         this.booking.seanceSeatIds = this.seatsIds
         await BookingService.create(this.booking).then((response) => {
             console.log(response.data)
-            this.$router.replace({name: 'BookingConfirmation', params: {id: response.data}})
+            this.$router.replace({name: 'BookingConfirmation', params: {id: response.data.bookingId}})
           }).catch(error => {
             this.booking_error_status = true
             console.log(error)
