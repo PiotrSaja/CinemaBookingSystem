@@ -6,7 +6,7 @@
       <div class="row">
         <h6 class="text-white font-weight-bold ml-4">Please select favorite movies to future movies recommendation:</h6>
       </div>
-      <div class="row">
+      <div class="row mb-4">
         <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-6 padding"
         v-for="(movie, index) in movies.items"
         :key="index"
@@ -23,7 +23,7 @@
           </div>
         </div>
       </div>
-      <div class="row mt-4 mb-4 text-right underline">
+      <div class="row mt-4 mb-4 text-right underline" v-if="this.selectedList.length > 0">
          <b-button class="btn-success" v-on:click="getUserBaseRecomendation">Save favorite movies</b-button>
       </div>
     </div>
@@ -36,9 +36,6 @@ export default {
   data () {
     return {
       movies: {},
-      limitOnPage: 32,
-      currentPage: 1,
-      searchString: '',
       checked: [],
       selectedList: []
     }
@@ -48,7 +45,7 @@ export default {
   },
   methods: {
       fetchData () {
-          MovieService.getAll(this.currentPage, this.limitOnPage, this.searchString).then((response) => {
+          MovieService.getForSelectingFavorite().then((response) => {
             this.movies = response.data
 
             for (var i = 0; i < this.movies.items.length; i++) {
@@ -73,9 +70,12 @@ export default {
             moviesIds: this.selectedList
           }
 
-          MovieService.pref(response).then((response) => {
-            console.log(response)
-        })
+          if (this.selectedList.length > 0) {
+                MovieService.pref(response).then((response) => {
+                console.log(response)
+                this.$router.go()
+            })
+          }
       }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <div class="container text-white" style="margin-top: 100px">
+    <div class="container text-white custom-margin-top">
       <div class="row">
         <div class="col-md-12">
           <b-alert v-model="showAlert" variant="danger" dismissible>
@@ -19,9 +19,9 @@
         </div>
       </div>
       <div class="row mt-5">
-        <div style="width: 30%"></div>
-        <div class="screen" :style="{backgroundImage:`url(${seance.movie.backgroundImagePath})`}"></div>
-        <div style="width: 30%"></div>
+        <div class="col-0 col-sm-2 col-md-3 col-lg-3 col-xl-3"></div>
+        <div class="screen col-12 col-sm-8 col-md-6 col-lg-6 col-xl-6" :style="{backgroundImage:`url(${seance.movie.backgroundImagePath})`}"></div>
+        <div class="col-0 col-sm-2 col-md-3 col-lg-3 col-xl-3"></div>
         <table class="mx-auto">
             <!--<tr>
               <th></th>
@@ -35,23 +35,23 @@
               <!--<th class="pt-3 pr-5 font-weight-normal">Row: {{index}}</th>-->
                 <td v-for="seat in seats.items"
                 :key="seat.id" v-if='seat.cinemaSeat.row === index' class="pt-2" style="width: 30px">
-                  <svg style="width:26px;height:26px; cursor: pointer" viewBox="0 0 24 24" v-if='seat.cinemaSeat.seatType === 1 && seat.seatStatus === false'>
+                  <svg style="width:20px;height:20px; cursor: pointer" viewBox="0 0 20 20" v-if='seat.cinemaSeat.seatType === 1 && seat.seatStatus === false'>
                   <path :style="selectedIds.indexOf(seat.id) !== -1 ? { 'fill': '#FF9100' } : null" @click="onSeatSelected(seat.id)" class="can-select" fill="currentColor" d="M5 9.15V7C5 5.9 5.9 5 7 5H17C18.1 5 19 5.9 19 7V9.16C17.84 9.57 17 10.67 17 11.97V14H7V11.96C7 10.67 6.16 9.56 5 9.15M20 10C18.9 10 18 10.9 18 12V15H6V12C6 10.9 5.11 10 4 10S2 10.9 2 12V17C2 18.1 2.9 19 4 19V21H6V19H18V21H20V19C21.1 19 22 18.1 22 17V12C22 10.9 21.1 10 20 10Z" />
                   </svg>
-                  <svg style="width:26px;height:26px" viewBox="0 0 24 24" v-else-if='seat.cinemaSeat.seatType === 1 && seat.seatStatus === true'>
+                  <svg style="width:20px;height:20px" viewBox="0 0 20 20" v-else-if='seat.cinemaSeat.seatType === 1 && seat.seatStatus === true'>
                   <path :style="selectedIds.indexOf(seat.id) !== -1 ? { 'fill': '#FF9100' } : null" fill="gray" d="M5 9.15V7C5 5.9 5.9 5 7 5H17C18.1 5 19 5.9 19 7V9.16C17.84 9.57 17 10.67 17 11.97V14H7V11.96C7 10.67 6.16 9.56 5 9.15M20 10C18.9 10 18 10.9 18 12V15H6V12C6 10.9 5.11 10 4 10S2 10.9 2 12V17C2 18.1 2.9 19 4 19V21H6V19H18V21H20V19C21.1 19 22 18.1 22 17V12C22 10.9 21.1 10 20 10Z" />
                   </svg>
-                  <svg style="width:26px;height:26px" viewBox="0 0 24 24" v-else-if='seat.seatStatus === true'>
+                  <svg style="width:20px;height:20px" viewBox="0 0 20 20" v-else-if='seat.seatStatus === true'>
                   <path :style="selectedIds.indexOf(seat.id) !== -1 ? { 'fill': '#FF9100' } : null" fill="gray" d="M4,18V21H7V18H17V21H20V15H4V18M19,10H22V13H19V10M2,10H5V13H2V10M17,13H7V5A2,2 0 0,1 9,3H15A2,2 0 0,1 17,5V13Z" />
                   </svg>
-                  <svg style="width:26px;height:26px;cursor: pointer" viewBox="0 0 24 24" v-else>
+                  <svg style="width:20px;height:20px;cursor: pointer" viewBox="0 0 20 20" v-else>
                   <path :style="selectedIds.indexOf(seat.id) !== -1 ? { 'fill': '#FF9100' } : null" @click="onSeatSelected(seat.id)" class="can-select" fill="currentColor" d="M4,18V21H7V18H17V21H20V15H4V18M19,10H22V13H19V10M2,10H5V13H2V10M17,13H7V5A2,2 0 0,1 9,3H15A2,2 0 0,1 17,5V13Z" />
                   </svg>
                 </td>
             </tr>
         </table>
       </div>
-      <div class="row mt-5">
+      <div class="row mt-5 mb-3">
         <div class="col-md-6 col-6">
           <p>Choosen seats:{{selectedIds}}</p>
         </div>
@@ -174,7 +174,6 @@ min-height: 100vh;
 .screen {
   background-color: #fff;
   height: 235px;
-  width: 40%;
   margin: 15px 0;
   transform: rotateX(-45deg);
   box-shadow: 0 3px 10px rgba(255, 255, 255, 0.75);
@@ -182,6 +181,16 @@ min-height: 100vh;
   background-repeat: no-repeat;
   background-position: top center;
   background-size: cover;
+}
+
+.custom-margin-top {
+  margin-top: 100px
+}
+
+@media only screen and (min-width: 1px) and (max-width: 576px) {
+.custom-margin-top {
+  margin-top: 10px
+}
 }
 
 </style>

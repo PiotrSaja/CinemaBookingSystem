@@ -2,7 +2,7 @@
   <div>
   <b-navbar toggleable="lg" type="dark">
     <b-navbar-brand :to="{name: 'Home'}"  @click="activeElement = ''">
-        <img src="@/assets/logo.png" class="d-inline-block align-top" alt="Logo">
+        <img src="@/assets/logo.png" class="d-inline-block align-top" alt="Logo" style="width: 36px;">
         MyCinema
     </b-navbar-brand>
 
@@ -25,7 +25,7 @@
         <b-nav-item v-if="isUserLoggedIn" @click="onLogout()">Logout</b-nav-item>
         </b-navbar-nav>
       </b-navbar-nav>
-    </b-collapse>w
+    </b-collapse>
   </b-navbar>
 </div>
 </template>

@@ -8,7 +8,7 @@
         <div class="col-12 col-md-8">
         <h5 class="text-white underline font-weight-bold">All movies</h5>
         </div>
-        <div class="col-12 col-md-2">
+        <div class="col-12 col-md-2 hideRecordsNumberOnMobile">
             <b-dropdown text="Records number" class="mt-2 mr-5">
             <b-dropdown-item @click="updateLimitOnPage(8)">8</b-dropdown-item>
             <b-dropdown-item @click="updateLimitOnPage(16)">16</b-dropdown-item>
@@ -30,7 +30,7 @@
               </a>
               <span class="movie-label" v-if="movie.imdbRating >= 7.5">Mega hit!</span>
             </div>
-            <div class="movie-content">
+            <div class="movie-content" v-resize-text>
               <h3 class="title"><a href="#">{{ movie.title }}</a></h3>
             </div>
           </div>
@@ -52,10 +52,11 @@
 </template>
 
 <script>
+import VueResizeText from 'vue-resize-text'
 import MovieService from '@/api-services/movie-service'
 import MovieCarousel from '@/components/MovieCarousel'
 export default {
-  components: { MovieCarousel },
+  components: { MovieCarousel, VueResizeText },
   name: 'Movies',
   data () {
     return {
@@ -118,6 +119,16 @@ export default {
     padding-right: 10px;
     padding-left: 10px;
   }
+  .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl /deep/{
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .hideRecordsNumberOnMobile {
+    display: none
+  }
 }
 .movie-grid:hover{
   box-shadow:  0 0 30px rgba(0,0,0,0.4);
@@ -144,15 +155,19 @@ export default {
 .movie-grid .movie-content{
     background-color: #fff;
     text-align: left;
-    padding: 15px 10px;
+    padding: 5px 5px;
     border-top: 1px solid transparent;
     border-radius: 0 0 10px 10px;
     transition: all 0.3s;
+    min-height: 67px;
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center; /* align vertical */
 }
 .movie-grid:hover .movie-content{ border-top-color: #dbdbdb; }
 .movie-grid .title{
     text-align: center;
-    font-size: 15px;
+    font-size: 15.5px;
     font-weight: bold;
     text-transform: capitalize;
     margin: 0;

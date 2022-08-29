@@ -3,7 +3,7 @@
     <div class="background-image" style="background-image: url('https://wallpaperaccess.com/full/1773889.jpg')">
     </div>
     <h5 class="underline font-weight-bold mt-4">All cinemas</h5>
-    <div class="row">
+    <div class="row mb-3">
       <div class="col-md-4 col-12" v-for="cinema in cinemas.items"
                   :key="cinema.id"
                   :cinema="cinema" style="cursor: pointer;" @click="onCinemaClicked(cinema.id)">

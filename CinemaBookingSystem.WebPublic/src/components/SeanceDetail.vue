@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-      <div class="row text-white" style="margin-top: 100px">
+      <div class="row text-white custom-margin-top">
       <div class="col-xl-2 col-lg-3">
           <span class="movie-label" v-if="seance.movie.imdbRating >= 7.5">Mega hit!</span>
           <img :src="seance.movie.posterPath" class="image-wrapper">
@@ -80,5 +80,27 @@ min-height: 100vh;
     left: 50%;
     transform: translateX(-50%);
     top: -3px;
+}
+
+.custom-margin-top {
+  margin-top: 100px
+}
+
+@media only screen and (min-width: 1px) and (max-width: 576px) {
+.movie-label{
+  color: #fff;
+  background: #FF5555;
+  font-size: 13px;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 3px;
+  position: absolute;
+  left: 5%;
+  transform: translateX(-5%);
+  top: -3px;
+}
+.custom-margin-top {
+  margin-top: 10px
+}
 }
 </style>
