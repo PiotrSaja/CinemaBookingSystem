@@ -91,9 +91,9 @@
           <h5 class="text-center pb-3">Total price: {{ total_tickets_price }}$</h5>
         </div>
       </div>
-      <div class="row">
+      <div class="row mb-3">
         <div class="col-md-12 text-right">
-          <b-button v-if="!confirm" class="mt-5 right" style="background-color: #FF9100" squared type="submit">Confirm inserted data and go to booking confirmation</b-button>
+          <b-button v-if="!confirm" class="mt-5 right" style="background-color: #FF9100" squared type="submit">Next step</b-button>
         </div>
       </div>
       </form>
