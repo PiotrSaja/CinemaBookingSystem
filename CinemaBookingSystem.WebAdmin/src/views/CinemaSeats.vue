@@ -113,7 +113,7 @@ export default {
 
             CinemaSeatsService.createSeats(request).then((response) => {
                 console.log(response.data)
-                this.$router.replace({name: 'CinemaHalls', params: {id: this.cinemaHallId}})
+                this.$router.replace({name: 'CinemaHalls', params: {id: this.cinemaHall.cinema.id}})
             }).catch(error => {
                 console.log(error)
                 this.errorMessage = error.response.data.Message;
