@@ -26,7 +26,7 @@ namespace CinemaBookingSystem.Application.Cinemas.Queries.GetCinemaDetail
             profile.CreateMap<Cinema, CinemaDetailVm>()
                 .ForMember(x => x.Id, map => map.MapFrom(src => src.Id))
                 .ForMember(x => x.Name, map => map.MapFrom(src => src.Name))
-                .ForMember(x => x.TotalCinemaHalls, map => map.MapFrom(src => src.CinemaHalls.Count))
+                .ForMember(x => x.TotalCinemaHalls, map => map.MapFrom(src => src.CinemaHalls.Where(x=>x.StatusId != 0).ToList().Count))
                 .ForMember(x => x.Street, map => map.MapFrom(src => src.Address.Street))
                 .ForMember(x => x.City, map => map.MapFrom(src => src.Address.City))
                 .ForMember(x => x.State, map => map.MapFrom(src => src.Address.State))
