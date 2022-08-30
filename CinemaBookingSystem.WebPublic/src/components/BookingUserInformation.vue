@@ -17,21 +17,20 @@
         </div>
       </div>
     <div class="row text-white">
-      <div class="col-md-2">
-          <span class="movie-label" v-if="seance.movie.imdbRating >= 7.5">Mega hit!</span>
+      <div class="col-12 col-sm-12 col-md-2">
           <img :src="seance.movie.posterPath" class="image-wrapper">
       </div>
-      <div class="col-md-4">
+      <div class="col-8 col-sm-8 col-md-4">
           <h4>{{ seance.movie.title}}</h4>
           <h6>{{ seance.movie.imdbRating }}/10</h6>
           <h6><span v-for="genre in seance.movie.genres" :key="genre.id">{{ genre.name }}, </span></h6><br>
           <h6>{{ seance.movie.plot }}</h6>
         </div>
-        <div class="col-md-2"></div>
-          <div class="col-md-4">
-          <h6>Hall: {{ seance.cinemaHall.name }}</h6><br>
-          <h6>Start time: {{ seance.date.replace('T', ' : ').slice(0, -3) }}</h6><br>
-          </div>
+        <div class="col-4 col-sm-4 col-md-2"></div>
+        <div class="col-md-4">
+        <h6>Hall: {{ seance.cinemaHall.name }}</h6><br>
+        <h6>Start time: {{ seance.date.replace('T', ' : ').slice(0, -3) }}</h6><br>
+        </div>
       <hr>
       </div>
       <div class="row text-white mt-5">
@@ -73,7 +72,7 @@
                <b-form-input v-model="phone_number" type="tel" id="phone_number" placeholder="Enter your phone number" :disabled="input_disabled"></b-form-input>
             </div>
           </div>
-          <div class="row mt-2">
+          <div class="row mt-2 mb-3">
             <div class="col-md-6">
               <label for="payment_method">Payment method:</label>
             </div>
@@ -86,7 +85,7 @@
         <div class="col-md-2"></div>
         <div class="col-md-4 summary-box">
           <ul class="pt-3 pl-5">
-            <li v-for="seat in seance_seats" :key="seat.id">Row: {{ seat.cinemaSeat.seatRow }} Number: {{ seat.cinemaSeat.seatNumber }} - {{ seat.price }}$</li>
+            <li v-for="seat in seance_seats" :key="seat.id">Row: {{ seat.cinemaSeat.row }} Number: {{ seat.cinemaSeat.seatNumber }} - {{ seat.price }}$</li>
           </ul>
           <hr>
           <h5 class="text-center pb-3">Total price: {{ total_tickets_price }}$</h5>
@@ -256,7 +255,7 @@ min-height: 100vh;
 .summary-box{
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   background-color: gray;
-  border-radius: 25px;
+  border-radius: 20px;
 }
 
 .custom-margin-top {
