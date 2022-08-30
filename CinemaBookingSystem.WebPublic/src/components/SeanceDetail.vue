@@ -2,7 +2,6 @@
   <div class="page">
       <div class="row text-white custom-margin-top">
       <div class="col-xl-2 col-lg-3">
-          <span class="movie-label" v-if="seance.movie.imdbRating >= 7.5">Mega hit!</span>
           <img :src="seance.movie.posterPath" class="image-wrapper">
       </div>
       <div class="col-xl-4 col-lg-4">

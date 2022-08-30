@@ -41,7 +41,7 @@ namespace CinemaBookingSystem.Application.SeanceSeats.Commands.LockSeanceSeat
 
             var currentUserId = _userService.Id;
             var actualTime = _dateTime.Now;
-            var expirationTime = actualTime.AddMinutes(1);
+            var expirationTime = actualTime.AddMinutes(10);
 
             var lockSeatComplete = await _seatLockingService.LockSeat(request.SeanceSeatId, currentUserId, expirationTime);
 
