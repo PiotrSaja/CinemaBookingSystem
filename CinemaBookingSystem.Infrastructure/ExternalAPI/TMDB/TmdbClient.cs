@@ -13,6 +13,7 @@ namespace CinemaBookingSystem.Infrastructure.ExternalAPI.TMDB
         private readonly HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
+        #region TmdbClient()
         public TmdbClient(IHttpClientFactory factory)
         {
             _httpClient = factory.CreateClient("TmdbClient");
@@ -23,22 +24,29 @@ namespace CinemaBookingSystem.Infrastructure.ExternalAPI.TMDB
                 UpdateJsonSerializerSettings(settings);
                 return settings;
             });
-
-
         }
+        #endregion
 
+        #region JsonSerializerSettings()
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings
         {
             get { return _settings.Value; }
         }
+        #endregion
 
+        #region UpdateJsonSerializerSettings()
         partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
+        #endregion
 
+        #region BaseUrl()
         public string BaseUrl
         {
             get { return _baseUrl; }
             set { _baseUrl = value; }
         }
+        #endregion
+
+        #region GetMovieByImdbId()
 
         public async Task<string> GetMovieByImdbId(string id, CancellationToken cancellationToken)
         {
@@ -78,5 +86,6 @@ namespace CinemaBookingSystem.Infrastructure.ExternalAPI.TMDB
                 throw;
             }
         }
+        #endregion
     }
 }

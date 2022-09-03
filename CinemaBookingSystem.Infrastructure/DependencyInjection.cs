@@ -11,6 +11,7 @@ namespace CinemaBookingSystem.Infrastructure
 {
     public static class DependencyInjection
     {
+        #region AddInfrastructure()
         public static IServiceCollection AddInfrastructure(this IServiceCollection services,IConfiguration configuration)
         {
             services.AddHttpClient("OmdbClient", options =>
@@ -34,5 +35,6 @@ namespace CinemaBookingSystem.Infrastructure
 
             return services;
         }
+        #endregion
     }
 }
