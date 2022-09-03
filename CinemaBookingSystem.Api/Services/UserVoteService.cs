@@ -116,6 +116,8 @@ namespace CinemaBookingSystem.Api.Services
         }
         #endregion
 
+        #region GetMostPopularMovie()
+
         private double[] GetMostPopularMovie(double[][] moviesVotes, double[][] currentUserMovieVote)
         {
             var moviesCount = new double [moviesVotes[0].Length];
@@ -136,8 +138,12 @@ namespace CinemaBookingSystem.Api.Services
             }
             return moviesCount;
         }
+
+        #endregion
+
         //Bardzo wolna metoda - pomyslec nad zmniejszeniem ilosci zapytań
         #region GetRawDataFromDatabase()
+
         private async Task<double[][]> GetRawDataFromDatabase(List<int> moviesId, List<string> usersId, CancellationToken cancellationToken)
         {
             var voteUserList = new double[usersId.Count][];

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
+﻿using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using CinemaBookingSystem.Application.Common.Exceptions;
@@ -17,20 +13,23 @@ namespace CinemaBookingSystem.Application.CinemaHalls.Commands.CreateCinemaHall
     {
         private readonly ICinemaDbContext _context;
 
+        #region CreateCinemaHallCommandHandler()
         public CreateCinemaHallCommandHandler(ICinemaDbContext context)
         {
             _context = context;
         }
+        #endregion
+
+        #region Handle()
 
         public async Task<int> Handle(CreateCinemaHallCommand request, CancellationToken cancellationToken)
         {
-            var cinemaFk = await _context.Cinemas.Where(x => x.Id == request.CinemaId)
-                .FirstOrDefaultAsync(CancellationToken.None);
+            var cinema = await _context.Cinemas
+                .FirstOrDefaultAsync(x => x.Id == request.CinemaId, cancellationToken);
 
-            if (cinemaFk == null)
-            {
+            if (cinema == null)
                 throw new HttpStatusCodeException(HttpStatusCode.InternalServerError, "Not exists cinema in database, check your CinemaId");
-            }
+
             var cinemaHall = new CinemaHall()
             {
                 Name = request.Name,
@@ -46,5 +45,7 @@ namespace CinemaBookingSystem.Application.CinemaHalls.Commands.CreateCinemaHall
 
             return cinemaHall.Id;
         }
+
+        #endregion
     }
 }

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -19,12 +17,15 @@ namespace CinemaBookingSystem.Application.CinemaSeats.Queries.GetCinemaSeats
         private readonly ICinemaDbContext _context;
         private readonly IMapper _mapper;
 
+        #region GetCinemaSeatsQueryHandler()
         public GetCinemaSeatsQueryHandler(ICinemaDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
+        #endregion
 
+        #region Handle()
         public async Task<CinemaSeatsVm> Handle(GetCinemaSeatsQuery request, CancellationToken cancellationToken)
         {
             var cinemaSeats = await _context.CinemaSeats
@@ -34,9 +35,7 @@ namespace CinemaBookingSystem.Application.CinemaSeats.Queries.GetCinemaSeats
                 .ToListAsync(cancellationToken);
 
             if (cinemaSeats == null)
-            {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "Not exists records in database");
-            }
 
             var cinemaSeatsDto = _mapper.Map<List<CinemaSeat>, List<CinemaSeatDto>>(cinemaSeats);
 
@@ -47,5 +46,6 @@ namespace CinemaBookingSystem.Application.CinemaSeats.Queries.GetCinemaSeats
 
             return cinemaSeatsVm;
         }
+        #endregion
     }
 }

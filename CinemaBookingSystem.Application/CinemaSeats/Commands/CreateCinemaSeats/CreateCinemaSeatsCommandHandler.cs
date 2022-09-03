@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
+﻿using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using CinemaBookingSystem.Application.Common.Exceptions;
@@ -17,11 +13,14 @@ namespace CinemaBookingSystem.Application.CinemaSeats.Commands.CreateCinemaSeats
     {
         private readonly ICinemaDbContext _context;
 
+        #region CreateCinemaSeatsCommandHandler()
         public CreateCinemaSeatsCommandHandler(ICinemaDbContext context)
         {
             _context = context;
         }
+        #endregion
 
+        #region Handle()
         public async Task<bool> Handle(CreateCinemaSeatsCommand request, CancellationToken cancellationToken)
         {
             var cinemaHall = await _context.CinemaHalls.FirstOrDefaultAsync(x => x.Id == request.CinemaHallId, cancellationToken);
@@ -45,5 +44,6 @@ namespace CinemaBookingSystem.Application.CinemaSeats.Commands.CreateCinemaSeats
 
             return true;
         }
+        #endregion
     }
 }

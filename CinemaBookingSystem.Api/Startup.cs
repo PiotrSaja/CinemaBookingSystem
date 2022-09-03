@@ -31,14 +31,17 @@ namespace CinemaBookingSystem.Api
 {
     public class Startup
     {
+        #region Startup()
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        #endregion
+
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplication();
@@ -129,7 +132,6 @@ namespace CinemaBookingSystem.Api
             services.AddHangfireServer();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IRecurringJobManager recurringJobManager, IUserVoteService userVoteService)
         {
             if (env.IsDevelopment())

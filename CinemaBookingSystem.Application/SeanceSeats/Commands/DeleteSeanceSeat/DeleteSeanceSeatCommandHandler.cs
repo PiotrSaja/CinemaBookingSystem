@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
+﻿using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using CinemaBookingSystem.Application.Common.Exceptions;
@@ -16,20 +12,21 @@ namespace CinemaBookingSystem.Application.SeanceSeats.Commands.DeleteSeanceSeat
     {
         private readonly ICinemaDbContext _context;
 
+        #region DeleteSeanceSeatCommandHandler()
         public DeleteSeanceSeatCommandHandler(ICinemaDbContext context)
         {
             _context = context;
         }
+        #endregion
 
+        #region Handle()
         public async Task<Unit> Handle(DeleteSeanceSeatCommand request, CancellationToken cancellationToken)
         {
-            var seanceSeatToDelete = await _context.SeanceSeats.Where(x => x.Id == request.SeanceSeatId && x.StatusId != 0)
-                .FirstOrDefaultAsync(cancellationToken);
+            var seanceSeatToDelete = await _context.SeanceSeats
+                .FirstOrDefaultAsync(x => x.Id == request.SeanceSeatId && x.StatusId != 0, cancellationToken);
 
             if (seanceSeatToDelete == null)
-            {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "Not exists in database, check your id");
-            }
 
             _context.SeanceSeats.Remove(seanceSeatToDelete);
 
@@ -37,5 +34,6 @@ namespace CinemaBookingSystem.Application.SeanceSeats.Commands.DeleteSeanceSeat
 
             return Unit.Value;
         }
+        #endregion
     }
 }

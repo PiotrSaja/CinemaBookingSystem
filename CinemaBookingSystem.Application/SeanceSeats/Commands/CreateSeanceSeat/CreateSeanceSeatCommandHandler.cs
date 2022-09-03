@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
+﻿using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using CinemaBookingSystem.Application.Common.Exceptions;
@@ -17,26 +13,26 @@ namespace CinemaBookingSystem.Application.SeanceSeats.Commands.CreateSeanceSeat
     {
         private readonly ICinemaDbContext _context;
 
+        #region CreateSeanceSeatCommandHandler()
         public CreateSeanceSeatCommandHandler(ICinemaDbContext context)
         {
             _context = context;
         }
+        #endregion
 
+        #region Handle()
         public async Task<int> Handle(CreateSeanceSeatCommand request, CancellationToken cancellationToken)
         {
-            var seance = await _context.Seances.Where(x => x.Id == request.SeanceId)
-                .FirstOrDefaultAsync(CancellationToken.None);
-            var cinemaSeat = await _context.CinemaSeats.Where(x => x.Id == request.CinemaSeatId)
-                .FirstOrDefaultAsync(CancellationToken.None);
+            var seance = await _context.Seances
+                .FirstOrDefaultAsync(x => x.Id == request.SeanceId, cancellationToken);
+
+            var cinemaSeat = await _context.CinemaSeats
+                .FirstOrDefaultAsync(x => x.Id == request.CinemaSeatId, cancellationToken);
 
             if (seance == null)
-            {
                 throw new HttpStatusCodeException(HttpStatusCode.InternalServerError, "Not exists seance in database, check your seanceId");
-            }
             if (cinemaSeat == null)
-            {
                 throw new HttpStatusCodeException(HttpStatusCode.InternalServerError, "Not exists cinema seat in database, check your CinemaSeatId");
-            }
 
             var newSeanceSeat = new SeanceSeat()
             {
@@ -52,5 +48,6 @@ namespace CinemaBookingSystem.Application.SeanceSeats.Commands.CreateSeanceSeat
 
             return newSeanceSeat.Id;
         }
+        #endregion
     }
 }

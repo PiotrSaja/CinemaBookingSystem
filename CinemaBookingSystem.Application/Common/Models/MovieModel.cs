@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using System.Collections.Generic;
 
 namespace CinemaBookingSystem.Application.Common.Models
 {
+    #region Rating()
     public class Rating
     {
         public string Source { get; set; }
         public string Value { get; set; }
     }
+    #endregion
 
+    #region MovieModel()
     public class MovieModel
     {
         public string Title { get; set; }
@@ -41,5 +39,6 @@ namespace CinemaBookingSystem.Application.Common.Models
         public string Website { get; set; }
         public string Response { get; set; }
     }
+    #endregion
 }
 

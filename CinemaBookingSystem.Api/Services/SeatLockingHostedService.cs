@@ -18,6 +18,8 @@ namespace CinemaBookingSystem.Api.Services
         private readonly ILogger<SeatLockingHostedService> _logger;
         private readonly IServiceScopeFactory scopeFactory;
 
+        #region SeatLockingHostedService()
+
         public SeatLockingHostedService(ISeatLockingService seatLockingService, IDateTime dateTime, ILogger<SeatLockingHostedService> logger, IServiceScopeFactory factory)
         {
             _seatLockingService = seatLockingService;
@@ -25,6 +27,10 @@ namespace CinemaBookingSystem.Api.Services
             _logger = logger;
             scopeFactory = factory;
         }
+
+        #endregion
+
+        #region StartAsync()
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
@@ -43,10 +49,18 @@ namespace CinemaBookingSystem.Api.Services
             }, cancellationToken);
         }
 
+        #endregion
+
+        #region StopAsync()
+
         public Task StopAsync(CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
         }
+
+        #endregion
+
+        #region DeleteExpiredReservation()
 
         private async Task DeleteExpiredReservation(List<SeatLockingModel> lockedList)
         {
@@ -70,5 +84,7 @@ namespace CinemaBookingSystem.Api.Services
             lockedList.RemoveAll(item => item.ExpirationTime.AddMinutes(1) < actualDate);
 
         }
+
+        #endregion
     }
 }

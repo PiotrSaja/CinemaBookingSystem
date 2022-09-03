@@ -13,10 +13,10 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesPrediction
         public string Plot { get; set; }
         public ICollection<GenreDto> Genre { get; set; }
         public string PosterPath { get; set; }
-
         public DateTime ReleasedDate { get; set; }
         public string ImdbRating { get; set; }
 
+        #region Mapping()
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Movie, MovieDetailDto>()
@@ -27,5 +27,6 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesPrediction
                 .ForMember(d => d.ReleasedDate, map => map.MapFrom(src => src.Released))
                 .ForMember(d => d.ImdbRating, map => map.MapFrom(src => src.ImdbRating));
         }
+        #endregion
     }
 }

@@ -15,6 +15,8 @@ namespace CinemaBookingSystem.Api.Controllers
     [Route("api/seance-seats")]
     public class SeanceSeatsController : BaseController
     {
+        #region GetDetail()
+
         [HttpGet("detail/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -27,6 +29,10 @@ namespace CinemaBookingSystem.Api.Controllers
             return Ok(vm);
         }
 
+        #endregion
+
+        #region GetAvailableSeanceSeats()
+
         [HttpGet("{seanceId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -38,6 +44,11 @@ namespace CinemaBookingSystem.Api.Controllers
             });
             return Ok(vm);
         }
+
+        #endregion
+
+        #region CreateSeanceSeat()
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -48,6 +59,11 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(result);
         }
+
+        #endregion
+
+        #region DeleteSeanceSeat()
+
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -58,6 +74,11 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(result);
         }
+
+        #endregion
+
+        #region UpdateSeanceSeat()
+
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -74,6 +95,11 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(result);
         }
+
+        #endregion
+
+        #region LockSeanceSeat()
+
         [HttpPost("seat-lock")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -84,6 +110,11 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(result);
         }
+
+        #endregion
+
+        #region CreateCinemaSeats()
+
         [HttpPost("list")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -94,5 +125,7 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(result);
         }
+
+        #endregion
     }
 }
