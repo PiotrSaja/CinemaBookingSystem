@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace CinemaBookingSystem.Application.CinemaSeats.Commands.UpdateCinemaSeat
 {
     public class UpdateCinemaSeatCommandValidator : AbstractValidator<UpdateCinemaSeatCommand>
     {
+        #region UpdateCinemaSeatCommandValidator()
         public UpdateCinemaSeatCommandValidator()
         {
             RuleFor(x => x.SeatNumber)
@@ -20,5 +16,6 @@ namespace CinemaBookingSystem.Application.CinemaSeats.Commands.UpdateCinemaSeat
             RuleFor(x => x.CinemaHallId)
                 .NotNull();
         }
+        #endregion
     }
 }
