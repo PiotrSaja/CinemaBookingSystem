@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using CinemaBookingSystem.Application.Common.Interfaces;
-using CinemaBookingSystem.Application.Common.Interfaces.TicketBookingSystem.Application.Common.Interfaces;
 using CinemaBookingSystem.Infrastructure.ExternalAPI.OMDB;
 using CinemaBookingSystem.Infrastructure.ExternalAPI.TMDB;
 using CinemaBookingSystem.Infrastructure.Services;
