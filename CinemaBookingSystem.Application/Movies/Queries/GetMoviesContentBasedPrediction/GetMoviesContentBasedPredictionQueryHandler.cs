@@ -107,9 +107,7 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesContentBasedPr
                         continue;
                 }
                 else
-                {
                     continue;
-                }
 
                 var directorDist = CalculateSimilarity(RemoveWhitespace(movie.Director.DirectorName.ToString()),
                     userProfile.DirectorsString);
@@ -183,6 +181,7 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesContentBasedPr
             return distances[lengthA, lengthB];
         }
         #endregion
+
         #region CalculateSimilarity()
         private double CalculateSimilarity(string source, string target)
         {

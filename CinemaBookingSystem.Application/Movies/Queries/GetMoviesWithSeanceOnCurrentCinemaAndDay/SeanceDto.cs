@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using CinemaBookingSystem.Application.Common.Mappings;
 using CinemaBookingSystem.Domain.Entities;
@@ -16,6 +12,7 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesWithSeanceOnCu
         public DateTime Date { get; set; }
         public SeanceType SeanceType { get; set; }
 
+        #region Mapping()
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Seance, SeanceDto>()
@@ -23,5 +20,6 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesWithSeanceOnCu
                 .ForMember(x => x.Date, map => map.MapFrom(src => src.Date))
                 .ForMember(x => x.SeanceType, map => map.MapFrom(src => src.SeanceType));
         }
+        #endregion
     }
 }

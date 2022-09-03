@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using CinemaBookingSystem.Application.Common.Interfaces;
@@ -16,24 +12,27 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMovieDetail
         private readonly ICinemaDbContext _context;
         private IMapper _mapper;
 
+        #region GetMovieDetailQueryHandler()
         public GetMovieDetailQueryHandler(ICinemaDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
+        #endregion
 
+        #region Handle()
         public async Task<MovieDetailVm> Handle(GetMovieDetailQuery request, CancellationToken cancellationToken)
         {
-            var movie = await _context.Movies.Where(p => p.Id == request.MovieId)
+            var movie = await _context.Movies
                 .Include(x=>x.Genres)
                 .Include(x=>x.Director)
                 .Include(x=>x.Actors)
-                .FirstOrDefaultAsync(cancellationToken);
-
+                .FirstOrDefaultAsync(p => p.Id == request.MovieId, cancellationToken);
 
             var movieVm = _mapper.Map<MovieDetailVm>(movie);
 
             return movieVm;
         }
+        #endregion
     }
 }

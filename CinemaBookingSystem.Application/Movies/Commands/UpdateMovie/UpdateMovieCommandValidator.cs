@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace CinemaBookingSystem.Application.Movies.Commands.UpdateMovie
 {
     public class UpdateMovieCommandValidator : AbstractValidator<UpdateMovieCommand>
     {
+        #region UpdateMovieCommandValidator()
         public UpdateMovieCommandValidator()
         {
             RuleFor(x => x.Title)
@@ -35,5 +30,6 @@ namespace CinemaBookingSystem.Application.Movies.Commands.UpdateMovie
             RuleFor(x => x.ImdbRating)
                 .NotEmpty();
         }
+        #endregion
     }
 }
