@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
+﻿using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -18,26 +14,28 @@ namespace CinemaBookingSystem.Application.Cinemas.Queries.GetCinemaDetail
         private readonly ICinemaDbContext _context;
         private readonly IMapper _mapper;
 
+        #region GetCinemaDetailQueryHandler()
         public GetCinemaDetailQueryHandler(ICinemaDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
+        #endregion
 
+        #region Handle()
         public async Task<CinemaDetailVm> Handle(GetCinemaDetailQuery request, CancellationToken cancellationToken)
         {
-            var cinema = await _context.Cinemas.Where(x => x.Id == request.CinemaId && x.StatusId != 0)
+            var cinema = await _context.Cinemas
                 .Include(x=>x.CinemaHalls)
-                .FirstOrDefaultAsync(cancellationToken);
+                .FirstOrDefaultAsync(x => x.Id == request.CinemaId && x.StatusId != 0, cancellationToken);
 
             if (cinema == null)
-            {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "Not exists in database, check your id");
-            }
 
             var cinemaDetailVm = _mapper.Map<CinemaDetailVm>(cinema);
 
             return cinemaDetailVm;
         }
+        #endregion
     }
 }

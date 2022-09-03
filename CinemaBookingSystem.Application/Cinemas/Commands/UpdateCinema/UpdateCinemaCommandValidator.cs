@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace CinemaBookingSystem.Application.Cinemas.Commands.UpdateCinema
 {
     public class UpdateCinemaCommandValidator : AbstractValidator<UpdateCinemaCommand>
     {
+        #region UpdateCinemaCommandValidator()
         public UpdateCinemaCommandValidator()
         {
             RuleFor(x => x.Id)
@@ -35,5 +31,6 @@ namespace CinemaBookingSystem.Application.Cinemas.Commands.UpdateCinema
                 .NotEmpty()
                 .MaximumLength(16);
         }
+        #endregion
     }
 }
