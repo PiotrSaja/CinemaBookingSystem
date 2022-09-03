@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -19,17 +18,22 @@ namespace CinemaBookingSystem.Application.Bookings.Queries.GetBookings
         private readonly ICinemaDbContext _context;
         private readonly IMapper _mapper;
 
+        #region GetBookingsQueryHandler()
+
         public GetBookingsQueryHandler(ICinemaDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
+        #endregion
+
+        #region Handle()
         public async Task<BookingsVm> Handle(GetBookingsQuery request, CancellationToken cancellationToken)
         {
-            if (request.PageSize < 1 && request.PageIndex < 1) { throw new HttpStatusCodeException(HttpStatusCode.InternalServerError, "Page size and Page index can't be null or less than 1"); }
-            if (request.PageSize < 1) { throw new HttpStatusCodeException(HttpStatusCode.InternalServerError, "Page size can't be null or less than 1"); }
-            if (request.PageIndex < 1) { throw new HttpStatusCodeException(HttpStatusCode.InternalServerError, "Page index can't be null or less than 1"); }
+            if (request.PageSize < 1 && request.PageIndex < 1) { throw new HttpStatusCodeException(HttpStatusCode.UnprocessableEntity, "Page size and Page index can't be null or less than 1"); }
+            if (request.PageSize < 1) { throw new HttpStatusCodeException(HttpStatusCode.UnprocessableEntity, "Page size can't be null or less than 1"); }
+            if (request.PageIndex < 1) { throw new HttpStatusCodeException(HttpStatusCode.UnprocessableEntity, "Page index can't be null or less than 1"); }
 
             var bookings = await _context.Bookings
                 .Where(x => x.StatusId != 0)
@@ -49,9 +53,7 @@ namespace CinemaBookingSystem.Application.Bookings.Queries.GetBookings
             }
 
             if (bookings.Items.Count == 0)
-            {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "Not exists records in database");
-            }
 
             var bookingsDto = _mapper.Map<List<Booking>, List<BookingDto>>(bookings.Items.ToList());
 
@@ -66,5 +68,6 @@ namespace CinemaBookingSystem.Application.Bookings.Queries.GetBookings
 
             return bookingsVm;
         }
+        #endregion
     }
 }

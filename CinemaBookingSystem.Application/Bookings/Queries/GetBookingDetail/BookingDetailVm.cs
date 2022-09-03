@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using AutoMapper;
 using CinemaBookingSystem.Application.Common.Mappings;
 using CinemaBookingSystem.Domain.Entities;
@@ -21,6 +17,7 @@ namespace CinemaBookingSystem.Application.Bookings.Queries.GetBookingDetail
         public SeanceDto Seance { get; set; }
         public ICollection<SeanceSeatDto> SeanceSeats { get; set; }
 
+        #region Mapping()
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Booking, BookingDetailVm>()
@@ -30,5 +27,6 @@ namespace CinemaBookingSystem.Application.Bookings.Queries.GetBookingDetail
                 .ForMember(x => x.UserId, map => map.MapFrom(src => src.UserId))
                 .ForMember(x => x.PersonalName, map => map.MapFrom(src => src.PersonalName));
         }
+        #endregion
     }
 }
