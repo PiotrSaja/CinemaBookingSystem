@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 
 namespace CinemaBookingSystem.Application.Common.Exceptions
@@ -13,6 +9,7 @@ namespace CinemaBookingSystem.Application.Common.Exceptions
         public HttpStatusCode StatusCode { get; set; }
         public string ContentType { get; set; } = @"text/plain";
 
+        #region HttpStatusCodeException()
         public HttpStatusCodeException(HttpStatusCode statusCode)
         {
             this.StatusCode = statusCode;
@@ -32,5 +29,6 @@ namespace CinemaBookingSystem.Application.Common.Exceptions
         {
             this.ContentType = @"application/json";
         }
+        #endregion
     }
 }

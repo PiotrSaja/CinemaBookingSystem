@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace CinemaBookingSystem.Application.Common.Exceptions
 {
@@ -12,9 +7,11 @@ namespace CinemaBookingSystem.Application.Common.Exceptions
         public int StatusCode { get; set; }
         public string Message { get; set; }
 
+        #region ToString()
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this);
         }
+        #endregion
     }
 }

@@ -1,20 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 
 namespace CinemaBookingSystem.Application.Common.Mappings
 {
     public class MappingProfile : Profile
     {
+        #region MappingProfile()
         public MappingProfile()
         {
             ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
         }
+        #endregion
 
+        #region ApplyMappingsFromAssembly()
         private void ApplyMappingsFromAssembly(Assembly assembly)
         {
             var types = assembly.GetExportedTypes().Where(p =>
@@ -29,5 +29,6 @@ namespace CinemaBookingSystem.Application.Common.Mappings
                 methodInfo?.Invoke(instance, new object[] { this });
             }
         }
+        #endregion
     }
 }
