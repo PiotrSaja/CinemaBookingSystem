@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using CinemaBookingSystem.Application.Common.Mappings;
 using CinemaBookingSystem.Domain.Entities;
 
@@ -18,6 +13,7 @@ namespace CinemaBookingSystem.Application.CinemaHalls.Queries.GetCinemaHallsInCi
         public int NumberOfRows { get; set; }
         public bool IsSeatsCreated { get; set; }
 
+        #region Mapping()
         public void Mapping(Profile profile)
         {
             profile.CreateMap<CinemaHall, CinemaHallDto>()
@@ -28,5 +24,6 @@ namespace CinemaBookingSystem.Application.CinemaHalls.Queries.GetCinemaHallsInCi
                 .ForMember(x => x.NumberOfRows, map => map.MapFrom(src => src.NumberOfRows))
                 .ForMember(x => x.IsSeatsCreated, map => map.MapFrom(src => src.CinemaSeats.Count > 0));
         }
+        #endregion
     }
 }
