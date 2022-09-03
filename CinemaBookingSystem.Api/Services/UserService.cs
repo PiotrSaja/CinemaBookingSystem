@@ -12,6 +12,7 @@ namespace CinemaBookingSystem.Api.Services
         public string Role { get; set; }
         public bool IsAuthenticated { get; set; }
 
+        #region UserService()
         public UserService(IHttpContextAccessor httpContextAccessor)
         {
             var id = httpContextAccessor.HttpContext?.User?.FindFirstValue(JwtClaimTypes.Id);
@@ -24,5 +25,6 @@ namespace CinemaBookingSystem.Api.Services
 
             IsAuthenticated = !string.IsNullOrEmpty(email);
         }
+        #endregion
     }
 }

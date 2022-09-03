@@ -15,12 +15,17 @@ namespace CinemaBookingSystem.Api.Services
         private readonly IServiceScopeFactory scopeFactory;
         public List<SeatLockingModel> LockedList { get; set; }
 
+        #region SeatLockingService()
+
         public SeatLockingService(IServiceScopeFactory scopeFactory)
         {
             this.scopeFactory = scopeFactory;
             LockedList = new List<SeatLockingModel>();
         }
 
+        #endregion
+
+        #region LockSeat()
         public async Task<bool> LockSeat(int seanceSeatId, string userId, DateTime expirationTime)
         {
             var lockedSeat = LockedList.FirstOrDefault(x => x.SeanceSeatId == seanceSeatId);
@@ -59,5 +64,6 @@ namespace CinemaBookingSystem.Api.Services
 
             return false;
         }
+        #endregion
     }
 }

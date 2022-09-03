@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CinemaBookingSystem.Common.Mailer.Models.Emails
+﻿namespace CinemaBookingSystem.Common.Mailer.Models.Emails
 {
     public class BookingMail
     {

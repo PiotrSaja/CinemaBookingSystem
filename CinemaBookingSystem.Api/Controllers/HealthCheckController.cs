@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
-using CinemaBookingSystem.Application.Common.Interfaces;
-using CinemaBookingSystem.Application.Common.Models;
-using CinemaBookingSystem.Common.Mailer.Abstractions;
-using CinemaBookingSystem.Common.Mailer.Models;
-using CinemaBookingSystem.Common.Mailer.Models.Emails;
-using CinemaBookingSystem.Infrastructure.ExternalAPI.OMDB;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +8,8 @@ namespace CinemaBookingSystem.Api.Controllers
     [ApiController]
     public class HealthCheckController : ControllerBase
     {
+        #region GetAsync()
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -25,5 +17,7 @@ namespace CinemaBookingSystem.Api.Controllers
         {
             return "Api healthy";
         }
+
+        #endregion
     }
 }

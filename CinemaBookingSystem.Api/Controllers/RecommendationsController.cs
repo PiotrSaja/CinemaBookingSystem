@@ -10,8 +10,12 @@ namespace CinemaBookingSystem.Api.Controllers
     [Authorize(Roles = "Administrator, User")]
     public class RecommendationsController : BaseController
     {
+        #region GetRecommendationType()
+
         [HttpGet("type")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetRecommendationType() => Ok(await Mediator.Send(new WhichRecommendationQuery()));
+
+        #endregion 
     }
 }

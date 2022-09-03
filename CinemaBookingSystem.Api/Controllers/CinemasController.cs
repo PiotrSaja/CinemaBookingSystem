@@ -4,7 +4,6 @@ using CinemaBookingSystem.Application.Cinemas.Commands.DeleteCinema;
 using CinemaBookingSystem.Application.Cinemas.Commands.UpdateCinema;
 using CinemaBookingSystem.Application.Cinemas.Queries.GetCinemaDetail;
 using CinemaBookingSystem.Application.Cinemas.Queries.GetCinemas;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +13,8 @@ namespace CinemaBookingSystem.Api.Controllers
     [Route("api/cinemas")]
     public class CinemasController : BaseController
     {
+        #region GetDetails()
+
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -23,6 +24,11 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(vm);
         }
+
+        #endregion
+
+        #region GetCinemas()
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -31,6 +37,10 @@ namespace CinemaBookingSystem.Api.Controllers
             var vm = await Mediator.Send(new GetCinemasQuery());
             return Ok(vm);
         }
+
+        #endregion
+
+        #region CreateCinema()
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -41,6 +51,11 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(result);
         }
+
+        #endregion
+
+        #region DeleteCinema()
+
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -50,6 +65,11 @@ namespace CinemaBookingSystem.Api.Controllers
             var result = await Mediator.Send(new DeleteCinemaCommand() { CinemaId = id });
             return Ok(result);
         }
+
+        #endregion
+
+        #region UpdateCinema()
+
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -64,5 +84,7 @@ namespace CinemaBookingSystem.Api.Controllers
             }
             return Ok(await Mediator.Send(cinema));
         }
+
+        #endregion 
     }
 }

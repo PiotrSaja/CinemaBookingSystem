@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using CinemaBookingSystem.Application.Common.Interfaces;
 using CinemaBookingSystem.Application.Movies.Commands.AddMovieVote;
 using CinemaBookingSystem.Application.Movies.Commands.AddPreferencesMovie;
 using CinemaBookingSystem.Application.Movies.Commands.CreateMovieFromExternalApi;
@@ -30,6 +29,8 @@ namespace CinemaBookingSystem.Api.Controllers
         }
         #endregion
 
+        #region GetDetails()
+
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -39,6 +40,11 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(vm);
         }
+
+        #endregion
+
+        #region GetMovies()
+
         [HttpGet(Name = "GetMovies")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -52,6 +58,11 @@ namespace CinemaBookingSystem.Api.Controllers
             });
             return Ok(vm);
         }
+
+        #endregion
+
+        #region GetMoviesWithShowsInCinemaOnGivenDay()
+
         [HttpGet("{id}/{date}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -64,6 +75,11 @@ namespace CinemaBookingSystem.Api.Controllers
             });
             return Ok(vm);
         }
+
+        #endregion
+
+        #region CreateMovieFromExternalApi()
+
         [HttpPost("omdb")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -74,6 +90,11 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(result);
         }
+
+        #endregion
+
+        #region DeleteMovie()
+
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -83,6 +104,11 @@ namespace CinemaBookingSystem.Api.Controllers
             var result = await Mediator.Send(new DeleteMovieCommand() { MovieId = id });
             return Ok(result);
         }
+
+        #endregion
+
+        #region UpdateMovie()
+
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -97,6 +123,11 @@ namespace CinemaBookingSystem.Api.Controllers
             }
             return Ok(await Mediator.Send(movie));
         }
+
+        #endregion
+
+        #region GetMoviesDaysToPremiere()
+
         [HttpGet("soon/{daysToPremiere}", Name = "GetMoviesDaysToPremiere")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -110,6 +141,11 @@ namespace CinemaBookingSystem.Api.Controllers
             });
             return Ok(vm);
         }
+
+        #endregion
+
+        #region AddVote()
+
         [HttpPost("vote")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -121,6 +157,11 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(result);
         }
+
+        #endregion
+
+        #region AddPrefMovie()
+
         [HttpPost("pref")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -133,6 +174,10 @@ namespace CinemaBookingSystem.Api.Controllers
             return Ok(result);
         }
 
+        #endregion
+
+        #region GetMoviesPredictions()
+
         [HttpGet("predictions")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -144,6 +189,12 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(result);
         }
+
+        #endregion
+
+        #region GetUserMovieVote()
+
+
         [HttpGet("vote/{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -154,6 +205,11 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(vm);
         }
+
+        #endregion
+
+        #region GetPrefMovies()
+
         [HttpGet("pref")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -165,6 +221,11 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(result);
         }
+
+        #endregion
+
+        #region GetMoviesContentBasedPredictions()
+
         [HttpGet("content-based/predictions")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -176,6 +237,11 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(result);
         }
+
+        #endregion
+
+        #region GetMoviesForSelectingFavorite()
+
         [HttpGet("selecting-favorite")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -189,5 +255,7 @@ namespace CinemaBookingSystem.Api.Controllers
             });
             return Ok(vm);
         }
+
+        #endregion
     }
 }
