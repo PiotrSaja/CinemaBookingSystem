@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -19,12 +17,15 @@ namespace CinemaBookingSystem.Application.SeanceSeats.Queries.GetSeanceSeatsForS
         private readonly ICinemaDbContext _context;
         private readonly IMapper _mapper;
 
+        #region GetSeanceSeatsForSeanceQueryHandler()
         public GetSeanceSeatsForSeanceQueryHandler(ICinemaDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
+        #endregion
 
+        #region Handle()
         public async Task<SeanceSeatsVm> Handle(GetSeanceSeatsForSeanceQuery request, CancellationToken cancellationToken)
         {
             var seanceSeats = await _context.SeanceSeats
@@ -34,9 +35,8 @@ namespace CinemaBookingSystem.Application.SeanceSeats.Queries.GetSeanceSeatsForS
                 .ToListAsync(cancellationToken);
 
             if (seanceSeats == null)
-            {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "Not exists in database or seanceId is incorrect");
-            }
+
             var seanceSeatsDto = _mapper.Map<List<SeanceSeat>, List<SeanceSeatDto>>(seanceSeats);
 
             var seanceSeatsVm = new SeanceSeatsVm()
@@ -46,5 +46,6 @@ namespace CinemaBookingSystem.Application.SeanceSeats.Queries.GetSeanceSeatsForS
 
             return seanceSeatsVm;
         }
+        #endregion
     }
 }
