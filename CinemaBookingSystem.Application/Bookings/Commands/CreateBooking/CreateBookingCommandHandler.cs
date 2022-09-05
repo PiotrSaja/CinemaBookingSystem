@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using CinemaBookingSystem.Application.Common.Exceptions;
@@ -21,41 +19,42 @@ namespace CinemaBookingSystem.Application.Bookings.Commands.CreateBooking
         private readonly IUserService _userService;
         private readonly ISeatLockingService _seatLockingService;
 
+        #region CreateBookingCommandHandler()
         public CreateBookingCommandHandler(ICinemaDbContext context, IUserService userService, ISeatLockingService seatLockingService)
         {
             _context = context;
             _userService = userService;
             _seatLockingService = seatLockingService;
         }
+        #endregion
 
+        #region Handle()
         public async Task<Result> Handle(CreateBookingCommand request, CancellationToken cancellationToken)
         {
-            var seance = await _context.Seances.Where(x => x.Id == request.SeanceId).FirstOrDefaultAsync(cancellationToken);
+            var seance = await _context.Seances
+                .Where(x => x.Id == request.SeanceId)
+                .FirstOrDefaultAsync(cancellationToken);
 
             if (seance == null)
-            {
                 throw new HttpStatusCodeException(HttpStatusCode.InternalServerError, "Not exists seance in database, check your seanceId");
-            }
 
-            var seanceSeats = _context.SeanceSeats.Where(x => request.SeanceSeatIds.Contains(x.Id)).ToList();
+            var seanceSeats = await _context.SeanceSeats
+                .Where(x => request.SeanceSeatIds.Contains(x.Id))
+                .ToListAsync(cancellationToken);
 
             if (seanceSeats.Count == 0)
-            {
                 throw new HttpStatusCodeException(HttpStatusCode.InternalServerError, "Seance seat ids can't be empty");
-            }
-            else
+
+            var blockedSeatsList = _seatLockingService.LockedList;
+            foreach (var itemSeat in seanceSeats)
             {
-                var blockedSeatsList = _seatLockingService.LockedList;
-                foreach (var itemSeat in seanceSeats)
+                var existsInLockingService = blockedSeatsList.Exists(x => x.SeanceSeatId == itemSeat.Id && x.UserId == _userService.Id);
+                if (!existsInLockingService)
                 {
-                    var existsInLockingService = blockedSeatsList.Exists(x => x.SeanceSeatId == itemSeat.Id && x.UserId == _userService.Id);
-                    if (!existsInLockingService)
-                    {
-                        throw new HttpStatusCodeException(HttpStatusCode.InternalServerError, "Seance seat not locked in service");
-                    }
+                    throw new HttpStatusCodeException(HttpStatusCode.InternalServerError, "Seance seat not locked in service");
                 }
             }
-
+            
             ChangeStatusInShowSeat(seanceSeats, cancellationToken);
 
             var booking = new Booking()
@@ -93,7 +92,9 @@ namespace CinemaBookingSystem.Application.Bookings.Commands.CreateBooking
                 Email = _userService.Email
             };
         }
+        #endregion
 
+        #region ChangeStatusInShowSeat()
         private async void ChangeStatusInShowSeat(List<SeanceSeat> items, CancellationToken cancellationToken)
         {
             foreach (var item in items)
@@ -102,7 +103,9 @@ namespace CinemaBookingSystem.Application.Bookings.Commands.CreateBooking
                 _context.SeanceSeats.Update(item);
             }
         }
+        #endregion
 
+        #region Result()
         public class Result
         {
             public string BookingId { get; set; }
@@ -112,5 +115,6 @@ namespace CinemaBookingSystem.Application.Bookings.Commands.CreateBooking
             public string Date { get; set; }
             public string Email { get; set; }
         }
+        #endregion
     }
 }

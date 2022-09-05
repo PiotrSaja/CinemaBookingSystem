@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using CinemaBookingSystem.Application.Common.Mappings;
-using CinemaBookingSystem.Application.Seances.Queries.GetSeanceDetail;
 using CinemaBookingSystem.Domain.Entities;
 using CinemaBookingSystem.Domain.Enums;
 
@@ -20,6 +15,7 @@ namespace CinemaBookingSystem.Application.Seances.Queries.GetSeances
         public MovieDto Movie { get; set; }
         public bool IsCompleted { get; set; }
 
+        #region Mapping()
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Seance, SeanceDto>()
@@ -28,5 +24,6 @@ namespace CinemaBookingSystem.Application.Seances.Queries.GetSeances
                 .ForMember(x => x.SeanceType, map => map.MapFrom(src => src.SeanceType))
                 .ForMember(x => x.IsCompleted, map => map.MapFrom(src => src.SeanceSeats.Count > 0));
         }
+        #endregion
     }
 }

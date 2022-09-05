@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace CinemaBookingSystem.Application.SeanceSeats.Commands.CreateSeanceSeat
 {
     public class CreateSeanceSeatCommandValidator : AbstractValidator<CreateSeanceSeatCommand>
     {
+        #region CreateSeanceSeatCommandValidator()
         public CreateSeanceSeatCommandValidator()
         {
             RuleFor(x => x.SeanceId)
@@ -19,5 +15,6 @@ namespace CinemaBookingSystem.Application.SeanceSeats.Commands.CreateSeanceSeat
             RuleFor(x => x.CinemaSeatId)
                 .NotNull();
         }
+        #endregion
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using CinemaBookingSystem.Application.Common.Mappings;
 using CinemaBookingSystem.Domain.Entities;
 
@@ -15,6 +10,8 @@ namespace CinemaBookingSystem.Application.Bookings.Queries.GetUserBookingDetail
         public string Title { get; set; }
         public string PosterPath { get; set; }
         public string BackgroundImagePath { get; set; }
+
+        #region Mapping()
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Movie, MovieDto>()
@@ -23,5 +20,6 @@ namespace CinemaBookingSystem.Application.Bookings.Queries.GetUserBookingDetail
                 .ForMember(d => d.PosterPath, map => map.MapFrom(src => src.PosterPath))
                 .ForMember(d => d.BackgroundImagePath, map => map.MapFrom(src => src.BackgroundImagePath));
         }
+        #endregion
     }
 }

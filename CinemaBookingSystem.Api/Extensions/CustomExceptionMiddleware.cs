@@ -10,12 +10,18 @@ namespace CinemaBookingSystem.Api.Extensions
     {
         private readonly RequestDelegate next;
 
+        #region CustomExceptionMiddleware()
+
         public CustomExceptionMiddleware(RequestDelegate next)
         {
             this.next = next;
         }
 
-        public async Task Invoke(HttpContext context /* other dependencies */)
+        #endregion
+
+        #region Invoke()
+
+        public async Task Invoke(HttpContext context)
         {
             try
             {
@@ -30,6 +36,10 @@ namespace CinemaBookingSystem.Api.Extensions
                 await HandleExceptionAsync(context, exceptionObj);
             }
         }
+
+        #endregion
+
+        #region HandleExceptionAsync()
 
         private Task HandleExceptionAsync(HttpContext context, HttpStatusCodeException exception)
         {
@@ -56,6 +66,10 @@ namespace CinemaBookingSystem.Api.Extensions
             return context.Response.WriteAsync(result);
         }
 
+        #endregion
+
+        #region HandleExceptionAsync()
+
         private Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             string result = new ErrorDetails()
@@ -66,5 +80,7 @@ namespace CinemaBookingSystem.Api.Extensions
             context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             return context.Response.WriteAsync(result);
         }
+
+        #endregion 
     }
 }

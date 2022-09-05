@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using CinemaBookingSystem.Application.Common.Exceptions;
@@ -15,10 +13,14 @@ namespace CinemaBookingSystem.Application.Common.Behaviours
     {
         private readonly IEnumerable<IValidator<TRequest>> _validators;
 
+        #region ValidationBehaviour()
         public ValidationBehaviour(IEnumerable<IValidator<TRequest>> validators)
         {
             _validators = validators;
         }
+        #endregion
+
+        #region Handle()
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
             if (_validators.Any())
@@ -44,5 +46,6 @@ namespace CinemaBookingSystem.Application.Common.Behaviours
 
             return await next();
         }
+        #endregion
     }
 }

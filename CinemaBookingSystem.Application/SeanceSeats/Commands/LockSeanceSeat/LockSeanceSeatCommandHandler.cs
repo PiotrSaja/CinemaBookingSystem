@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
+﻿using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using CinemaBookingSystem.Application.Common.Exceptions;
@@ -19,6 +15,7 @@ namespace CinemaBookingSystem.Application.SeanceSeats.Commands.LockSeanceSeat
         private readonly IDateTime _dateTime;
         private readonly ICinemaDbContext _context;
 
+        #region LockSeanceSeatCommandHandler()
         public LockSeanceSeatCommandHandler(IUserService userService, ISeatLockingService seatLockingService,
             IDateTime dateTime, ICinemaDbContext context)
         {
@@ -27,25 +24,25 @@ namespace CinemaBookingSystem.Application.SeanceSeats.Commands.LockSeanceSeat
             _dateTime = dateTime;
             _context = context;
         }
+        #endregion
 
+        #region Handle()
         public async Task<bool> Handle(LockSeanceSeatCommand request, CancellationToken cancellationToken)
         {
             var seanceSeat = await _context.SeanceSeats
-                .Where(x => x.Id == request.SeanceSeatId && x.StatusId != 0)
-                .FirstOrDefaultAsync(cancellationToken);
+                .FirstOrDefaultAsync(x => x.Id == request.SeanceSeatId && x.StatusId != 0, cancellationToken);
 
             if (seanceSeat == null)
-            {
                 throw new HttpStatusCodeException(HttpStatusCode.InternalServerError, "Incorrect SeanceSeatId");
-            }
 
             var currentUserId = _userService.Id;
             var actualTime = _dateTime.Now;
-            var expirationTime = actualTime.AddMinutes(1);
+            var expirationTime = actualTime.AddMinutes(10);
 
             var lockSeatComplete = await _seatLockingService.LockSeat(request.SeanceSeatId, currentUserId, expirationTime);
 
             return lockSeatComplete;
         }
+        #endregion
     }
 }

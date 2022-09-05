@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using CinemaBookingSystem.Domain.Common;
 
 namespace CinemaBookingSystem.Domain.ValueObjects
@@ -15,6 +11,7 @@ namespace CinemaBookingSystem.Domain.ValueObjects
         public string Country { get; set; }
         public string ZipCode { get; set; }
 
+        #region GetEqualityComponents()
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return Street;
@@ -23,10 +20,13 @@ namespace CinemaBookingSystem.Domain.ValueObjects
             yield return Country;
             yield return ZipCode;
         }
+        #endregion
 
+        #region ToString()
         public override string ToString()
         {
             return $"{Street}, {ZipCode} {City},\n{State}, {Country}";
         }
+        #endregion
     }
 }

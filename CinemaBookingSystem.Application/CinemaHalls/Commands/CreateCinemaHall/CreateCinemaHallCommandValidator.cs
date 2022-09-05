@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace CinemaBookingSystem.Application.CinemaHalls.Commands.CreateCinemaHall
 {
     public class CreateCinemaHallCommandValidator : AbstractValidator<CreateCinemaHallCommand>
     {
+        #region CreateCinemaHallCommandValidator()
         public CreateCinemaHallCommandValidator()
         {
             RuleFor(x => x.Name)
@@ -24,5 +20,6 @@ namespace CinemaBookingSystem.Application.CinemaHalls.Commands.CreateCinemaHall
             RuleFor(x => x.NumberOfRows)
                 .NotNull();
         }
+        #endregion
     }
 }

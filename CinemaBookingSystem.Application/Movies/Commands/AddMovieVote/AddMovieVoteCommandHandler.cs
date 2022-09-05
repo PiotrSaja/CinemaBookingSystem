@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
+﻿using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using CinemaBookingSystem.Application.Common.Exceptions;
@@ -18,21 +14,22 @@ namespace CinemaBookingSystem.Application.Movies.Commands.AddMovieVote
         private readonly ICinemaDbContext _context;
         private readonly IUserService _userService;
 
+        #region AddMovieVoteCommandHandler()
         public AddMovieVoteCommandHandler(ICinemaDbContext context, IUserService userService)
         {
             _context = context;
             _userService = userService;
         }
+        #endregion
 
+        #region Handle()
         public async Task<int> Handle(AddMovieVoteCommand request, CancellationToken cancellationToken)
         {
-            var movie = await _context.Movies.Where(x => x.Id == request.MovieId)
-                .FirstOrDefaultAsync(cancellationToken);
+            var movie = await _context.Movies
+                .FirstOrDefaultAsync(x => x.Id == request.MovieId, cancellationToken);
 
             if (movie == null)
-            {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "Not exists in database, check your id");
-            }
 
             var userMovie =
                 await _context.UserMovieVotes.FirstOrDefaultAsync(x =>
@@ -49,9 +46,11 @@ namespace CinemaBookingSystem.Application.Movies.Commands.AddMovieVote
             };
 
             await _context.UserMovieVotes.AddAsync(userMovieVote, cancellationToken);
+
             await _context.SaveChangesAsync(cancellationToken);
 
             return userMovieVote.Id;
         }
+        #endregion
     }
 }

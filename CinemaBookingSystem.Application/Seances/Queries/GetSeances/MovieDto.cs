@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using CinemaBookingSystem.Application.Common.Mappings;
 using CinemaBookingSystem.Domain.Entities;
 
@@ -17,6 +12,7 @@ namespace CinemaBookingSystem.Application.Seances.Queries.GetSeances
         public string Language { get; set; }
         public string Country { get; set; }
 
+        #region Mapping()
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Movie, MovieDto>()
@@ -26,5 +22,6 @@ namespace CinemaBookingSystem.Application.Seances.Queries.GetSeances
                 .ForMember(d => d.Language, map => map.MapFrom(src => src.Language))
                 .ForMember(d => d.Country, map => map.MapFrom(src => src.Country));
         }
+        #endregion
     }
 }

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +10,7 @@ namespace CinemaBookingSystem.Application.Common.Extensions
 {
     public static class PageExtension
     {
+        #region PaginateAsync()
         public static async Task<PagedModel<TModel>> PaginateAsync<TModel>(
             this IQueryable<TModel> query,
             int page,
@@ -39,6 +39,9 @@ namespace CinemaBookingSystem.Application.Common.Extensions
 
             return paged;
         }
+        #endregion
+
+        #region Paginate()
         public static PagedModel<TModel> Paginate<TModel>(
             this IEnumerable<TModel> query,
             int page,
@@ -67,5 +70,6 @@ namespace CinemaBookingSystem.Application.Common.Extensions
 
             return paged;
         }
+        #endregion
     }
 }

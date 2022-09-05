@@ -14,6 +14,8 @@ namespace CinemaBookingSystem.Api.Controllers
     [Route("api/cinema-seats")]
     public class CinemaSeatsController : BaseController
     {
+        #region GetDetails()
+
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -24,6 +26,11 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(vm);
         }
+
+        #endregion
+
+        #region GetCinemaSeats()
+
         [HttpGet("cinema-hall/{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -33,6 +40,11 @@ namespace CinemaBookingSystem.Api.Controllers
             var vm = await Mediator.Send(new GetCinemaSeatsQuery() {CinemaHallId = id});
             return Ok(vm);
         }
+
+        #endregion
+
+        #region CreateCinemaSeat()
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -43,6 +55,11 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(result);
         }
+
+        #endregion
+
+        #region DeleteCinemaSeat()
+
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -53,6 +70,11 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(result);
         }
+
+        #endregion
+
+        #region UpdateCinemaSeat()
+
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -67,6 +89,11 @@ namespace CinemaBookingSystem.Api.Controllers
             }
             return Ok(await Mediator.Send(cinemaSeat));
         }
+
+        #endregion
+
+        #region CreateCinemaSeats()
+
         [HttpPost("list")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -77,5 +104,7 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(result);
         }
+
+        #endregion 
     }
 }

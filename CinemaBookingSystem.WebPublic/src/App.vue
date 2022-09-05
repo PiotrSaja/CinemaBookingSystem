@@ -8,7 +8,9 @@
         </b-row>
         <b-row>
           <b-col>
-            <router-view/>
+            <transition name="fade">
+              <router-view/>
+            </transition>
           </b-col>
         </b-row>
     </b-container>
@@ -30,4 +32,13 @@ export default {
 
 <style scoped>
 [v-cloak] {display: none}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
 </style>

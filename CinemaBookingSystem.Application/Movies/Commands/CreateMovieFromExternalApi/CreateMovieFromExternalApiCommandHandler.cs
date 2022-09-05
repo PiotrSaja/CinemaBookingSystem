@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using CinemaBookingSystem.Application.Common.Exceptions;
 using CinemaBookingSystem.Application.Common.Interfaces;
-using CinemaBookingSystem.Application.Common.Interfaces.TicketBookingSystem.Application.Common.Interfaces;
 using CinemaBookingSystem.Application.Common.Models;
 using CinemaBookingSystem.Domain.Entities;
 using CinemaBookingSystem.Domain.ValueObjects;
@@ -23,37 +21,35 @@ namespace CinemaBookingSystem.Application.Movies.Commands.CreateMovieFromExterna
         private readonly IOmdbClient _omdbClient;
         private readonly ITmdbClient _tmdbClient;
 
+        #region CreateMovieFromExternalApiCommandHandler()
         public CreateMovieFromExternalApiCommandHandler(ICinemaDbContext context, IOmdbClient omdbClient, ITmdbClient tmdbClient)
         {
             _context = context;
             _omdbClient = omdbClient;
             _tmdbClient = tmdbClient;
         }
+        #endregion
 
+        #region Handle()
         public async Task<int> Handle(CreateMovieFromExternalApiCommand request, CancellationToken cancellationToken)
         {
             var importedMovieJson = await _omdbClient.GetMovieById(request.ImdbId, cancellationToken);
 
-            
-
             var movieFromApi = JsonSerializer.Deserialize<MovieModel>(importedMovieJson);
 
             if (movieFromApi.Title == null)
-            {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "Not exists in omdb database.");
-            }
 
-            var movieFromTmdb = await _tmdbClient.GetMovieByImdbId(request.ImdbId, CancellationToken.None);
+            var movieFromTmdb = await _tmdbClient.GetMovieByImdbId(request.ImdbId, cancellationToken);
 
             MovieTmdbJson movieTmdbJson =
                 JsonSerializer.Deserialize<MovieTmdbJson>(movieFromTmdb);
 
-            //
             string[] releasedDate = movieFromApi.Released.Split(" ");
             var releasedDay = Int32.Parse(releasedDate[0]);
             var releasedMonth = DateTime.ParseExact(releasedDate[1], "MMM", CultureInfo.InvariantCulture).Month;
             var releasedYear = Int32.Parse(releasedDate[2]);
-            //
+            
             var genres = movieFromApi.Genre.Split(", ").ToList();
             var genresList = new List<Genre>();
             foreach (var item in genres)
@@ -74,7 +70,7 @@ namespace CinemaBookingSystem.Application.Movies.Commands.CreateMovieFromExterna
                     genresList.Add(newGenre);
                 }
             }
-            //
+            
             var actors = movieFromApi.Actors.Split(", ").ToList();
             var actorsList = new List<Actor>();
             foreach (var item in actors)
@@ -129,7 +125,6 @@ namespace CinemaBookingSystem.Application.Movies.Commands.CreateMovieFromExterna
                 };
             }
             
-
             if (movieFromApi.Runtime.Equals("N/A"))
                 movieFromApi.Runtime = "0";
 
@@ -154,5 +149,6 @@ namespace CinemaBookingSystem.Application.Movies.Commands.CreateMovieFromExterna
 
             return movie.Id;
         }
+        #endregion
     }
 }

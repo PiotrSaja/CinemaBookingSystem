@@ -12,6 +12,7 @@ namespace CinemaBookingSystem.Persistence
 {
     public static class DependencyInjection
     {
+        #region AddPersistence()
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<CinemaDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("CinemaDatabase")));
@@ -19,5 +20,6 @@ namespace CinemaBookingSystem.Persistence
             services.AddScoped<ICinemaDbContext, CinemaDbContext>();
             return services;
         }
+        #endregion
     }
 }

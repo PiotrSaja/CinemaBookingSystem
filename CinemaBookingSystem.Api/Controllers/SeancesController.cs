@@ -16,6 +16,8 @@ namespace CinemaBookingSystem.Api.Controllers
     [Route("api/seances")]
     public class SeancesController : BaseController
     {
+        #region GetDetails()
+
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -25,6 +27,11 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(vm);
         }
+
+        #endregion
+
+        #region GetSeances()
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -39,6 +46,11 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(vm);
         }
+
+        #endregion
+
+        #region CreateSeance()
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -49,6 +61,11 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(result);
         }
+
+        #endregion
+
+        #region DeleteSeance()
+
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -59,6 +76,11 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(result);
         }
+
+        #endregion
+
+        #region UpdateSeance()
+
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -73,6 +95,11 @@ namespace CinemaBookingSystem.Api.Controllers
             }
             return Ok(await Mediator.Send(seance));
         }
+
+        #endregion
+
+        #region GetShowsOfCurrentMovieOnGivenCinemaAndDate()
+
         [HttpGet("{movieId}/{cinemaId}/{date}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -86,5 +113,7 @@ namespace CinemaBookingSystem.Api.Controllers
             });
             return Ok(vm);
         }
+
+        #endregion 
     }
 }

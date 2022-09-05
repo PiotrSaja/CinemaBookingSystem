@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CinemaBookingSystem.Domain.Enums;
+﻿using System.Collections.Generic;
 using MediatR;
 
 namespace CinemaBookingSystem.Application.SeanceSeats.Commands.CreateSeanceSeats
@@ -14,9 +9,11 @@ namespace CinemaBookingSystem.Application.SeanceSeats.Commands.CreateSeanceSeats
         public List<SeanceSeatsModel> SeanceSeats { get; set; }
     }
 
+    #region SeanceSeatsModel()
     public class SeanceSeatsModel
     {
         public double Price { get; set; }
         public int CinemaSeatId { get; set; }
     }
+    #endregion
 }

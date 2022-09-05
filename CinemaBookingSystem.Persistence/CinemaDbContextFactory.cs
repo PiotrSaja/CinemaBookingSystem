@@ -9,9 +9,11 @@ namespace CinemaBookingSystem.Persistence
 {
     public class CinemaDbContextFactory : DbContextFactoryBase<CinemaDbContext>
     {
+        #region CreateNewInstance()
         protected override CinemaDbContext CreateNewInstance(DbContextOptions<CinemaDbContext> options)
         {
             return new CinemaDbContext(options);
         }
+        #endregion
     }
 }
