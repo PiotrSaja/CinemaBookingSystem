@@ -1,27 +1,30 @@
-﻿using System;
+﻿using CinemaBookingSystem.Application.Common.Interfaces;
+using CinemaBookingSystem.Application.Common.Models;
+using CinemaBookingSystem.Domain.Entities;
+using CinemaBookingSystem.Persistence;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using CinemaBookingSystem.Application.Common.Interfaces;
-using CinemaBookingSystem.Application.Common.Models;
-using CinemaBookingSystem.Domain.Entities;
-using Hangfire.Server;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace CinemaBookingSystem.Api.Services
 {
     public class UserVoteService : IUserVoteService
     {
         private readonly int NUM_CLASTERS = 3;
-        private readonly ICinemaDbContext _context;
+        private readonly CinemaDbContext _context;
         private readonly ILogger<UserVoteService> _logger;
 
         #region UserVoteService()
 
-        public UserVoteService(ICinemaDbContext context, ILogger<UserVoteService> logger)
+        public UserVoteService(CinemaDbContext context, ILogger<UserVoteService> logger)
         {
             _context = context;
             _logger = logger;
@@ -50,25 +53,55 @@ namespace CinemaBookingSystem.Api.Services
 
             int[] result = GetClusters(rawDataFromDb, NUM_CLASTERS);
 
-            _context.UserClusters.RemoveRange(_context.UserClusters);
+            var table = new DataTable();
+            table.Columns.Add(nameof(UserCluster.UserId), typeof(string));
+            table.Columns.Add(nameof(UserCluster.ClusterNumber), typeof(int));
+            table.Columns.Add(nameof(UserCluster.CreatedBy), typeof(string));
+            table.Columns.Add(nameof(UserCluster.Created), typeof(DateTime));
+            table.Columns.Add(nameof(UserCluster.ModifiedBy), typeof(string));
+            table.Columns.Add(nameof(UserCluster.Modified), typeof(DateTime));
+            table.Columns.Add(nameof(UserCluster.StatusId), typeof(int));
+            table.Columns.Add(nameof(UserCluster.InactivatedBy), typeof(string));
+            table.Columns.Add(nameof(UserCluster.Inactivated), typeof(DateTime));
 
-            _logger.LogInformation("2 step. Time: {elapsedTime}", timer.Elapsed);
-
-            timer.Restart();
-
-            var userClusters =
-                new Dictionary<string, int>();
-
-            //Przerobić na bulk copy
             for (var i=0; i < result.Length; i++)
             {
-                userClusters.Add(usersId[i], result[i]);
+                table.Rows.Add(usersId[i], result[i],"Hangfire", DateTime.Now, null, null, 1, null, null);
+            }
 
-                _context.UserClusters.Add(new UserCluster()
+            await using (var transaction =  await _context.Database.BeginTransactionAsync(IsolationLevel.ReadUncommitted, cancellationToken))
+            {
+                try
                 {
-                    UserId = usersId[i],
-                    ClusterNumber = result[i]
-                });
+                    _context.UserClusters.RemoveRange(_context.UserClusters);
+
+                    _logger.LogInformation("2 step. Time: {elapsedTime}", timer.Elapsed);
+
+                    timer.Restart();
+
+                    var bulk = new SqlBulkCopy((SqlConnection)_context.Database.GetDbConnection(), SqlBulkCopyOptions.Default, (SqlTransaction) transaction.GetDbTransaction());
+
+                    bulk.DestinationTableName = $"dbo.{_context.UserClusters.EntityType.GetDefaultTableName()}s";
+                    bulk.BulkCopyTimeout = _context.Database.GetCommandTimeout() ?? bulk.BulkCopyTimeout;
+
+                    foreach (var column in table.Columns.Cast<DataColumn>().Select((value, i) => (value, i)))
+                    {
+                        bulk.ColumnMappings.Add(new SqlBulkCopyColumnMapping()
+                        {
+                            SourceOrdinal = column.i,
+                            DestinationColumn = column.value.ColumnName
+                        });
+                    }
+
+                    await bulk.WriteToServerAsync(table, cancellationToken);
+
+                    await transaction.CommitAsync(cancellationToken);
+                }
+                catch (Exception)
+                {
+                    await transaction.RollbackAsync(cancellationToken);
+                    throw;
+                }
             }
 
             await _context.SaveChangesAsync(cancellationToken);
@@ -79,6 +112,8 @@ namespace CinemaBookingSystem.Api.Services
             return true;
         }
         #endregion
+
+
 
         #region GetPredictions()
         public async Task<List<MovieResultAssign>> GetPredictions(string currentUserId, CancellationToken cancellationToken)
@@ -94,8 +129,12 @@ namespace CinemaBookingSystem.Api.Services
                 await _context.UserClusters.FirstOrDefaultAsync(x => x.UserId == currentUserId, cancellationToken);
 
             var usersFromCluster =
-                await _context.UserClusters.Where(x => x.ClusterNumber == currentUserCluster.ClusterNumber && x.UserId != currentUserId && x.StatusId == 1).Select(x => new string(x.UserId)).ToListAsync(cancellationToken);
-
+                await _context.UserClusters
+                    .Where(x => x.ClusterNumber == currentUserCluster.ClusterNumber &&
+                                x.UserId != currentUserId &&
+                                x.StatusId == 1)
+                    .Select(x => new string(x.UserId))
+                    .ToListAsync(cancellationToken);
 
             var moviesVotesFromCluster = await GetRawDataFromDatabase(movies, usersFromCluster, cancellationToken);
 
@@ -116,6 +155,8 @@ namespace CinemaBookingSystem.Api.Services
         }
         #endregion
 
+        #region GetMostPopularMovie()
+
         private double[] GetMostPopularMovie(double[][] moviesVotes, double[][] currentUserMovieVote)
         {
             var moviesCount = new double [moviesVotes[0].Length];
@@ -131,15 +172,18 @@ namespace CinemaBookingSystem.Api.Services
                         moviesCount[j] += 1 * userDistance;
                     }
                 }
-
-                
             }
             return moviesCount;
         }
-        //Bardzo wolna metoda - pomyslec nad zmniejszeniem ilosci zapytań
+
+        #endregion
+
         #region GetRawDataFromDatabase()
+
         private async Task<double[][]> GetRawDataFromDatabase(List<int> moviesId, List<string> usersId, CancellationToken cancellationToken)
         {
+            var votes = await _context.UserMovieVotes.ToListAsync(cancellationToken);
+
             var voteUserList = new double[usersId.Count][];
             var i = 0;
 
@@ -149,7 +193,7 @@ namespace CinemaBookingSystem.Api.Services
                 var y = 0;
                 foreach (var movieId in moviesId)
                 {
-                    var vote = await _context.UserMovieVotes.FirstOrDefaultAsync(x => x.UserId == userId && x.MovieId == movieId, cancellationToken);
+                    var vote = votes.FirstOrDefault(x => x.UserId == userId && x.MovieId == movieId);
 
                     if (vote != null)
                     {

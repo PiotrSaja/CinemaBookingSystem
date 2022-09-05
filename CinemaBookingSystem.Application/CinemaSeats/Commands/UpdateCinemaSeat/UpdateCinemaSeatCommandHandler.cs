@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
+﻿using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using CinemaBookingSystem.Application.Common.Exceptions;
@@ -16,29 +12,28 @@ namespace CinemaBookingSystem.Application.CinemaSeats.Commands.UpdateCinemaSeat
     {
         private readonly ICinemaDbContext _context;
 
+        #region UpdateCinemaSeatCommandHandler()
         public UpdateCinemaSeatCommandHandler(ICinemaDbContext context)
         {
             _context = context;
         }
+        #endregion
 
+        #region Handle()
         public async Task<int> Handle(UpdateCinemaSeatCommand request, CancellationToken cancellationToken)
         {
-            var cinemaSeatToUpdate = await _context.CinemaSeats.Where(x => x.Id == request.CinemaSeatId)
-                .FirstOrDefaultAsync(cancellationToken);
+            var cinemaSeatToUpdate = await _context.CinemaSeats
+                .FirstOrDefaultAsync(x => x.Id == request.CinemaSeatId, cancellationToken);
 
             if (cinemaSeatToUpdate == null)
-            {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "Not exists in database, check your id");
-            }
 
-            var cinemaHall = await _context.Cinemas.Where(x => x.Id == request.CinemaHallId)
-                .FirstOrDefaultAsync(CancellationToken.None);
+            var cinemaHall = await _context.Cinemas
+                .FirstOrDefaultAsync(x => x.Id == request.CinemaHallId, cancellationToken);
 
             if (cinemaHall == null)
-            {
                 throw new HttpStatusCodeException(HttpStatusCode.InternalServerError, "Not exists cinema hall in database, check your CinemaHallId");
-            }
-
+            
             cinemaSeatToUpdate.SeatNumber = request.SeatNumber;
             cinemaSeatToUpdate.Row = request.Row;
             cinemaSeatToUpdate.SeatType = request.SeatType;
@@ -50,5 +45,6 @@ namespace CinemaBookingSystem.Application.CinemaSeats.Commands.UpdateCinemaSeat
 
             return cinemaSeatToUpdate.Id;
         }
+        #endregion
     }
 }

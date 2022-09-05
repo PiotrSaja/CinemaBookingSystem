@@ -13,15 +13,18 @@ namespace CinemaBookingSystem.Application.Recommendations.Queries.WhichRecommend
         private readonly ICinemaDbContext _context;
         private readonly IUserService _userService;
 
+        #region WhichRecommendationQueryHandler()
         public WhichRecommendationQueryHandler(ICinemaDbContext context, IUserService userService)
         {
             _context = context;
             _userService = userService;
         }
+        #endregion
 
+        #region Handle()
         public async Task<RecommendationType> Handle(WhichRecommendationQuery request, CancellationToken cancellationToken)
         {
-            var moviesPref = await _context.UserPreferencesMovies
+            var moviesPreferences = await _context.UserPreferencesMovies
                 .Where(x => x.UserId == _userService.Id)
                 .Select(x => x.MovieId)
                 .ToListAsync(cancellationToken);
@@ -30,12 +33,13 @@ namespace CinemaBookingSystem.Application.Recommendations.Queries.WhichRecommend
                 .Where(x => x.UserId == _userService.Id)
                 .ToListAsync(cancellationToken);
 
-            if (moviesPref.Count > 0 && moviesVotes.Count <= 5)
+            if (moviesPreferences.Count > 0 && moviesVotes.Count <= 5)
                 return RecommendationType.ContentBased;
             if (moviesVotes.Count > 5)
                 return RecommendationType.KMeans;
 
             return RecommendationType.None;
         }
+        #endregion
     }
 }

@@ -14,8 +14,6 @@ using CinemaBookingSystem.Common.Mailer.Models.Emails;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
-using RazorEngineCore;
 
 namespace CinemaBookingSystem.Api.Controllers
 {
@@ -31,6 +29,8 @@ namespace CinemaBookingSystem.Api.Controllers
         }
         #endregion
 
+        #region GetDetails()
+
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -41,6 +41,10 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(vm);
         }
+        #endregion
+
+        #region GetBookings()
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -56,6 +60,11 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(vm);
         }
+
+        #endregion
+
+        #region GetUserBookingDetails()
+
         [HttpGet("user/{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -66,6 +75,11 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(vm);
         }
+
+        #endregion
+
+        #region GetUserBookings()
+
         [HttpGet("user")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -76,6 +90,11 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(vm);
         }
+
+        #endregion
+
+        #region CreateBooking()
+
         [HttpPost]
         [Authorize(Roles = "Administrator,User")]
         public async Task<ActionResult> CreateBooking(CreateBookingCommand booking)
@@ -100,6 +119,11 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(result);
         }
+
+        #endregion
+
+        #region DeleteBooking()
+
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -109,6 +133,11 @@ namespace CinemaBookingSystem.Api.Controllers
             var result = await Mediator.Send(new DeleteBookingCommand() { BookingId = id });
             return Ok(result);
         }
+
+        #endregion
+
+        #region UpdateBooking()
+
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -123,5 +152,7 @@ namespace CinemaBookingSystem.Api.Controllers
             }
             return Ok(await Mediator.Send(booking));
         }
+
+        #endregion
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace CinemaBookingSystem.Common.Mailer.Models
 {
@@ -17,6 +13,7 @@ namespace CinemaBookingSystem.Common.Mailer.Models
         public string? ReplyToName { get; set; }
         public string Subject { get; set; }
         public string? Body { get; set; }
+
         #region MailData()
         public MailData(List<string> to, string subject, string? body = null, string? from = null, string? displayName = null, string? replyTo = null, string? replyToName = null, List<string>? bcc = null, List<string>? cc = null)
         {

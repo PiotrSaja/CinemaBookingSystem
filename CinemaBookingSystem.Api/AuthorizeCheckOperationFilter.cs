@@ -8,6 +8,8 @@ namespace CinemaBookingSystem.Api
 {
     public class AuthorizeCheckOperationFilter : IOperationFilter
     {
+        #region Apply()
+
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
             var hasAuthorize =
@@ -35,5 +37,7 @@ namespace CinemaBookingSystem.Api
 
             }
         }
+
+        #endregion
     }
 }

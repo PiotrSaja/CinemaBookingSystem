@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace CinemaBookingSystem.Application.Seances.Queries.GetSeances
 {
@@ -11,9 +7,7 @@ namespace CinemaBookingSystem.Application.Seances.Queries.GetSeances
         public int CurrentPage { get; set; }
         public int TotalItems { get; set; }
         public int TotalPages { get; set; }
-
         public string SearchString { get; set; }
-
         public ICollection<SeanceDto> Items { get; set; }
     }
 }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -22,12 +21,15 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMovies
         private readonly ICinemaDbContext _context;
         private readonly IMapper _mapper;
 
+        #region GetMoviesQueryHandler()
         public GetMoviesQueryHandler(ICinemaDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
+        #endregion
 
+        #region Handle()
         public async Task<MoviesVm> Handle(GetMoviesQuery request, CancellationToken cancellationToken)
         {
             PagedModel<Movie> movies;
@@ -41,13 +43,9 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMovies
             prediction.And(x => x.StatusId != 0);
 
             if (!String.IsNullOrEmpty(request.SearchString))
-            {
                 prediction.And(x => x.Title.Contains(request.SearchString));
-            }
             if (request.GenreId.HasValue)
-            {
                 prediction.And(x => x.Genres.Any(x=>x.Id == request.GenreId));
-            }
 
             movies = await _context.Movies
                 .Where(prediction)
@@ -56,9 +54,7 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMovies
                 .PaginateAsync(request.PageIndex, request.PageSize, cancellationToken);
 
             if (movies == null)
-            {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "Not exists records in database");
-            }
 
             var moviesDto = _mapper.Map<List<Movie>, List<MoviesDto>>(movies.Items.ToList());
 
@@ -73,5 +69,6 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMovies
 
             return moviesVm;
         }
+        #endregion
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
+﻿using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using CinemaBookingSystem.Application.Common.Exceptions;
@@ -18,25 +14,27 @@ namespace CinemaBookingSystem.Application.Movies.Commands.AddPreferencesMovie
         private readonly ICinemaDbContext _context;
         private readonly IUserService _userService;
 
+        #region AddPreferencesMovieCommandHandler()
         public AddPreferencesMovieCommandHandler(ICinemaDbContext context, IUserService userService)
         {
             _context = context;
             _userService = userService;
         }
+        #endregion
 
+        #region Handle()
         public async Task<int> Handle(AddPreferencesMovieCommand request, CancellationToken cancellationToken)
         {
             UserPreferencesMovie userPreferencesMovie = null;
 
             foreach (var movieId in request.MoviesIds)
             {
-                var movie = await _context.Movies.Where(x => x.Id == movieId)
-                    .FirstOrDefaultAsync(cancellationToken);
+                var movie = await _context.Movies
+                    .FirstOrDefaultAsync(x => x.Id == movieId, cancellationToken);
 
                 if (movie == null)
-                {
                     throw new HttpStatusCodeException(HttpStatusCode.NotFound, "Not exists in database, check your id");
-                }
+
                 var userMovie =
                     await _context.UserPreferencesMovies.FirstOrDefaultAsync(x =>
                         x.MovieId == movieId && x.UserId == _userService.Id, cancellationToken);
@@ -57,5 +55,6 @@ namespace CinemaBookingSystem.Application.Movies.Commands.AddPreferencesMovie
 
             return userPreferencesMovie.Id;
         }
+        #endregion
     }
 }

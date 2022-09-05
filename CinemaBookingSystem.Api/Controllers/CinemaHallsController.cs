@@ -13,6 +13,8 @@ namespace CinemaBookingSystem.Api.Controllers
     [Route("api/cinema-halls")]
     public class CinemaHallsController : BaseController
     {
+        #region GetDetails()
+
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -23,6 +25,11 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(vm);
         }
+
+        #endregion
+
+        #region GetCinemaHalls()
+
         [HttpGet("cinema/{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -32,6 +39,11 @@ namespace CinemaBookingSystem.Api.Controllers
             var vm = await Mediator.Send(new GetCinemaHallsInCinemaQuery() {CinemaId = id});
             return Ok(vm);
         }
+
+        #endregion
+
+        #region CreateCinemaHall()
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -42,6 +54,11 @@ namespace CinemaBookingSystem.Api.Controllers
 
             return Ok(result);
         }
+
+        #endregion
+
+        #region DeleteCinemaHall()
+
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -51,6 +68,11 @@ namespace CinemaBookingSystem.Api.Controllers
             var result = await Mediator.Send(new DeleteCinemaHallCommand() { CinemaHallId = id });
             return Ok(result);
         }
+
+        #endregion
+
+        #region UpdateCinemaHall()
+
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -65,5 +87,7 @@ namespace CinemaBookingSystem.Api.Controllers
             }
             return Ok(await Mediator.Send(cinemaHall));
         }
+
+        #endregion
     }
 }

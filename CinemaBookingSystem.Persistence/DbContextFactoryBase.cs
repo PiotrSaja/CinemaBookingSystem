@@ -16,14 +16,19 @@ namespace CinemaBookingSystem.Persistence
         private const string ConnectionStringName = "CinemaDatabase";
         private const string AspNetCoreEnvironment = "ASPNETCORE_ENVIRONMENT";
 
+        #region CreateDbContext()
         public TContext CreateDbContext(string[] args)
         {
             var basePath = Directory.GetCurrentDirectory() + string.Format("{0}..{0}CinemaBookingSystem.Api", Path.DirectorySeparatorChar);
             return Create(basePath, Environment.GetEnvironmentVariable(AspNetCoreEnvironment));
         }
+        #endregion
 
+        #region CreateNewInstance()
         protected abstract TContext CreateNewInstance(DbContextOptions<TContext> options);
+        #endregion
 
+        #region Create()
         private TContext Create(string basePath, string environmentName)
         {
 
@@ -55,5 +60,6 @@ namespace CinemaBookingSystem.Persistence
 
             return CreateNewInstance(optionsBuilder.Options);
         }
+        #endregion
     }
 }

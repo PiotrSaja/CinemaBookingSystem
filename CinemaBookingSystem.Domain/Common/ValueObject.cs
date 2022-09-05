@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CinemaBookingSystem.Domain.Common
 {
     public abstract class ValueObject
     {
+        #region EqualOperator()
         protected static bool EqualOperator(ValueObject left, ValueObject right)
         {
             if (ReferenceEquals(left, null) ^ ReferenceEquals(right, null))
@@ -16,12 +14,16 @@ namespace CinemaBookingSystem.Domain.Common
             }
             return ReferenceEquals(left, null) || left.Equals(right);
         }
+        #endregion
 
+        #region NotEqualOperator()
         protected static bool NotEqualOperator(ValueObject left, ValueObject right)
         {
             return !(EqualOperator(left, right));
         }
+        #endregion
 
+        #region GetEqualityComponents()
         protected abstract IEnumerable<object> GetEqualityComponents();
 
         public override bool Equals(object obj)
@@ -35,13 +37,15 @@ namespace CinemaBookingSystem.Domain.Common
 
             return this.GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
         }
+        #endregion
 
+        #region GetHashCode()
         public override int GetHashCode()
         {
             return GetEqualityComponents()
                 .Select(x => x != null ? x.GetHashCode() : 0)
                 .Aggregate((x, y) => x ^ y);
         }
-        // Other utility methods
+        #endregion
     }
 }

@@ -17,6 +17,8 @@ namespace CinemaBookingSystem.Persistence
     {
         private readonly IDateTime _dateTime;
         private readonly IUserService _userService;
+
+        #region CinemaDbContext()
         public CinemaDbContext(DbContextOptions<CinemaDbContext> options) : base(options)
         {
         }
@@ -25,6 +27,7 @@ namespace CinemaBookingSystem.Persistence
             _dateTime = dateTime;
             _userService = userService;
         }
+        #endregion
 
         public DbSet<Actor> Actors { get; set; }
         public DbSet<Booking> Bookings { get; set; }
@@ -41,6 +44,7 @@ namespace CinemaBookingSystem.Persistence
         public DbSet<UserPreferencesMovie> UserPreferencesMovies { get; set; }
         public DbSet<UserCluster> UserClusters { get; set; }
 
+        #region OnModelCreating()
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Actor>().OwnsOne(a => a.ActorName);
@@ -50,6 +54,9 @@ namespace CinemaBookingSystem.Persistence
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
+        #endregion
+
+        #region SaveChangesAsync()
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
@@ -77,5 +84,6 @@ namespace CinemaBookingSystem.Persistence
             }
             return base.SaveChangesAsync(cancellationToken);
         }
+        #endregion
     }
 }

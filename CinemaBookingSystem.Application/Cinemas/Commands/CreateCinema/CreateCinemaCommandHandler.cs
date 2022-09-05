@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using CinemaBookingSystem.Application.Common.Interfaces;
 using CinemaBookingSystem.Domain.Entities;
@@ -15,14 +11,17 @@ namespace CinemaBookingSystem.Application.Cinemas.Commands.CreateCinema
     {
         private readonly ICinemaDbContext _context;
 
+        #region CreateCinemaCommandHandler()
         public CreateCinemaCommandHandler(ICinemaDbContext context)
         {
             _context = context;
         }
+        #endregion
 
+        #region Handle()
         public async Task<int> Handle(CreateCinemaCommand request, CancellationToken cancellationToken)
         {
-            var newCinema = new Cinema()
+            var cinema = new Cinema()
             {
                 Name = request.Name,
                 TotalCinemaHalls = request.TotalCinemaHalls,
@@ -37,11 +36,12 @@ namespace CinemaBookingSystem.Application.Cinemas.Commands.CreateCinema
                 ImagePath = request.ImagePath
             };
 
-            _context.Cinemas.Add(newCinema);
+            _context.Cinemas.Add(cinema);
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            return newCinema.Id;
+            return cinema.Id;
         }
+        #endregion
     }
 }

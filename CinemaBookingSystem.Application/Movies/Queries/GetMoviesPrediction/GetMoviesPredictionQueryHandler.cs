@@ -18,29 +18,32 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesPrediction
     {
         private readonly ICinemaDbContext _context;
         private readonly IMapper _mapper;
-        private readonly IDateTime _dateTime;
         private readonly IUserVoteService _userVoteService;
         private readonly IUserService _userService;
 
-        public GetMoviesPredictionQueryHandler(ICinemaDbContext context, IMapper mapper, IDateTime dateTime, IUserVoteService userVoteService, IUserService userService)
+        #region GetMoviesPredictionQueryHandler()
+        public GetMoviesPredictionQueryHandler(ICinemaDbContext context, IMapper mapper, IUserVoteService userVoteService, IUserService userService)
         {
             _context = context;
             _mapper = mapper;
-            _dateTime = dateTime;
             _userVoteService = userVoteService;
             _userService = userService;
         }
+        #endregion
 
+        #region Handle()
         public async Task<MoviesDetailVm> Handle(GetMoviesPredictionQuery request, CancellationToken cancellationToken)
         {
             if (request.PageSize < 1 && request.PageIndex < 1) { throw new HttpStatusCodeException(HttpStatusCode.InternalServerError, "Page size and Page index can't be null or less than 1"); }
             if (request.PageSize < 1) { throw new HttpStatusCodeException(HttpStatusCode.InternalServerError, "Page size can't be null or less than 1"); }
             if (request.PageIndex < 1) { throw new HttpStatusCodeException(HttpStatusCode.InternalServerError, "Page index can't be null or less than 1"); }
 
-
             var result = await _userVoteService.GetPredictions(_userService.Id, cancellationToken);
 
-            var movieResultAssigns = result.Where(x=>x.Result > 0).OrderByDescending(x => x.Result).Select(x=>x.MovieId).ToList();
+            var movieResultAssigns = result
+                .Where(x=>x.Result > 0)
+                .OrderByDescending(x => x.Result).Select(x=>x.MovieId)
+                .ToList();
 
             var watchedFilms = await _context.Bookings
                 .Where(x =>
@@ -72,6 +75,7 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesPrediction
 
             return moviesDetailVm;
         }
+        #endregion
     }
 }
                     

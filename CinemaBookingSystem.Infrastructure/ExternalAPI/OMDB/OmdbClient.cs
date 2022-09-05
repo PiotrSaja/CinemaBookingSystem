@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using CinemaBookingSystem.Application.Common.Interfaces;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace CinemaBookingSystem.Infrastructure.ExternalAPI.OMDB
 {
@@ -17,6 +13,7 @@ namespace CinemaBookingSystem.Infrastructure.ExternalAPI.OMDB
         private readonly HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
+        #region OmdbClient()
         public OmdbClient(IHttpClientFactory factory)
         {
             _httpClient = factory.CreateClient("OmdbClient");
@@ -27,20 +24,26 @@ namespace CinemaBookingSystem.Infrastructure.ExternalAPI.OMDB
                 UpdateJsonSerializerSettings(settings);
                 return settings;
             });
-
-
         }
+        #endregion
 
+        #region JsonSerializerSettings()
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
+        #endregion
 
+        #region UpdateJsonSerializerSettings()
         partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
+        #endregion
 
+        #region BaseUrl()
         public string BaseUrl
         {
             get { return _baseUrl; }
             set { _baseUrl = value; }
         }
+        #endregion
 
+        #region GetMovie()
         public async Task<string> GetMovie(string searchFilter, CancellationToken cancellationToken)
         {
             var urlBuilder = new StringBuilder();
@@ -72,6 +75,9 @@ namespace CinemaBookingSystem.Infrastructure.ExternalAPI.OMDB
                 throw;
             }
         }
+        #endregion
+
+        #region GetMovieById()
         public async Task<string> GetMovieById(string id, CancellationToken cancellationToken)
         {
             var urlBuilder = new StringBuilder();
@@ -104,5 +110,6 @@ namespace CinemaBookingSystem.Infrastructure.ExternalAPI.OMDB
                 throw;
             }
         }
+        #endregion
     }
 }
