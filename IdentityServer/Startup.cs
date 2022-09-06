@@ -39,18 +39,6 @@ namespace IdentityServer
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowAll", policy =>
-                {
-                    policy.AllowAnyOrigin();
-                    policy.AllowAnyHeader();
-                    policy.WithOrigins("https://cinema-booking-system.francecentral.cloudapp.azure.com");
-                    policy.WithOrigins("https://cinema-booking-system.francecentral.cloudapp.azure.com:44301");
-                    policy.WithOrigins("https://cinema-booking-system.francecentral.cloudapp.azure.com:44351");
-                });
-            });
-
             services.AddTransient<IProfileService, ProfileService>();
 
             var builder = services.AddIdentityServer(options =>
@@ -84,8 +72,6 @@ namespace IdentityServer
             }
 
             app.UseStaticFiles();
-
-            app.UseCors("AllowAll");
 
             app.UseRouting();
             app.UseIdentityServer();
