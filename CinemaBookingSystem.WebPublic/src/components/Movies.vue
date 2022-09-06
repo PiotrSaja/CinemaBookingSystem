@@ -29,9 +29,9 @@
                 <img class="pic-1" :src="movie.posterPath" />
               </a>
               <span class="movie-label" v-if="movie.imdbRating >= 7.5">Mega hit!</span>
-            </div>
-            <div class="movie-content" v-resize-text>
+              <div class="movie-content">
               <h3 class="title"><a href="#">{{ movie.title }}</a></h3>
+            </div>
             </div>
           </div>
         </div>
@@ -100,7 +100,7 @@ export default {
 }
 .movie-grid .movie-image img{
   width: 100%;
-  height: 300px;
+  height: 315px;
 }
 @media only screen and (min-width: 1px) and (max-width: 576px) {
   .movie-grid {

@@ -86,7 +86,6 @@ export default {
             console.log(error.response.data)
           })
       }
-      console.log(this.type)
     }).catch((error) => {
       console.log(error.response.data)
     })

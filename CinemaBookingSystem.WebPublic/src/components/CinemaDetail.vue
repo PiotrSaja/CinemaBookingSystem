@@ -9,9 +9,6 @@
           <h5>Total cinema halls: {{cinema.totalCinemaHalls}}</h5><br>
         </div>
         <div class="col-6 text-right">
-          <!--<h5>Contact</h5>
-          <h6>Email: contact@email.com</h6>
-          <h6>Phone: +48 123456789</h6>-->
           <h5>Address</h5>
           <h6>st. {{cinema.street}}</h6>
           <h6>{{cinema.city}}, {{cinema.zipCode}}</h6>
