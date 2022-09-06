@@ -51,15 +51,12 @@ namespace CinemaBookingSystem.Api
                     policy.AllowAnyOrigin();
                     policy.AllowAnyHeader();
                     policy.AllowAnyMethod();
-                    policy.WithOrigins("https://cinema-booking-system.francecentral.cloudapp.azure.com");
-                    policy.WithOrigins("https://cinema-booking-system.francecentral.cloudapp.azure.com:44301");
-                    policy.WithOrigins("https://cinema-booking-system.francecentral.cloudapp.azure.com:5001");
                 });
             });
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = "https://cinema-booking-system.francecentral.cloudapp.azure.com:5001";
+                    options.Authority = "https://localhost:5001";
                     options.TokenValidationParameters = new TokenValidationParameters()
                     {
                         ValidateAudience = false
@@ -85,8 +82,8 @@ namespace CinemaBookingSystem.Api
                     {
                         AuthorizationCode = new OpenApiOAuthFlow()
                         {
-                            AuthorizationUrl = new Uri("https://cinema-booking-system.francecentral.cloudapp.azure.com:5001/connect/authorize"),
-                            TokenUrl = new Uri("https://cinema-booking-system.francecentral.cloudapp.azure.com:5001/connect/token"),
+                            AuthorizationUrl = new Uri("https://localhost:5001/connect/authorize"),
+                            TokenUrl = new Uri("https://localhost:5001/connect/token"),
                             Scopes = new Dictionary<string, string>()
                             {
                                 {"api", "Full access to API"},

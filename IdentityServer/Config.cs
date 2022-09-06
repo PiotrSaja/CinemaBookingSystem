@@ -42,8 +42,8 @@ namespace IdentityServer
                     AlwaysSendClientClaims = true,
                     AlwaysIncludeUserClaimsInIdToken = true,
                     AllowAccessTokensViaBrowser = true,
-                    RedirectUris = {"https://cinema-booking-system.francecentral.cloudapp.azure.com:44351/swagger/oauth2-redirect.html"},
-                    AllowedCorsOrigins = { "https://cinema-booking-system.francecentral.cloudapp.azure.com:44351" }
+                    RedirectUris = {"https://localhost:44334/swagger/oauth2-redirect.html"},
+                    AllowedCorsOrigins = { "https://localhost:44334" }
                 },
 
                 new Client
@@ -57,25 +57,9 @@ namespace IdentityServer
                     AlwaysSendClientClaims = true,
                     AlwaysIncludeUserClaimsInIdToken = true,
                     AllowAccessTokensViaBrowser = true,
-                    RedirectUris = {"https://cinema-booking-system.francecentral.cloudapp.azure.com/login"},
-                    PostLogoutRedirectUris = { "https://cinema-booking-system.francecentral.cloudapp.azure.com/logout" },
-                    AllowedCorsOrigins = { "https://cinema-booking-system.francecentral.cloudapp.azure.com" }
-                },
-
-                new Client
-                {
-                    ClientId = "vue-admin",
-                    ClientName = "Client for vue admin user",
-                    AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
-                    RequirePkce = true,
-                    RequireClientSecret = false,
-                    AllowedScopes = {"api","user","openid"},
-                    AlwaysSendClientClaims = true,
-                    AlwaysIncludeUserClaimsInIdToken = true,
-                    AllowAccessTokensViaBrowser = true,
-                    RedirectUris = {"https://cinema-booking-system.francecentral.cloudapp.azure.com:44301/login"},
-                    PostLogoutRedirectUris = { "https://cinema-booking-system.francecentral.cloudapp.azure.com:44301/logout" },
-                    AllowedCorsOrigins = { "https://cinema-booking-system.francecentral.cloudapp.azure.com:44301" }
+                    RedirectUris = {"http://localhost:8080/login"},
+                    PostLogoutRedirectUris = { "http://localhost:8080/logout" },
+                    AllowedCorsOrigins = { "http://localhost:8080" }
                 }
             };
     }
