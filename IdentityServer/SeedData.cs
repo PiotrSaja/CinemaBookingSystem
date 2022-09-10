@@ -1396,7 +1396,7 @@ namespace IdentityServer
                         Log.Debug("user39 already exists");
                     }
 
-                    var user40 = userMgr.FindByNameAsync("user39").Result;
+                    var user40 = userMgr.FindByNameAsync("user40").Result;
                     if (user40 == null)
                     {
                         user40 = new ApplicationUser
