@@ -13,19 +13,22 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace CinemaBookingSystem.Api.Services
 {
     public class UserVoteService : IUserVoteService
     {
-        private readonly int NUM_CLASTERS = 3;
+        private int NUM_CLASTERS;
+        private readonly IConfiguration _configuration;
         private readonly CinemaDbContext _context;
         private readonly ILogger<UserVoteService> _logger;
 
         #region UserVoteService()
 
-        public UserVoteService(CinemaDbContext context, ILogger<UserVoteService> logger)
+        public UserVoteService(IConfiguration configuration, CinemaDbContext context, ILogger<UserVoteService> logger)
         {
+            _configuration = configuration;
             _context = context;
             _logger = logger;
         }
@@ -35,6 +38,8 @@ namespace CinemaBookingSystem.Api.Services
         #region Clustering()
         public async Task<bool> Clustering(CancellationToken cancellationToken)
         {
+            NUM_CLASTERS = _configuration.GetValue<int>("UserVote:Clusters");
+
             var timer = new Stopwatch();
             _logger.LogInformation("Start clustering");
             _logger.LogInformation("Job running at: {time}", DateTimeOffset.UtcNow);
