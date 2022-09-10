@@ -13,19 +13,24 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Hangfire.Console;
+using Hangfire.Server;
+using Microsoft.Extensions.Configuration;
 
 namespace CinemaBookingSystem.Api.Services
 {
     public class UserVoteService : IUserVoteService
     {
-        private readonly int NUM_CLASTERS = 3;
+        private int NUM_CLASTERS;
+        private readonly IConfiguration _configuration;
         private readonly CinemaDbContext _context;
         private readonly ILogger<UserVoteService> _logger;
 
         #region UserVoteService()
 
-        public UserVoteService(CinemaDbContext context, ILogger<UserVoteService> logger)
+        public UserVoteService(IConfiguration configuration, CinemaDbContext context, ILogger<UserVoteService> logger)
         {
+            _configuration = configuration;
             _context = context;
             _logger = logger;
         }
@@ -33,11 +38,16 @@ namespace CinemaBookingSystem.Api.Services
         #endregion
 
         #region Clustering()
-        public async Task<bool> Clustering(CancellationToken cancellationToken)
+        public async Task<bool> Clustering(PerformContext context, CancellationToken cancellationToken)
         {
+            NUM_CLASTERS = _configuration.GetValue<int>("UserVote:Clusters");
+
             var timer = new Stopwatch();
             _logger.LogInformation("Start clustering");
+            context.WriteLine("Start clustering");
+
             _logger.LogInformation("Job running at: {time}", DateTimeOffset.UtcNow);
+            context.WriteLine($"Job running at: {DateTimeOffset.UtcNow}");
 
             timer.Start();
 
@@ -46,6 +56,7 @@ namespace CinemaBookingSystem.Api.Services
             var usersId = await _context.UserMovieVotes.Select(x => x.UserId).Distinct().ToListAsync(cancellationToken);
 
             _logger.LogInformation("1 step. Time: {elapsedTime}", timer.Elapsed);
+            context.WriteLine($"1 step - select from db. Time: {timer.Elapsed}");
 
             timer.Restart();
 
@@ -73,9 +84,15 @@ namespace CinemaBookingSystem.Api.Services
             {
                 try
                 {
+                    _logger.LogInformation("2 step. Time: {elapsedTime}", timer.Elapsed);
+                    context.WriteLine($"2 step - get raw data. Time: {timer.Elapsed}");
+
+                    timer.Restart();
+
                     _context.UserClusters.RemoveRange(_context.UserClusters);
 
-                    _logger.LogInformation("2 step. Time: {elapsedTime}", timer.Elapsed);
+                    _logger.LogInformation("3 step. Time: {elapsedTime}", timer.Elapsed);
+                    context.WriteLine($"3 step - remove old rows from db. Time: {timer.Elapsed}");
 
                     timer.Restart();
 
@@ -108,6 +125,7 @@ namespace CinemaBookingSystem.Api.Services
             timer.Stop();
 
             _logger.LogInformation("Finished clustering. Time: {elapsedTime}", timer.Elapsed);
+            context.WriteLine($"Finished clustering. Time: {timer.Elapsed}");
 
             return true;
         }
@@ -238,37 +256,6 @@ namespace CinemaBookingSystem.Api.Services
 
             return clusters;
         }
-
-        private double[][] NormalizedData(double[][] rawData)
-        {
-            // normalize raw data by computing (x - mean) / stddev
-            // primary alternative is min-max:
-            // v' = (v - min) / (max - min)
-
-            // make a copy of input data
-            double[][] result = new double[rawData.Length][];
-            for (int i = 0; i < rawData.Length; ++i)
-            {
-                result[i] = new double[rawData[i].Length];
-                Array.Copy(rawData[i], result[i], rawData[i].Length);
-            }
-
-            for (int j = 0; j < result[0].Length; ++j) // each col
-            {
-                double colSum = 0.0;
-                for (int i = 0; i < result.Length; ++i)
-                    colSum += result[i][j];
-                double mean = colSum / result.Length;
-                double sum = 0.0;
-                for (int i = 0; i < result.Length; ++i)
-                    sum += (result[i][j] - mean) * (result[i][j] - mean);
-                double sd = sum / result.Length;
-                for (int i = 0; i < result.Length; ++i)
-                    result[i][j] = (result[i][j] - mean) / sd;
-            }
-            return result;
-        }
-
         private int[] InitClustering(int numRecords, int numClusters)
         {
             var random = new Random(numRecords);
