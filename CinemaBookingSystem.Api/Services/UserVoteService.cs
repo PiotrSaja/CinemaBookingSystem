@@ -13,6 +13,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Hangfire.Console;
+using Hangfire.Server;
 using Microsoft.Extensions.Configuration;
 
 namespace CinemaBookingSystem.Api.Services
@@ -36,13 +38,16 @@ namespace CinemaBookingSystem.Api.Services
         #endregion
 
         #region Clustering()
-        public async Task<bool> Clustering(CancellationToken cancellationToken)
+        public async Task<bool> Clustering(PerformContext context, CancellationToken cancellationToken)
         {
             NUM_CLASTERS = _configuration.GetValue<int>("UserVote:Clusters");
 
             var timer = new Stopwatch();
             _logger.LogInformation("Start clustering");
+            context.WriteLine("Start clustering");
+
             _logger.LogInformation("Job running at: {time}", DateTimeOffset.UtcNow);
+            context.WriteLine($"Job running at: {DateTimeOffset.UtcNow}");
 
             timer.Start();
 
@@ -51,6 +56,7 @@ namespace CinemaBookingSystem.Api.Services
             var usersId = await _context.UserMovieVotes.Select(x => x.UserId).Distinct().ToListAsync(cancellationToken);
 
             _logger.LogInformation("1 step. Time: {elapsedTime}", timer.Elapsed);
+            context.WriteLine($"1 step - select from db. Time: {timer.Elapsed}");
 
             timer.Restart();
 
@@ -78,9 +84,15 @@ namespace CinemaBookingSystem.Api.Services
             {
                 try
                 {
+                    _logger.LogInformation("2 step. Time: {elapsedTime}", timer.Elapsed);
+                    context.WriteLine($"2 step - get raw data. Time: {timer.Elapsed}");
+
+                    timer.Restart();
+
                     _context.UserClusters.RemoveRange(_context.UserClusters);
 
-                    _logger.LogInformation("2 step. Time: {elapsedTime}", timer.Elapsed);
+                    _logger.LogInformation("3 step. Time: {elapsedTime}", timer.Elapsed);
+                    context.WriteLine($"3 step - remove old rows from db. Time: {timer.Elapsed}");
 
                     timer.Restart();
 
@@ -113,6 +125,7 @@ namespace CinemaBookingSystem.Api.Services
             timer.Stop();
 
             _logger.LogInformation("Finished clustering. Time: {elapsedTime}", timer.Elapsed);
+            context.WriteLine($"Finished clustering. Time: {timer.Elapsed}");
 
             return true;
         }
