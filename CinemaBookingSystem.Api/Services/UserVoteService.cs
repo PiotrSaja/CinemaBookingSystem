@@ -256,37 +256,6 @@ namespace CinemaBookingSystem.Api.Services
 
             return clusters;
         }
-
-        private double[][] NormalizedData(double[][] rawData)
-        {
-            // normalize raw data by computing (x - mean) / stddev
-            // primary alternative is min-max:
-            // v' = (v - min) / (max - min)
-
-            // make a copy of input data
-            double[][] result = new double[rawData.Length][];
-            for (int i = 0; i < rawData.Length; ++i)
-            {
-                result[i] = new double[rawData[i].Length];
-                Array.Copy(rawData[i], result[i], rawData[i].Length);
-            }
-
-            for (int j = 0; j < result[0].Length; ++j) // each col
-            {
-                double colSum = 0.0;
-                for (int i = 0; i < result.Length; ++i)
-                    colSum += result[i][j];
-                double mean = colSum / result.Length;
-                double sum = 0.0;
-                for (int i = 0; i < result.Length; ++i)
-                    sum += (result[i][j] - mean) * (result[i][j] - mean);
-                double sd = sum / result.Length;
-                for (int i = 0; i < result.Length; ++i)
-                    result[i][j] = (result[i][j] - mean) / sd;
-            }
-            return result;
-        }
-
         private int[] InitClustering(int numRecords, int numClusters)
         {
             var random = new Random(numRecords);
