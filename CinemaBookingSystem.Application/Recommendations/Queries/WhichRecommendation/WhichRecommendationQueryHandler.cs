@@ -33,9 +33,11 @@ namespace CinemaBookingSystem.Application.Recommendations.Queries.WhichRecommend
                 .Where(x => x.UserId == _userService.Id)
                 .ToListAsync(cancellationToken);
 
-            if (moviesPreferences.Count > 0 && moviesVotes.Count <= 5)
+            var clusterSetForUser = await _context.UserClusters.FirstOrDefaultAsync(x => x.UserId == _userService.Id, cancellationToken);
+
+            if (moviesPreferences.Count > 0 && (moviesVotes.Count < 5 || clusterSetForUser == null))
                 return RecommendationType.ContentBased;
-            if (moviesVotes.Count > 5)
+            if (moviesVotes.Count > 5 && clusterSetForUser != null)
                 return RecommendationType.KMeans;
 
             return RecommendationType.None;
