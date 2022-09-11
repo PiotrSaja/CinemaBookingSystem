@@ -55,6 +55,14 @@ namespace CinemaBookingSystem.Api.Services
 
             var usersId = await _context.UserMovieVotes.Select(x => x.UserId).Distinct().ToListAsync(cancellationToken);
 
+            if (usersId.Count < (NUM_CLASTERS * 4))
+            {
+                _logger.LogInformation("To little users votes for clustering method");
+                context.WriteLine("To little users votes for clustering method");
+
+                return false;
+            }
+
             _logger.LogInformation("1 step. Time: {elapsedTime}", timer.Elapsed);
             context.WriteLine($"1 step - select from db. Time: {timer.Elapsed}");
 
