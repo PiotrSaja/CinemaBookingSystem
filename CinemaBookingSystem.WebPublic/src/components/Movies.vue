@@ -6,7 +6,7 @@
             <b-form-input v-model="searchString" @keydown.native="fetchData()" placeholder="Search movie" class="mt-2 mr-5"></b-form-input>
         </div>
         <div class="col-12 col-md-8">
-        <h5 class="text-white underline font-weight-bold">All movies</h5>
+        <h5 class="text-white underline font-weight-bold">Movies</h5>
         </div>
         <div class="col-12 col-md-2 hideRecordsNumberOnMobile">
             <b-dropdown text="Records number" class="mt-2 mr-5">
@@ -189,6 +189,7 @@ export default {
   position: relative;
   left: 50%;
   transform: translateX(-50%);
+  padding-bottom:10px
 }
 .page {
 min-height: 100vh;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -41,6 +42,7 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesDaysToPremiere
                 .Where(x => x.StatusId != 0 && EF.Functions.DateDiffDay(dateNow, x.Released) >= request.DaysToPremiere)
                 .AsNoTracking()
                 .OrderByDescending(p => p.Released)
+                .Take(12)
                 .PaginateAsync(request.PageIndex, request.PageSize, cancellationToken);
 
             if (request.DaysToPremiere < 0)
@@ -48,12 +50,13 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesDaysToPremiere
                     .Where(x => x.StatusId != 0 && EF.Functions.DateDiffDay(dateNow, x.Released) <= 0)
                     .AsNoTracking()
                     .OrderByDescending(p => p.Released)
+                    .Take(12)
                     .PaginateAsync(request.PageIndex, request.PageSize, cancellationToken);
 
             if (movies == null)
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "Not exists records in database");
 
-            var moviesDto = _mapper.Map<List<Movie>, List<MovieDetailDto>>(movies.Items.ToList());
+            var moviesDto = _mapper.Map<List<Movie>, List<MovieDetailDto>>(movies.Items.OrderBy(x => Guid.NewGuid()).ToList());
 
             var moviesDetailVm = new MoviesDetailVm()
             {

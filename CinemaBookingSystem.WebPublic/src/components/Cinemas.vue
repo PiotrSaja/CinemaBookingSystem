@@ -2,7 +2,7 @@
   <div class="container page text-white">
     <div class="background-image" style="background-image: url('https://wallpaperaccess.com/full/1773889.jpg')">
     </div>
-    <h5 class="underline font-weight-bold mt-4">All cinemas</h5>
+    <h5 class="underline font-weight-bold mt-4">Cinemas</h5>
     <div class="row mb-3">
       <div class="col-md-4 col-12" v-for="cinema in cinemas.items"
                   :key="cinema.id"
@@ -87,5 +87,6 @@ min-height: 100vh;
   position: relative;
   left: 50%;
   transform: translateX(-50%);
+  padding-bottom:10px
 }
 </style>
