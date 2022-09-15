@@ -9,6 +9,7 @@ namespace CinemaBookingSystem.Application.Common.Interfaces
     public interface IUserVoteService
     {
         public Task<bool> Clustering(PerformContext context, CancellationToken cancellationToken);
+        public Task<bool> CreateRandomVotes(PerformContext context, CancellationToken cancellationToken);
         public Task<List<MovieResultAssign>> GetPredictions(string currentUserId, CancellationToken cancellationToken);
     }
 }

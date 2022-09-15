@@ -162,6 +162,7 @@ namespace CinemaBookingSystem.Api
             app.UseHangfireDashboard();
 
             recurringJobManager.AddOrUpdate("Clustering for movie recommendation", () => userVoteService.Clustering(null,CancellationToken.None), "0 0 * * *");
+            recurringJobManager.AddOrUpdate("Creating random votes for k-means recommendation", () => userVoteService.CreateRandomVotes(null, CancellationToken.None), Cron.Never);
         }
     }
 }
