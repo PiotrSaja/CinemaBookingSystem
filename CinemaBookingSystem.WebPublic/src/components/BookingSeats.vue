@@ -44,7 +44,7 @@
       </div>
       <div class="row mt-5 mb-3">
         <div class="col-md-6 col-6">
-          <p>Choosen seats:{{selectedIds}}</p>
+          <p>Choosen seats:{{seats.items.filter(seance => selectedIds.includes(seance.id)).map(function (p) { return "row "+p.cinemaSeat.row+" no. "+p.cinemaSeat.seatNumber; })}}</p>
         </div>
         <div class="col-md-6 col-6 text-right">
           <b-button v-on:click="goToBookingUserInformation">Next step</b-button>
