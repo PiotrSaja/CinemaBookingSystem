@@ -27,6 +27,7 @@ import MovieService from '@/api-services/movie-service'
 import RecommendationService from '@/api-services/recommendation-service'
 import VueHorizontalListAutoscroll from 'vue-horizontal-list-autoscroll'
 export default {
+  props: ['selectedMovieId'],
   components: { VueHorizontalListAutoscroll, VueResizeText },
   name: 'HorizontalMovieRecomendationList',
   data () {
@@ -74,13 +75,13 @@ export default {
       this.type = response.data
 
       if (this.type === 0) {
-          MovieService.getMoviesPrediction(1, 12).then((response) => {
+          MovieService.getMoviesPrediction(1, 12, this.selectedMovieId).then((response) => {
             this.movies = response.data.items
           }).catch((error) => {
             console.log(error.response.data)
           })
       } else if (this.type === 1) {
-          MovieService.getMoviesContentBasedPrediction(1, 12).then((response) => {
+          MovieService.getMoviesContentBasedPrediction(1, 12, this.selectedMovieId).then((response) => {
             this.movies = response.data.items
           }).catch((error) => {
             console.log(error.response.data)

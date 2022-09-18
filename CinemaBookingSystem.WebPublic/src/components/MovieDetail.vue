@@ -53,7 +53,7 @@
               <subsequent-seances/>
             </div>
             <div class="row" v-if="movieRecomendationVisable">
-              <horizontal-movie-recomandation-list/>
+              <horizontal-movie-recomandation-list :selectedMovieId="movie.id"/>
             </div>
         </div>
     </div>

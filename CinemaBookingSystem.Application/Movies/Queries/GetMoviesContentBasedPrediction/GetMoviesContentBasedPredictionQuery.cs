@@ -6,5 +6,6 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesContentBasedPr
     {
         public int PageIndex { get; set; }
         public int PageSize { get; set; }
+        public int SelectedMovieId { get; set; }
     }
 }

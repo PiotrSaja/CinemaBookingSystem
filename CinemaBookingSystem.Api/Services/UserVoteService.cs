@@ -166,7 +166,7 @@ namespace CinemaBookingSystem.Api.Services
 
             List<MovieResultAssign> movieResults = new List<MovieResultAssign>();
 
-            for (var i =0; i < mostPopularMoviesTable.Length; i++)
+            for (var i = 0; i < mostPopularMoviesTable.Length; i++)
             {
                 movieResults.Add(new MovieResultAssign()
                 {
@@ -183,17 +183,18 @@ namespace CinemaBookingSystem.Api.Services
 
         private double[] GetMostPopularMovie(double[][] moviesVotes, double[][] currentUserMovieVote)
         {
-            var moviesCount = new double [moviesVotes[0].Length];
+            var moviesCount = new double [currentUserMovieVote[0].Length];
 
-            for(var i = 0; i < moviesVotes.Length; i++)
+            for(var i = 0; i < currentUserMovieVote[0].Length; i++)
             {
-                var userDistance = UserDistance(currentUserMovieVote[0], moviesVotes[i]);
-                userDistance = 1 / Math.Pow(userDistance, 2);
-                for (var j = 0; j < moviesVotes[i].Length; j++)
+                for (var j = 0; j < moviesVotes.Length; j++)
                 {
-                    if (moviesVotes[i][j] > 0)
+                    var userDistance = UserDistance(currentUserMovieVote[0], moviesVotes[j]);
+                    var fiFunction = 1 / Math.Pow(userDistance, 2);
+
+                    if (moviesVotes[j][i] > 0)
                     {
-                        moviesCount[j] += 1 * userDistance;
+                        moviesCount[i] += 1 * fiFunction;
                     }
                 }
             }
@@ -206,7 +207,7 @@ namespace CinemaBookingSystem.Api.Services
 
         private async Task<double[][]> GetRawDataFromDatabase(List<int> moviesId, List<string> usersId, CancellationToken cancellationToken)
         {
-            var votes = await _context.UserMovieVotes.ToListAsync(cancellationToken);
+            var votes = await _context.UserMovieVotes.Where(x => x.StatusId == 1).ToListAsync(cancellationToken);
 
             var voteUserList = new double[usersId.Count][];
             var i = 0;
@@ -217,7 +218,7 @@ namespace CinemaBookingSystem.Api.Services
                 var y = 0;
                 foreach (var movieId in moviesId)
                 {
-                    var vote = votes.FirstOrDefault(x => x.UserId == userId && x.MovieId == movieId);
+                    var vote = votes.FirstOrDefault(x => x.UserId == userId && x.MovieId == movieId && x.StatusId == 1);
 
                     if (vote != null)
                     {
@@ -456,6 +457,7 @@ namespace CinemaBookingSystem.Api.Services
                 "c898de18-3301-41a4-8226-77ead1fe39eb",
                 "7dbc0b75-5984-4a86-8c90-40f73f142405",
             };
+
             #endregion
 
             context.WriteLine("Rozpoczynam dodawanie głosów");
@@ -470,14 +472,14 @@ namespace CinemaBookingSystem.Api.Services
 
             foreach (var userId in userGuids)
             {
-                //Pobieramy liczbę losowa z przedziału 60% do 80% liczby wszystkich filmów 
-                var low = Convert.ToInt32(0.6 * movies.Count);
+                //Pobieramy liczbę losowa z przedziału 55% do 80% liczby wszystkich filmów 
+                var low = Convert.ToInt32(0.55 * movies.Count);
                 var high = Convert.ToInt32(0.8 * movies.Count);
                 var randomCount = random.Next(low, high);
                 context.WriteLine($"Losujemy filmy dla usera:{userId}\n" +
                                   $"Dodamy {randomCount} ocen filmów");
                 //Sortujemy losowo filmy i pobieramy z góry ilość wylosowaną
-                var userMovies = movies.OrderBy(x => new Guid()).Take(randomCount).ToList();
+                var userMovies = movies.OrderBy(x => Guid.NewGuid()).Take(randomCount).ToList();
 
                 foreach (var movieId in userMovies)
                 {

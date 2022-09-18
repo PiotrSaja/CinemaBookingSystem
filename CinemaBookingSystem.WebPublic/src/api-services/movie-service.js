@@ -36,11 +36,11 @@ export default {
   getUserMovieVote (id) {
     return Axios.get(`${RESOURCE_NAME}/vote/${id}`)
   },
-  getMoviesPrediction (page, limit) {
-    return Axios.get(`${RESOURCE_NAME}/predictions/?page=${page}&limit=${limit}`)
+  getMoviesPrediction (page, limit, selectedMovieId) {
+    return Axios.get(`${RESOURCE_NAME}/k-means/predictions/?page=${page}&limit=${limit}&selectedMovieId=${selectedMovieId}`)
   },
-  getMoviesContentBasedPrediction (page, limit) {
-    return Axios.get(`${RESOURCE_NAME}/content-based/predictions/?page=${page}&limit=${limit}`)
+  getMoviesContentBasedPrediction (page, limit, selectedMovieId) {
+    return Axios.get(`${RESOURCE_NAME}/content-based/predictions/?page=${page}&limit=${limit}&selectedMovieId=${selectedMovieId}`)
   },
   getForSelectingFavorite () {
     return Axios.get(`${RESOURCE_NAME}/selecting-favorite`)
