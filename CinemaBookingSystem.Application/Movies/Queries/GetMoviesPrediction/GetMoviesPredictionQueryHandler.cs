@@ -66,7 +66,7 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesPrediction
                 .AsNoTracking()
                 .PaginateAsync(request.PageIndex, request.PageSize, cancellationToken);
 
-            var moviesDto = _mapper.Map<List<Movie>, List<MovieDetailDto>>(movies.Items.OrderBy(x => Guid.NewGuid()).ToList());
+            var moviesDto = _mapper.Map<List<Movie>, List<MovieDetailDto>>(movies.Items.ToList());
 
             var moviesDetailVm = new MoviesDetailVm()
             {
