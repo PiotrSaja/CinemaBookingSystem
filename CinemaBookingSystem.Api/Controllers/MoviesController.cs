@@ -178,14 +178,14 @@ namespace CinemaBookingSystem.Api.Controllers
 
         #region GetMoviesPredictions()
 
-        [HttpGet("predictions")]
+        [HttpGet("k-means/predictions")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Authorize(Roles = "Administrator,User")]
-        public async Task<IActionResult> GetMoviesPredictions(int page, int limit)
+        public async Task<IActionResult> GetMoviesPredictions(int page, int limit, int selectedMovieId)
         {
-            var result = await Mediator.Send(new GetMoviesPredictionQuery() { PageIndex = page, PageSize = limit});
+            var result = await Mediator.Send(new GetMoviesPredictionQuery() { PageIndex = page, PageSize = limit, SelectedMovieId = selectedMovieId});
 
             return Ok(result);
         }
@@ -231,9 +231,9 @@ namespace CinemaBookingSystem.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Authorize(Roles = "Administrator,User")]
-        public async Task<IActionResult> GetMoviesContentBasedPredictions(int page, int limit)
+        public async Task<IActionResult> GetMoviesContentBasedPredictions(int page, int limit, int selectedMovieId)
         {
-            var result = await Mediator.Send(new GetMoviesContentBasedPredictionQuery() { PageIndex = page, PageSize = limit });
+            var result = await Mediator.Send(new GetMoviesContentBasedPredictionQuery() { PageIndex = page, PageSize = limit, SelectedMovieId = selectedMovieId});
 
             return Ok(result);
         }

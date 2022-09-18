@@ -132,6 +132,8 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesContentBasedPr
                 });
             }
 
+            result.Remove(result.FirstOrDefault(x => x.Movie.Id == request.SelectedMovieId));
+
             var orderedMovie = result.OrderByDescending(x => x.GenreDistance)
                 .ThenByDescending(x => x.ActorDistance)
                 .ThenByDescending(x => x.DirectorDistance)
