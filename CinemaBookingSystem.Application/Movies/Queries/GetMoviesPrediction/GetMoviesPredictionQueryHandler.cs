@@ -44,6 +44,7 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesPrediction
             var movieResultAssigns = result
                 .Where(x=>x.Result > 0)
                 .OrderByDescending(x => x.Result).Select(x=>x.MovieId)
+                .Take(request.PageSize)
                 .ToList();
 
             var watchedFilms = await _context.Bookings
