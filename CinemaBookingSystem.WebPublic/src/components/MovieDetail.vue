@@ -87,34 +87,34 @@ export default {
         if (this.profile === null) {
           this.ratingVisable = false
           this.movieRecomendationVisable = false
+      } else {
+        RecommendationService.getType().then((response) => {
+          if (response.data === 2) {
+              this.movieRecomendationVisable = false
+          }
+        }).catch((error) => {
+          console.log(error.response.data)
+        })
+
+        MovieService.getUserMovieVote(this.$router.currentRoute.params.id).then((response) => {
+          this.voteRating = response.data.rating
+          this.ratingDisabled = true
+        }).catch(error => {
+          if (error.response.status === 404) {
+          this.voteRating = 0
+          }
+        })
       }
       })
       .catch(error => {
         console.log(error)
       })
 
-    RecommendationService.getType().then((response) => {
-      if (response.data === 2) {
-          this.movieRecomendationVisable = false
-      }
-    }).catch((error) => {
-      console.log(error.response.data)
-    })
-
     MovieService.get(this.$router.currentRoute.params.id).then((response) => {
       this.movie = response.data
     }).catch(error => {
       if (error.response.status === 404) {
       this.$router.replace({name: 'NotFound', params: {err: error.response.data.Message}})
-      }
-    })
-
-    MovieService.getUserMovieVote(this.$router.currentRoute.params.id).then((response) => {
-      this.voteRating = response.data.rating
-      this.ratingDisabled = true
-    }).catch(error => {
-      if (error.response.status === 404) {
-      this.voteRating = 0
       }
     })
   },
