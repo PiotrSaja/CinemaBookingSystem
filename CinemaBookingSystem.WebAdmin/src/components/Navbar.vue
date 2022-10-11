@@ -112,19 +112,6 @@ export default {
                             ]
                         }
                     ]
-                },
-                {
-                    key: '2',
-                    label: 'Payments',
-                    icon: 'pi pi-fw pi-wallet',
-                    items: [
-                        {
-                            key: '2_0',
-                            label: 'List',
-                            icon: 'pi pi-fw pi-list',
-                            url: '/payments'
-                        }
-                    ]
                 }
             ]
 		}

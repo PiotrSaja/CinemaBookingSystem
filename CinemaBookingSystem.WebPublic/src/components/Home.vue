@@ -230,6 +230,7 @@ export default {
   position: relative;
   left: 50%;
   transform: translateX(-50%);
+  padding-bottom:10px
 }
 .page {
 min-height: 100vh;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -43,6 +44,7 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesPrediction
             var movieResultAssigns = result
                 .Where(x=>x.Result > 0)
                 .OrderByDescending(x => x.Result).Select(x=>x.MovieId)
+                .Take(request.PageSize)
                 .ToList();
 
             var watchedFilms = await _context.Bookings
@@ -57,6 +59,8 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesPrediction
             {
                 movieResultAssigns.Remove(x);
             });
+
+            movieResultAssigns.Remove(movieResultAssigns.FirstOrDefault(x => x == request.SelectedMovieId));
 
             var movies = await _context.Movies
                 .Where(x => x.StatusId != 0 && movieResultAssigns.Contains(x.Id))

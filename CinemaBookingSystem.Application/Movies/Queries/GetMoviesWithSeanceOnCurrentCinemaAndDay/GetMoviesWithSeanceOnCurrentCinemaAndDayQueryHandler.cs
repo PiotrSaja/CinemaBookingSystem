@@ -30,7 +30,8 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesWithSeanceOnCu
                 .Include(x => x.Seances
                     .Where(x => x.Date.Date == request.Date.Date &&
                                 x.CinemaHall.CinemaId == request.CinemaId &&
-                                x.StatusId != 0))
+                                x.StatusId != 0)
+                    .OrderBy(x=>x.Date))
                 .ToListAsync(cancellationToken);
 
             var moviesWithSeances = movies

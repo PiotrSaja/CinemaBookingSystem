@@ -63,16 +63,13 @@ export default {
 
           this.selectedList.splice(indexInList)
         }
-        console.log(this.selectedList)
       },
       getUserBaseRecomendation () {
           var response = {
             moviesIds: this.selectedList
           }
-
           if (this.selectedList.length > 0) {
                 MovieService.pref(response).then((response) => {
-                console.log(response)
                 this.$router.go()
             })
           }

@@ -3,31 +3,20 @@
     <h5 class="text-white underline font-weight-bold">Recomendation</h5>
       <vue-horizontal-list-autoscroll :items="movies" :options="options">
         <template v-slot:default="{ item }">
-          <div class="movie-grid" @click="onMovieClicked(item.id)">
-            <div class="image-container">
-              <div class="movie-image">
-                <a href="" class="image">
-                  <img class="pic-1" :src="item.posterPath" />
-                </a>
-                <span class="movie-label" v-if="item.imdbRating >= 7.5">Mega hit!</span>
-              </div>
-              <div class="movie-content" v-resize-text>
-                <h3 class="title"><a href="#">{{ item.title }}</a></h3>
-              </div>
-            </div>
-          </div>
+          <movie-item :movieItem="item"></movie-item>
         </template>
       </vue-horizontal-list-autoscroll>
   </div>
 </template>
 
 <script>
-import VueResizeText from 'vue-resize-text'
 import MovieService from '@/api-services/movie-service'
 import RecommendationService from '@/api-services/recommendation-service'
 import VueHorizontalListAutoscroll from 'vue-horizontal-list-autoscroll'
+import MovieItem from '@/components/MovieItem'
 export default {
-  components: { VueHorizontalListAutoscroll, VueResizeText },
+  props: ['selectedMovieId'],
+  components: { VueHorizontalListAutoscroll, MovieItem },
   name: 'HorizontalMovieRecomendationList',
   data () {
     return {
@@ -74,19 +63,18 @@ export default {
       this.type = response.data
 
       if (this.type === 0) {
-          MovieService.getMoviesPrediction(1, 12).then((response) => {
+          MovieService.getMoviesPrediction(1, 12, this.selectedMovieId).then((response) => {
             this.movies = response.data.items
           }).catch((error) => {
             console.log(error.response.data)
           })
       } else if (this.type === 1) {
-          MovieService.getMoviesContentBasedPrediction(1, 12).then((response) => {
+          MovieService.getMoviesContentBasedPrediction(1, 12, this.selectedMovieId).then((response) => {
             this.movies = response.data.items
           }).catch((error) => {
             console.log(error.response.data)
           })
       }
-      console.log(this.type)
     }).catch((error) => {
       console.log(error.response.data)
     })
@@ -103,104 +91,6 @@ export default {
 </script>
 
 <style scoped>
-.movie-grid{
-    font-family: 'Montserrat', sans-serif;
-    text-align: center;
-    margin: 20px 15px 0;
-    border-radius: 10px;
-    box-shadow:  0 0 3px rgba(0,0,0,0.1);
-    transition: all 0.5s;
-}
-.movie-grid .movie-image img{
-    width: 100%;
-    height: 300px;
-}
-.movie-grid:hover{
-  box-shadow:  0 0 30px rgba(0,0,0,0.4);
-  transform: scale(1.05);
-}
-@media only screen and (min-width: 1px) and (max-width: 576px) {
-  .movie-grid {
-    font-family: 'Montserrat', sans-serif;
-    text-align: center;
-    margin: 15px 0px 0;
-    border-radius: 10px;
-    box-shadow:  0 0 3px rgba(0,0,0,0.1);
-    transition: all 0.5s;
-  }
-  .movie-grid .movie-image img{
-    width: 100%;
-    height: 215px;
-}
-}
-.movie-grid .movie-image{ position: relative; }
-.movie-grid .movie-image a.image{
-    border-radius: 10px 10px 0 0;
-    overflow: hidden;
-    display: block;
-}
-.movie-grid .movie-label{
-    color: #fff;
-    background: #FF5555;
-    font-size: 13px;
-    text-transform: uppercase;
-    padding: 2px 6px;
-    border-radius: 3px;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    top: -3px;
-}
-.movie-grid .movie-label-soon{
-    color: #fff;
-    background: #55c9ff;
-    font-size: 13px;
-    text-transform: uppercase;
-    padding: 2px 6px;
-    border-radius: 3px;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    top: -3px;
-}
-.movie-grid .movie-content{
-    background-color: #fff;
-    text-align: left;
-    padding: 5px 5px;
-    border-top: 1px solid transparent;
-    border-radius: 0 0 10px 10px;
-    transition: all 0.3s;
-    min-height: 67px;
-    display: flex;
-    justify-content: center; /* align horizontal */
-    align-items: center; /* align vertical */
-}
-.movie-grid:hover .movie-content{ border-top-color: #dbdbdb; }
-.movie-grid .title{
-    text-align: center;
-    font-size: 15.5px;
-    font-weight: bold;
-    text-transform: capitalize;
-    margin: 0;
-}
-.movie-grid .title a{
-    color: #323b45;
-    transition: all 0.4s ease-out;
-}
-.movie-grid .title a:hover{ color: #FF9100; }
-@media screen and (min-width: 577px) and (max-width:990px){
-    .movie-grid{ margin: 5px 15px 30px; }
-}
-.underline {
-  margin-top: 15px;
-  margin-bottom: 30px;
-  text-align: center;
-  width:150px;
-  border-bottom: 2px solid #FF9100;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-}
 .page {
 min-height: 100vh;
 }

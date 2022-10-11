@@ -16,18 +16,26 @@
             </div></b-carousel-slide>
             <b-carousel-slide
             class="carousel-item"
-            img-src="https://image.tmdb.org/t/p/original/oQPbZ5e6J9fuAyv4Gl0mMZMIyPI.jpg"
+            img-src="https://www.themoviedb.org/t/p/original/AaV1YIdWKnjAIAOe8UUKBFm327v.jpg"
             >
              <div class="carousel-caption d-none d-md-block">
-                <h1>The King's Man</h1>
+                <h1>Top Gun: Maverick</h1>
                 <b-button pill @click="onSeanceClicked()">Buy tickets now</b-button>
             </div></b-carousel-slide>
             <b-carousel-slide
             class="carousel-item"
-            img-src="https://image.tmdb.org/t/p/original/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg"
+            img-src="https://www.themoviedb.org/t/p/original/coJAeWD4ny2z6rtTSZ3OQAZ3wYH.jpg"
             >
              <div class="carousel-caption d-none d-md-block">
-                <h1>Free Guy</h1>
+                <h1>Bullet Train</h1>
+                <b-button pill @click="onSeanceClicked()">Buy tickets now</b-button>
+            </div></b-carousel-slide>
+            <b-carousel-slide
+            class="carousel-item"
+            img-src="https://www.themoviedb.org/t/p/original/skLAvmB4OmJS89hZodRzbGV0EPo.jpg"
+            >
+             <div class="carousel-caption d-none d-md-block">
+                <h1>Lightyear</h1>
                 <b-button pill @click="onSeanceClicked()">Buy tickets now</b-button>
             </div></b-carousel-slide>
         </b-carousel>

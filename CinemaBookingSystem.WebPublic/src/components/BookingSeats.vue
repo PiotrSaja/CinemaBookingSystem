@@ -23,29 +23,20 @@
         <div class="screen col-12 col-sm-8 col-md-6 col-lg-6 col-xl-6" :style="{backgroundImage:`url(${seance.movie.backgroundImagePath})`}"></div>
         <div class="col-0 col-sm-2 col-md-3 col-lg-3 col-xl-3"></div>
         <table class="mx-auto">
-            <!--<tr>
-              <th></th>
-              <th class="pl-3 font-weight-normal">1</th>
-              <th class="pl-3 font-weight-normal">2</th>
-              <th class="pl-3 font-weight-normal">3</th>
-              <th class="pl-3 font-weight-normal">4</th>
-              <th class="pl-3 font-weight-normal">5</th>
-            </tr>-->
             <tr v-for='(item,index) in seance.cinemaHall.numberOfRows + 1' :key='index'>
-              <!--<th class="pt-3 pr-5 font-weight-normal">Row: {{index}}</th>-->
                 <td v-for="seat in seats.items"
-                :key="seat.id" v-if='seat.cinemaSeat.row === index' class="pt-2" style="width: 30px">
-                  <svg style="width:20px;height:20px; cursor: pointer" viewBox="0 0 20 20" v-if='seat.cinemaSeat.seatType === 1 && seat.seatStatus === false'>
-                  <path :style="selectedIds.indexOf(seat.id) !== -1 ? { 'fill': '#FF9100' } : null" @click="onSeatSelected(seat.id)" class="can-select" fill="currentColor" d="M5 9.15V7C5 5.9 5.9 5 7 5H17C18.1 5 19 5.9 19 7V9.16C17.84 9.57 17 10.67 17 11.97V14H7V11.96C7 10.67 6.16 9.56 5 9.15M20 10C18.9 10 18 10.9 18 12V15H6V12C6 10.9 5.11 10 4 10S2 10.9 2 12V17C2 18.1 2.9 19 4 19V21H6V19H18V21H20V19C21.1 19 22 18.1 22 17V12C22 10.9 21.1 10 20 10Z" />
+                :key="seat.id" v-if='seat.cinemaSeat.row === index' class="pt-1 pb-1 borderOnHover" style="width: 30px" @click="onSeatSelected(seat.id, seat.seatStatus, seat.cinemaSeat.seatType)">
+                  <svg style="width:24px;height:20px; cursor: pointer" viewBox="0 0 20 20" v-if='seat.cinemaSeat.seatType === 1 && seat.seatStatus === false'>
+                  <path :style="selectedIds.indexOf(seat.id) !== -1 ? { 'fill': '#FF9100' } : null" class="can-select" fill="currentColor" d="M5 9.15V7C5 5.9 5.9 5 7 5H17C18.1 5 19 5.9 19 7V9.16C17.84 9.57 17 10.67 17 11.97V14H7V11.96C7 10.67 6.16 9.56 5 9.15M20 10C18.9 10 18 10.9 18 12V15H6V12C6 10.9 5.11 10 4 10S2 10.9 2 12V17C2 18.1 2.9 19 4 19V21H6V19H18V21H20V19C21.1 19 22 18.1 22 17V12C22 10.9 21.1 10 20 10Z" />
                   </svg>
-                  <svg style="width:20px;height:20px" viewBox="0 0 20 20" v-else-if='seat.cinemaSeat.seatType === 1 && seat.seatStatus === true'>
+                  <svg style="width:24px;height:20px" viewBox="0 0 20 20" v-else-if='seat.cinemaSeat.seatType === 1 && seat.seatStatus === true'>
                   <path :style="selectedIds.indexOf(seat.id) !== -1 ? { 'fill': '#FF9100' } : null" fill="gray" d="M5 9.15V7C5 5.9 5.9 5 7 5H17C18.1 5 19 5.9 19 7V9.16C17.84 9.57 17 10.67 17 11.97V14H7V11.96C7 10.67 6.16 9.56 5 9.15M20 10C18.9 10 18 10.9 18 12V15H6V12C6 10.9 5.11 10 4 10S2 10.9 2 12V17C2 18.1 2.9 19 4 19V21H6V19H18V21H20V19C21.1 19 22 18.1 22 17V12C22 10.9 21.1 10 20 10Z" />
                   </svg>
-                  <svg style="width:20px;height:20px" viewBox="0 0 20 20" v-else-if='seat.seatStatus === true'>
+                  <svg style="width:24px;height:20px" viewBox="0 0 20 20" v-else-if='seat.seatStatus === true'>
                   <path :style="selectedIds.indexOf(seat.id) !== -1 ? { 'fill': '#FF9100' } : null" fill="gray" d="M4,18V21H7V18H17V21H20V15H4V18M19,10H22V13H19V10M2,10H5V13H2V10M17,13H7V5A2,2 0 0,1 9,3H15A2,2 0 0,1 17,5V13Z" />
                   </svg>
-                  <svg style="width:20px;height:20px;cursor: pointer" viewBox="0 0 20 20" v-else>
-                  <path :style="selectedIds.indexOf(seat.id) !== -1 ? { 'fill': '#FF9100' } : null" @click="onSeatSelected(seat.id)" class="can-select" fill="currentColor" d="M4,18V21H7V18H17V21H20V15H4V18M19,10H22V13H19V10M2,10H5V13H2V10M17,13H7V5A2,2 0 0,1 9,3H15A2,2 0 0,1 17,5V13Z" />
+                  <svg style="width:24px;height:20px;cursor: pointer" viewBox="0 0 20 20" v-else>
+                  <path :style="selectedIds.indexOf(seat.id) !== -1 ? { 'fill': '#FF9100' } : null" class="can-select" fill="currentColor" d="M4,18V21H7V18H17V21H20V15H4V18M19,10H22V13H19V10M2,10H5V13H2V10M17,13H7V5A2,2 0 0,1 9,3H15A2,2 0 0,1 17,5V13Z" />
                   </svg>
                 </td>
             </tr>
@@ -53,7 +44,7 @@
       </div>
       <div class="row mt-5 mb-3">
         <div class="col-md-6 col-6">
-          <p>Choosen seats:{{selectedIds}}</p>
+          <p>Choosen seats:{{seats.items.filter(seance => selectedIds.includes(seance.id)).map(function (p) { return "row "+p.cinemaSeat.row+" no. "+p.cinemaSeat.seatNumber; })}}</p>
         </div>
         <div class="col-md-6 col-6 text-right">
           <b-button v-on:click="goToBookingUserInformation">Next step</b-button>
@@ -102,8 +93,10 @@ export default {
     })
   },
   methods: {
-    onSeatSelected (seatId) {
-      if (this.selectedIds.indexOf(seatId) !== -1) {
+    onSeatSelected (seatId, seatStatus, seatType) {
+      if (seatStatus === true && seatType === 1) {
+      } else if (seatStatus === true) {
+      } else if (this.selectedIds.indexOf(seatId) !== -1) {
         this.selectedIds.splice(this.selectedIds.indexOf(seatId), 1)
         } else if (this.selectedIds.length === 5) {
           this.alertMessage = 'You can select 5 seats on one reservation'
@@ -191,6 +184,10 @@ min-height: 100vh;
 .custom-margin-top {
   margin-top: 10px
 }
+}
+
+.borderOnHover:hover {
+  border-bottom: 0.8px solid rgb(255, 145, 0);
 }
 
 </style>
