@@ -1,0 +1,67 @@
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: qUgeyvYnOKyMy9HRpGMauKlJdsyq1QdIJUtp8Hz6HarKKCIiVm7m3ITHsBFQSMkEcrGXQy4FNHFX6zKq5NTzysbE0EVJnh3HZwl6DkAloQu7GQ1NZVVNnYEFpkAcxdun
+      ACCEPT_EULA: "Y"
+
+  # cinema-booking-system-api:
+  #   image: cinema-booking-system-api
+  #   restart: unless-stopped
+  #   build:
+  #     context: .
+  #     dockerfile: CinemaBookingSystem.Api/Dockerfile
+  #   environment:
+  #     - ConnectionStrings.CinemaDatabase=Server=db;Database=CinemaBookingSystem;Trusted_Connection=False;User Id=sa;Password=qUgeyvYnOKyMy9HRpGMauKlJdsyq1QdIJUtp8Hz6HarKKCIiVm7m3ITHsBFQSMkEcrGXQy4FNHFX6zKq5NTzysbE0EVJnh3HZwl6DkAloQu7GQ1NZVVNnYEFpkAcxdun;MultipleActiveResultSets=true
+  #   ports:
+  #     - "44334:44334"
+  #   depends_on:
+  #     - db
+  #   networks:
+  #       - internal
+
+  identityserver:
+    image: identityserver
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: IdentityServer/Dockerfile
+    environment:
+      - ConnectionStrings.DefaultConnection=Server=db;Database=CinemaBookingSystem;Trusted_Connection=False;User Id=sa;Password=qUgeyvYnOKyMy9HRpGMauKlJdsyq1QdIJUtp8Hz6HarKKCIiVm7m3ITHsBFQSMkEcrGXQy4FNHFX6zKq5NTzysbE0EVJnh3HZwl6DkAloQu7GQ1NZVVNnYEFpkAcxdun;MultipleActiveResultSets=true
+    ports:
+      - "5001:5001"
+    depends_on:
+      - db
+    networks:
+        - internal
+
+  # web-public:
+  #   image: webpublic
+  #   restart: unless-stopped
+  #   build:
+  #     context: .
+  #     dockerfile: ./CinemaBookingSystem.WebPublic/Dockerfile
+  #     args:
+  #       VUE_APP_API_URL: https://localhost:443
+  #   ports:
+  #     - "443:443"
+  #   depends_on:
+  #     - cinema-booking-system-api
+
+  # web-admin:
+  #   image: webadmin
+  #   restart: unless-stopped
+  #   build:
+  #     context: .
+  #     dockerfile: ./CinemaBookingSystem.WebAdmin/Dockerfile
+  #     args:
+  #       VUE_APP_API_URL: https://localhost:44301
+  #   ports:
+  #     - "44301:44301"
+  #   depends_on:
+  #     - cinema-booking-system-api
+
+networks:
+  internal:
