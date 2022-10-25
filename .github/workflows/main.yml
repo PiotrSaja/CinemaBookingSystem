@@ -14,9 +14,9 @@ jobs:
     - uses: actions/checkout@master
 
     - name: Setup API
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v1.2.x
       with:
-        dotnet-version: 5.0
+        dotnet-version: 5.0.x
     
     # dotnet build and publish
     - name: Build API
@@ -36,9 +36,9 @@ jobs:
       
      #Identity 
     - name: Setup Identity
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v1.2.x
       with:
-        dotnet-version: 5.0
+        dotnet-version: 5.0.x
 
     # dotnet build and publish
     - name: Build Identity
