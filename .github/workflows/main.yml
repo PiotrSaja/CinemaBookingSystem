@@ -66,15 +66,15 @@ jobs:
           cache: 'npm'
     
     - name: Install WebPublic
-      working-directory: ./CinemaBookingSystem.WebPublic
+      working-directory: './CinemaBookingSystem.WebPublic'
       run: npm install
       
     - name: Build WebPublic
-      working-directory: ./CinemaBookingSystem.WebPublic
+      working-directory: './CinemaBookingSystem.WebPublic'
       run: npm run build
       
     - name: Deploy WebPublic to IIS
-      working-directory: ./CinemaBookingSystem.WebPublic
+      working-directory: './CinemaBookingSystem.WebPublic'
       run: |
         iisreset /stop
         Copy-Item ./dist/* C:/projects/web-public -Recurse -Force
@@ -89,15 +89,15 @@ jobs:
           cache: 'npm'
     
     - name: Install WebAdmin
-      working-directory: ./CinemaBookingSystem.WebAdmin
+      working-directory: './CinemaBookingSystem.WebAdmin'
       run: npm install
       
     - name: Build WebAdmin
-      working-directory: ./CinemaBookingSystem.WebAdmin
+      working-directory: './CinemaBookingSystem.WebAdmin'
       run: npm run build
       
     - name: Deploy WebPublic to IIS
-      working-directory: ./CinemaBookingSystem.WebAdmin
+      working-directory: './CinemaBookingSystem.WebAdmin'
       run: |
         iisreset /stop
         Copy-Item ./dist/* C:/projects/web-admin -Recurse -Force
