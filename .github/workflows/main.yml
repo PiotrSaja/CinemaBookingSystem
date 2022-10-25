@@ -13,21 +13,16 @@ jobs:
     steps:
     - uses: actions/checkout@master
     
-    - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1.0.5
-
-    - name: Restore dependencies API
-      run: nuget restore CinemaBookingSystem.sln
-      
-    - name: Restore dependencies IDENTITY
-      run: nuget restore IdentityServer/IdentityServer.csproj
-
     - name: Setup API
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 5.0.x
     
     # dotnet build and publish
+    
+    - name: Restore dependencies API
+      run: dotnet restore
+      
     - name: Build API
       run: dotnet build --configuration Release --no-restore CinemaBookingSystem.sln
 
