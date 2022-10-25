@@ -1,0 +1,96 @@
+name: Deploy to IIS
+
+on: 
+   push:
+     branches:
+       - "master"
+     
+   workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+
+    runs-on: self-hosted
+    
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup API
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0
+    
+    # dotnet build and publish
+    - name: Build API
+      run: dotnet build --configuration Release .\api CinemaBookingSystem.sln
+
+    - name: Publish API
+      run: |
+        dotnet publish -c Release -o api .\api CinemaBookingSystem.sln
+    - name: Deploy API to IIS
+      run: |
+        iisreset /stop
+        Copy-Item ./api/* C:/projects/api -Recurse -Force
+        iisreset /start
+    
+    - name: Check API - HC
+      run: curl https://localhost:44351/api/hc
+      
+     #Identity 
+    - name: Setup Identity
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0
+
+    # dotnet build and publish
+    - name: Build Identity
+      run: dotnet build --configuration Release .\identity IdentityServer/IdentityServer.csproj
+
+    - name: Publish Identity
+      run: |
+        dotnet publish -c Release -o identity .\identity IdentityServer/IdentityServer.csproj
+    - name: Deploy Identity to IIS
+      run: |
+        iisreset /stop
+        Copy-Item ./identity/* C:/projects/identity -Recurse -Force
+        iisreset /start
+    # Web-Public
+    
+    - name: Setup Identity   
+    - uses: actions/setup-node@master
+    
+    - name: Install WebPublic
+      working-directory: ./CinemaBookingSystem.WebPublic
+      run: npm install
+      
+    - name: Build WebPublic
+      working-directory: ./CinemaBookingSystem.WebPublic
+      run: npm run build
+      
+    - name: Deploy WebPublic to IIS
+      working-directory: ./CinemaBookingSystem.WebPublic
+      run: |
+        iisreset /stop
+        Copy-Item ./dist/* C:/projects/web-public -Recurse -Force
+        iisreset /start
+        
+    # Web-Admin
+    
+    - name: Setup Identity   
+    - uses: actions/setup-node@master
+    
+    - name: Install WebAdmin
+      working-directory: ./CinemaBookingSystem.WebAdmin
+      run: npm install
+      
+    - name: Build WebAdmin
+      working-directory: ./CinemaBookingSystem.WebAdmin
+      run: npm run build
+      
+    - name: Deploy WebPublic to IIS
+      working-directory: ./CinemaBookingSystem.WebAdmin
+      run: |
+        iisreset /stop
+        Copy-Item ./dist/* C:/projects/web-admin -Recurse -Force
+        iisreset /start
+
