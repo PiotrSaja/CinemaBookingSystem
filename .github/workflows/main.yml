@@ -43,7 +43,7 @@ jobs:
 
     # dotnet build and publish
     - name: Build Identity
-      run: dotnet build --configuration Release .\identity IdentityServer/IdentityServer.csproj
+      run: dotnet build --configuration Release --no-restore IdentityServer/IdentityServer.csproj
 
     - name: Publish Identity
       run: |
