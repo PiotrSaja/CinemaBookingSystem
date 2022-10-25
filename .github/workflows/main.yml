@@ -59,8 +59,11 @@ jobs:
         iisreset /start
     # Web-Public
     
-    - name: Setup Identity   
-      uses: actions/setup-node@master
+    - name: Setup Web-Public
+      uses: actions/setup-node@v3
+      with:
+          node-version: 16
+          cache: 'npm'
     
     - name: Install WebPublic
       working-directory: ./CinemaBookingSystem.WebPublic
@@ -79,8 +82,11 @@ jobs:
         
     # Web-Admin
     
-    - name: Setup Identity   
-      uses: actions/setup-node@master
+    - name: Setup Web-Admin   
+      uses: actions/setup-node@v3
+      with:
+          node-version: 16
+          cache: 'npm'
     
     - name: Install WebAdmin
       working-directory: ./CinemaBookingSystem.WebAdmin
