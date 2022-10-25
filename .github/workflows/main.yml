@@ -19,12 +19,12 @@ jobs:
         dotnet-version: 5.0.x
     
     # dotnet build and publish
-    #- name: Build API
-    #  run: dotnet build --configuration Release .\api CinemaBookingSystem.sln
+    - name: Build API
+      run: dotnet build --configuration Release --no-restore CinemaBookingSystem.sln
 
     - name: Publish API
       run: |
-        dotnet publish -c Release -o api .\api CinemaBookingSystem.sln
+        dotnet publish -c Release --output ./api CinemaBookingSystem.sln
     - name: Deploy API to IIS
       run: |
         iisreset /stop
@@ -46,7 +46,7 @@ jobs:
 
     - name: Publish Identity
       run: |
-        dotnet publish -c Release -o identity .\identity IdentityServer/IdentityServer.csproj
+        dotnet publish -c Release --output .\identity IdentityServer/IdentityServer.csproj
     - name: Deploy Identity to IIS
       run: |
         iisreset /stop
