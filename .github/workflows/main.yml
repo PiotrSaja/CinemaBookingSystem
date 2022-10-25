@@ -62,7 +62,7 @@ jobs:
     - name: Setup Web-Public
       uses: actions/setup-node@v3
       with:
-          node-version: 16
+          node-version: 16.13.1
           cache: 'npm'
           cache-dependency-path: "./CinemaBookingSystem.WebPublic/package-lock.json"
     
@@ -86,7 +86,7 @@ jobs:
     - name: Setup Web-Admin   
       uses: actions/setup-node@v3
       with:
-          node-version: 16
+          node-version: 16.13.1
           cache: 'npm'
           cache-dependency-path: "./CinemaBookingSystem.WebAdmin/package-lock.json"
     
