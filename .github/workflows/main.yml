@@ -19,8 +19,8 @@ jobs:
         dotnet-version: 5.0.x
     
     # dotnet build and publish
-    - name: Build API
-      run: dotnet build --configuration Release .\api CinemaBookingSystem.sln
+    #- name: Build API
+    #  run: dotnet build --configuration Release .\api CinemaBookingSystem.sln
 
     - name: Publish API
       run: |
