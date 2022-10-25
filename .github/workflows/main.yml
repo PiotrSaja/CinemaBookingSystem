@@ -57,7 +57,7 @@ jobs:
     # Web-Public
     
     - name: Setup Identity   
-    - uses: actions/setup-node@master
+      uses: actions/setup-node@master
     
     - name: Install WebPublic
       working-directory: ./CinemaBookingSystem.WebPublic
@@ -77,7 +77,7 @@ jobs:
     # Web-Admin
     
     - name: Setup Identity   
-    - uses: actions/setup-node@master
+      uses: actions/setup-node@master
     
     - name: Install WebAdmin
       working-directory: ./CinemaBookingSystem.WebAdmin
