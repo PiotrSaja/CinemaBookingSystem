@@ -40,6 +40,10 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 5.0.x
+        
+    - name: Restore dependencies Identity
+      working-directory: ./IdentityServer
+      run: dotnet restore
 
     # dotnet build and publish
     - name: Build Identity
