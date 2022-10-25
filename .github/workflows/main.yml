@@ -35,9 +35,6 @@ jobs:
         Copy-Item ./api/* C:/projects/api -Recurse -Force
         iisreset /start
     
-    - name: Check API - HC
-      run: curl https://localhost:44351/api/hc
-      
      #Identity 
     - name: Setup Identity
       uses: actions/setup-dotnet@v3
