@@ -97,6 +97,7 @@ jobs:
     - name: Build WebAdmin
       working-directory: ./CinemaBookingSystem.WebAdmin/
       run: npm run build
+      continue-on-error: true
       
     - name: Deploy WebPublic to IIS
       working-directory: ./CinemaBookingSystem.WebAdmin/
