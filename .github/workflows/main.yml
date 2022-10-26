@@ -68,7 +68,7 @@ jobs:
     
     - name: Install WebPublic
       working-directory: ./CinemaBookingSystem.WebPublic/
-      run: npm i
+      run: npm --no-deprecation i
       
     - name: Build WebPublic
       working-directory: ./CinemaBookingSystem.WebPublic/
@@ -92,7 +92,7 @@ jobs:
     
     - name: Install WebAdmin
       working-directory: ./CinemaBookingSystem.WebAdmin/
-      run: npm i
+      run: npm --no-deprecation i
       
     - name: Build WebAdmin
       working-directory: ./CinemaBookingSystem.WebAdmin/
