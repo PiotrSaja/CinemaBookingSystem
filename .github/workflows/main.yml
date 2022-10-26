@@ -72,7 +72,7 @@ jobs:
       
     - name: Build WebPublic
       working-directory: ./CinemaBookingSystem.WebPublic/
-      run: npm run --silent  build
+      run: npm run build
       
     - name: Deploy WebPublic to IIS
       working-directory: ./CinemaBookingSystem.WebPublic/
@@ -96,7 +96,7 @@ jobs:
       
     - name: Build WebAdmin
       working-directory: ./CinemaBookingSystem.WebAdmin/
-      run: npm run --silent build
+      run: npm run build
       
     - name: Deploy WebPublic to IIS
       working-directory: ./CinemaBookingSystem.WebAdmin/
