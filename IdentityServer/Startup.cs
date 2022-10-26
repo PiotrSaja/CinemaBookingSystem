@@ -39,6 +39,18 @@ namespace IdentityServer
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", policy =>
+                {
+                    policy.AllowAnyOrigin();
+                    policy.AllowAnyHeader();
+                    policy.WithOrigins("https://saja.website");
+                    policy.WithOrigins("https://saja.website:44301");
+                    policy.WithOrigins("https://saja.website:44351");
+                });
+            });
+
             services.AddTransient<IProfileService, ProfileService>();
 
             var builder = services.AddIdentityServer(options =>
@@ -72,6 +84,8 @@ namespace IdentityServer
             }
 
             app.UseStaticFiles();
+
+            app.UseCors("AllowAll");
 
             app.UseRouting();
             app.UseIdentityServer();
