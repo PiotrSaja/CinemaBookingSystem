@@ -45,9 +45,9 @@ namespace IdentityServer
                 {
                     policy.AllowAnyOrigin();
                     policy.AllowAnyHeader();
-                    policy.WithOrigins("https://cinema-booking-system.francecentral.cloudapp.azure.com");
-                    policy.WithOrigins("https://cinema-booking-system.francecentral.cloudapp.azure.com:44301");
-                    policy.WithOrigins("https://cinema-booking-system.francecentral.cloudapp.azure.com:44351");
+                    policy.WithOrigins("https://saja.website");
+                    policy.WithOrigins("https://saja.website:44301");
+                    policy.WithOrigins("https://saja.website:44351");
                 });
             });
 

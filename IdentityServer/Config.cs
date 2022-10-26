@@ -42,8 +42,8 @@ namespace IdentityServer
                     AlwaysSendClientClaims = true,
                     AlwaysIncludeUserClaimsInIdToken = true,
                     AllowAccessTokensViaBrowser = true,
-                    RedirectUris = {"https://cinema-booking-system.francecentral.cloudapp.azure.com:44351/swagger/oauth2-redirect.html"},
-                    AllowedCorsOrigins = { "https://cinema-booking-system.francecentral.cloudapp.azure.com:44351" }
+                    RedirectUris = {"https://saja.website:44351/swagger/oauth2-redirect.html"},
+                    AllowedCorsOrigins = { "https://saja.website:44351" }
                 },
 
                 new Client
@@ -57,9 +57,9 @@ namespace IdentityServer
                     AlwaysSendClientClaims = true,
                     AlwaysIncludeUserClaimsInIdToken = true,
                     AllowAccessTokensViaBrowser = true,
-                    RedirectUris = {"https://cinema-booking-system.francecentral.cloudapp.azure.com/login"},
-                    PostLogoutRedirectUris = { "https://cinema-booking-system.francecentral.cloudapp.azure.com/logout" },
-                    AllowedCorsOrigins = { "https://cinema-booking-system.francecentral.cloudapp.azure.com" }
+                    RedirectUris = {"https://saja.website/login"},
+                    PostLogoutRedirectUris = { "https://saja.website/logout" },
+                    AllowedCorsOrigins = { "https://saja.website" }
                 },
 
                 new Client
@@ -73,9 +73,9 @@ namespace IdentityServer
                     AlwaysSendClientClaims = true,
                     AlwaysIncludeUserClaimsInIdToken = true,
                     AllowAccessTokensViaBrowser = true,
-                    RedirectUris = {"https://cinema-booking-system.francecentral.cloudapp.azure.com:44301/login"},
-                    PostLogoutRedirectUris = { "https://cinema-booking-system.francecentral.cloudapp.azure.com:44301/logout" },
-                    AllowedCorsOrigins = { "https://cinema-booking-system.francecentral.cloudapp.azure.com:44301" }
+                    RedirectUris = {"https://saja.website:44301/login"},
+                    PostLogoutRedirectUris = { "https://saja.website:44301/logout" },
+                    AllowedCorsOrigins = { "https://saja.website:44301" }
                 }
             };
     }

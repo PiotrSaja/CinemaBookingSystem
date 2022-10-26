@@ -1,6 +1,6 @@
 import Axios from 'axios'
 
-const RESOURCE_NAME = 'https://cinema-booking-system.francecentral.cloudapp.azure.com:44351/api/cinemas'
+const RESOURCE_NAME = 'https://saja.website:44351/api/cinemas'
 
 export default {
   getAll () {
