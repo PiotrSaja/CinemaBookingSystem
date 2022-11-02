@@ -20,7 +20,7 @@
         <hr>
         <b-navbar-nav right>
         <b-nav-item v-if="!isUserLoggedIn" @click="onLogin()">Login</b-nav-item>
-        <b-nav-item v-if="!isUserLoggedIn" href="https://cinema-booking-system.francecentral.cloudapp.azure.com:5001/Account/Register?ReturnUrl=https://cinema-booking-system.francecentral.cloudapp.azure.com">Sign-up</b-nav-item>
+        <b-nav-item v-if="!isUserLoggedIn" href="https://saja.website:5001/Account/Register?ReturnUrl=https://saja.website">Sign-up</b-nav-item>
         <b-nav-item v-bind:class="{active: activeElement === 'Profile'}" v-if="isUserLoggedIn" to="/profile">{{ profile.email }}</b-nav-item>
         <b-nav-item v-if="isUserLoggedIn" @click="onLogout()">Logout</b-nav-item>
         </b-navbar-nav>
