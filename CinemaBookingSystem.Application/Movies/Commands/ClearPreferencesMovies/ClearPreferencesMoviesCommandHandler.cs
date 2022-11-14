@@ -25,10 +25,8 @@ namespace CinemaBookingSystem.Application.Movies.Commands.ClearPreferencesMovies
         {
             var userMovie = await _context.UserPreferencesMovies.Where(x => x.UserId == _userService.Id).ToListAsync(cancellationToken);
 
-            if (userMovie.Count == 0)
-                return false;
-            
-            _context.UserPreferencesMovies.RemoveRange(userMovie);
+            foreach (var movie in userMovie)
+                _context.UserPreferencesMovies.Remove(movie);
 
             await _context.SaveChangesAsync(cancellationToken);
 
