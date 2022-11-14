@@ -37,7 +37,7 @@ namespace CinemaBookingSystem.Application.Movies.Commands.AddPreferencesMovie
 
                 var userMovie =
                     await _context.UserPreferencesMovies.FirstOrDefaultAsync(x =>
-                        x.MovieId == movieId && x.UserId == _userService.Id, cancellationToken);
+                        x.MovieId == movieId && x.UserId == _userService.Id && x.StatusId != 0, cancellationToken);
 
                 if (userMovie != null)
                     throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "You cannot add preferences of movies");

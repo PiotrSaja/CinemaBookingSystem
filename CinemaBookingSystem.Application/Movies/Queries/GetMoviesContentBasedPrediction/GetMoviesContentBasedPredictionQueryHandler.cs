@@ -46,7 +46,7 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesContentBasedPr
                 .ThenInclude(x=>x.Director)
                 .Include(x=>x.Movie)
                 .ThenInclude(x=>x.Genres)
-                .Where(x => x.UserId == _userService.Id)
+                .Where(x => x.UserId == _userService.Id && x.StatusId != 0)
                 .ToListAsync(cancellationToken);
 
             //Prepare user profile for content base filtering

@@ -23,7 +23,7 @@ namespace CinemaBookingSystem.Application.Movies.Commands.ClearPreferencesMovies
         #region Handle()
         public async Task<bool> Handle(ClearPreferencesMoviesCommand request, CancellationToken cancellationToken)
         {
-            var userMovie = await _context.UserPreferencesMovies.Where(x => x.UserId == _userService.Id).ToListAsync(cancellationToken);
+            var userMovie = await _context.UserPreferencesMovies.Where(x => x.UserId == _userService.Id && x.StatusId != 0).ToListAsync(cancellationToken);
 
             foreach (var movie in userMovie)
                 _context.UserPreferencesMovies.Remove(movie);
