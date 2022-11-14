@@ -1,6 +1,6 @@
 import Axios from 'axios'
 
-const RESOURCE_NAME = 'https://saja.website:44351/api/seances'
+const RESOURCE_NAME = 'https://localhost:44334/api/seances'
 
 export default {
   getAll (page, limit) {
