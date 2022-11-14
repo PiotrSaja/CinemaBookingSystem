@@ -14,10 +14,11 @@
       <div class="col-md-12">
         <template v-if="profile !== null">
           <p>Recomendation type</p>
+          <div>Picked: {{ picked }}</div>
           <input type="radio" id="one" value="collaborative-filtering" v-model="picked" />
           <label for="one">Collaborative Filtering</label>
           <input type="radio" id="two" value="content-based" v-model="picked" />
-          <label for="two">Content-Based</label>
+          <label for="two">Content-Based</label><br>
           <b-button @click="clearMoviesPreferences()" >Clear movies preferences</b-button>
         </template>
       </div>
@@ -66,7 +67,8 @@ export default {
       totalBookings: 0,
       newUser: false,
       moviesPrefList: [],
-      showMoviesPref: true
+      showMoviesPref: true,
+      picked: null
     }
   },
   mounted () {

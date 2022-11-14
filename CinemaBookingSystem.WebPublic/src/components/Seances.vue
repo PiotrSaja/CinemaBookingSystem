@@ -41,8 +41,7 @@
                               placeholder="Order by"
                               style="width:100%"
                               :options="sortOptions"
-                              clearable
-                              :clear-icon-cb="fetchMoviesWithShows()"
+                              :clearable="false"
                               v-model="sortType"
                               label="name"
                               id="value"

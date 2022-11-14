@@ -30,6 +30,8 @@ namespace CinemaBookingSystem.Application.Movies.Commands.ClearPreferencesMovies
             
             _context.UserPreferencesMovies.RemoveRange(userMovie);
 
+            await _context.SaveChangesAsync(cancellationToken);
+
             return true;
         }
         #endregion
