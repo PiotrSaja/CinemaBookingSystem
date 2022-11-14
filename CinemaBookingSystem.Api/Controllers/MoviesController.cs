@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using CinemaBookingSystem.Application.Movies.Commands.AddMovieVote;
 using CinemaBookingSystem.Application.Movies.Commands.AddPreferencesMovie;
+using CinemaBookingSystem.Application.Movies.Commands.ClearPreferencesMovies;
 using CinemaBookingSystem.Application.Movies.Commands.CreateMovieFromExternalApi;
 using CinemaBookingSystem.Application.Movies.Commands.DeleteMovie;
 using CinemaBookingSystem.Application.Movies.Commands.UpdateMovie;
@@ -255,6 +256,18 @@ namespace CinemaBookingSystem.Api.Controllers
             });
             return Ok(vm);
         }
+
+        #endregion
+
+        #region ClearPrefMovie()
+
+        [HttpPost("pref/clear")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(Roles = "Administrator,User")]
+        public async Task<IActionResult> ClearPrefMovie() =>
+            Ok(await Mediator.Send(new ClearPreferencesMoviesCommand()));
 
         #endregion
     }

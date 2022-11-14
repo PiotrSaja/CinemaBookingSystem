@@ -34,6 +34,7 @@
                       <div class="col-8">
                       Type: <span v-if="seat.cinemaSeat.seatType === 0">Normal</span>
                                     <span v-else>VIP</span><br>
+                      Price: {{seat.price}}<br>
                       </div>
                       <div class="col-4">
                       Row: {{seat.cinemaSeat.row}}<br>

@@ -44,5 +44,8 @@ export default {
   },
   getForSelectingFavorite () {
     return Axios.get(`${RESOURCE_NAME}/selecting-favorite`)
+  },
+  ClearPref () {
+    return Axios.post(`${RESOURCE_NAME}/pref/clear`)
   }
 }

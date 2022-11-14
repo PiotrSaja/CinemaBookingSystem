@@ -98,8 +98,8 @@ export default {
       } else if (seatStatus === true) {
       } else if (this.selectedIds.indexOf(seatId) !== -1) {
         this.selectedIds.splice(this.selectedIds.indexOf(seatId), 1)
-        } else if (this.selectedIds.length === 5) {
-          this.alertMessage = 'You can select 5 seats on one reservation'
+        } else if (this.selectedIds.length === 10) {
+          this.alertMessage = 'You can select 10 seats on one reservation. If you would like to book more, please contact BOK.'
           this.showAlert = true
         } else {
         this.selectedIds.push(seatId)
