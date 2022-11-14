@@ -19,6 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using IdentityServer.Quickstart.Account;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.WebUtilities;
 
@@ -381,9 +382,25 @@ namespace IdentityServerHost.Quickstart.UI
                 }
                 await _userManager.AddToRoleAsync(user, "User");
 
-                return Redirect(model.ReturnUrl ?? "/");
+                return RedirectToAction("RegisterSuccessful", new{ model.ReturnUrl });
             }
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RegisterSuccessful(string returnUrl)
+        {
+            return View(new RegisterSuccessfulModel()
+            {
+                ReturnUrl = returnUrl
+            });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegisterSuccessful(RegisterSuccessfulModel model)
+        {
+            return Redirect(model.ReturnUrl ?? "/");
         }
     }
 }

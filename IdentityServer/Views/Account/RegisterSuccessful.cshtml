@@ -1,0 +1,27 @@
+﻿@model IdentityServer.Quickstart.Account.RegisterSuccessfulModel
+<partial name="_ValidationSummary" />
+<div class="login-page panel-page">
+
+    <div class="row">
+        <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-center p-3">MyCinema</h3>
+                    </div>
+
+                    <div class="card-body">
+                        <form asp-route="Login">
+                            <input type="hidden" asp-for="ReturnUrl" />
+                            <div class="text-center pt-3">
+                                <h5 class="text-center p-3">Thank you for registering for the cinema booking system</h5>
+                                <h6 class="text-center p-3">If you want to return to the home page, click the button below</h6>
+                                <button class="btn btn-primary button button-success text-center" name="button" value="login">Return to home page</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3"></div>
+    </div>
+</div>
