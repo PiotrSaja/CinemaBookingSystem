@@ -41,6 +41,7 @@
                               placeholder="Order by"
                               style="width:100%"
                               :options="sortOptions"
+                              :clearable="false"
                               v-model="sortType"
                               label="name"
                               id="value"
@@ -160,8 +161,7 @@ export default {
       this.showSeanceDetail(seanceId)
     },
     sortBy (prop) {
-      console.log(prop)
-      this.moviesWithSeances.items.sort((a, b) => a[prop] < b[prop] ? -1 : 1)
+      this.moviesWithSeances.items.sort((a, b) => a[prop] > b[prop] ? -1 : 1)
     }
   },
   mounted () {

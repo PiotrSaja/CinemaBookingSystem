@@ -1,7 +1,7 @@
 <template>
   <div class="container">
       <div class="row">
-        <h5 class="text-white underline font-weight-bold">Recomendation configuration</h5>
+        <h5 class="text-white underline font-weight-bold">Movies preferences</h5>
       </div>
       <div class="row">
         <h6 class="text-white font-weight-bold ml-4">Please select favorite movies to future movies recommendation:</h6>

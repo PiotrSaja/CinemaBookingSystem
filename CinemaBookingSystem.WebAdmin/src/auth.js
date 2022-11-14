@@ -7,13 +7,13 @@ const settings = {
   // Where the tokens will be stored
   userStore: new WebStorageStateStore({ store: window.sessionStorage }),
   // URL to the authentication server (including realm)
-  authority: 'https://localhost:5001',
+  authority: 'https://saja.website:5001',
   // The name of the client in Keycloak setup for this service
-  client_id: 'vue',
+  client_id: 'vue-admin',
   // Where to redirect the user to after successful authentication
-  redirect_uri: 'http://localhost:8080/login',
+  redirect_uri: 'https://saja.website:44301/login',
   // Where to redirect the user to after logging the user out
-  post_logout_redirect_uri: 'http://localhost:8080/logout',
+  post_logout_redirect_uri: 'https://saja.website:44301/logout',
   // Indicate the the authorization code flow should be used
   response_type: 'code',
   // "openid" tells the server that this client uses oidc for authentication

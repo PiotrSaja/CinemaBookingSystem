@@ -43,12 +43,7 @@ export default {
                             key: '1_0',
                             label: 'Bookings',
                             icon: 'pi pi-fw pi-book',
-                            items: [{
-                                    key: '1_0_0',
-                                    label: 'New',
-                                    icon: 'pi pi-fw pi-plus',
-                                    url: '/bookings/new'
-                                },
+                            items: [
                                 {
                                     key: '1_0_1',
                                     label: 'List',

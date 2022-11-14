@@ -88,7 +88,7 @@
             <li v-for="seat in seance_seats" :key="seat.id">Row: {{ seat.cinemaSeat.row }} Number: {{ seat.cinemaSeat.seatNumber }} - {{ seat.price }}$</li>
           </ul>
           <hr>
-          <h5 class="text-center pb-3">Total price: {{ total_tickets_price }}$</h5>
+          <h5 class="text-center pb-3">Total price: {{ total_tickets_price.toFixed(2) }}$</h5>
         </div>
       </div>
       <div class="row mb-3">

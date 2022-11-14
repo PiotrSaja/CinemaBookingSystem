@@ -30,8 +30,26 @@ export default {
 },
 data () {
     return {
-      isUserLoggedIn: true,
+      isUserLoggedIn: false,
     }
+  },
+  beforeCreate (){
+    this.$auth.isUserLoggedIn()
+      .then(() => {
+        this.$auth.getProfile().then(profile => {
+          if (profile.role !== 'Administrator'){
+            this.isUserLoggedIn = false
+          }else {
+            this.isUserLoggedIn = true
+          }
+        }).catch(error => {
+        console.log(error)
+      })
+      })
+      .catch(error => {
+        console.log(error)
+        this.isUserLoggedIn = false
+      })
   },
   created () {
     this.$auth.isUserLoggedIn()

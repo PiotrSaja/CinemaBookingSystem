@@ -9,6 +9,20 @@
         </template>
       </div>
     </div>
+    <div class="row mt-5">
+      <h5 class="text-white underline font-weight-bold">Recommendation settings</h5>
+      <div class="col-md-12">
+        <template v-if="profile !== null">
+          <p>Recomendation type</p>
+          <div>Picked: {{ picked }}</div>
+          <input type="radio" id="one" value="collaborative-filtering" v-model="picked" />
+          <label for="one">Collaborative Filtering</label>
+          <input type="radio" id="two" value="content-based" v-model="picked" />
+          <label for="two">Content-Based</label><br>
+          <b-button @click="clearMoviesPreferences()" >Clear movies preferences</b-button>
+        </template>
+      </div>
+    </div>
     <div class="row mt-4">
       <movies-preferences-list v-if="showMoviesPref"></movies-preferences-list>
       <div class="col-md-12" v-if="!newUser">
@@ -53,7 +67,8 @@ export default {
       totalBookings: 0,
       newUser: false,
       moviesPrefList: [],
-      showMoviesPref: true
+      showMoviesPref: true,
+      picked: null
     }
   },
   mounted () {
@@ -88,7 +103,11 @@ export default {
   methods: {
     showBookingDetail (bookingId) {
       this.$router.push({name: 'BookingDetail', params: {id: bookingId}})
-      }
+    },
+    clearMoviesPreferences () {
+      MoviesService.ClearPref()
+      this.$router.go(this.$router.currentRoute)
+    }
   }
 }
 </script>

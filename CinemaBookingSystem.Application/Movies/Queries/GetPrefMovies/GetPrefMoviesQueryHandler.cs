@@ -29,7 +29,7 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetPrefMovies
         public async Task<MoviesDetailVm> Handle(GetPrefMoviesQuery request, CancellationToken cancellationToken)
         {
             var moviesPref = await _context.UserPreferencesMovies
-                .Where(x => x.UserId == _userService.Id)
+                .Where(x => x.UserId == _userService.Id & x.StatusId != 0)
                 .Select(x=>x.MovieId)
                 .ToListAsync(cancellationToken);
 
