@@ -43,6 +43,7 @@ namespace CinemaBookingSystem.Persistence
         public DbSet<UserMovieVote> UserMovieVotes { get; set; }
         public DbSet<UserPreferencesMovie> UserPreferencesMovies { get; set; }
         public DbSet<UserCluster> UserClusters { get; set; }
+        public DbSet<UserRecommendationType> UserRecommendationTypes { get; set; }
 
         #region OnModelCreating()
         protected override void OnModelCreating(ModelBuilder modelBuilder)

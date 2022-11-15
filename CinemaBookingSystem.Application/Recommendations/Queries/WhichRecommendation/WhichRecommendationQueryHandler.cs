@@ -24,20 +24,14 @@ namespace CinemaBookingSystem.Application.Recommendations.Queries.WhichRecommend
         #region Handle()
         public async Task<RecommendationType> Handle(WhichRecommendationQuery request, CancellationToken cancellationToken)
         {
-            var moviesPreferences = await _context.UserPreferencesMovies
-                .Where(x => x.UserId == _userService.Id)
-                .Select(x => x.MovieId)
-                .ToListAsync(cancellationToken);
+            var userRecommendationType = await _context.UserRecommendationTypes
+                .FirstOrDefaultAsync(x => x.UserId == _userService.Id, cancellationToken);
 
-            var moviesVotes = await _context.UserMovieVotes
-                .Where(x => x.UserId == _userService.Id)
-                .ToListAsync(cancellationToken);
-
-            var clusterSetForUser = await _context.UserClusters.FirstOrDefaultAsync(x => x.UserId == _userService.Id, cancellationToken);
-
-            if (moviesPreferences.Count > 0 && (moviesVotes.Count < 5 || clusterSetForUser == null))
+            if (userRecommendationType == null)
+                return RecommendationType.None;
+            if (userRecommendationType.RecommendationType == RecommendationType.ContentBased)
                 return RecommendationType.ContentBased;
-            if (moviesVotes.Count > 5 && clusterSetForUser != null)
+            if (userRecommendationType.RecommendationType == RecommendationType.KMeans)
                 return RecommendationType.KMeans;
 
             return RecommendationType.None;

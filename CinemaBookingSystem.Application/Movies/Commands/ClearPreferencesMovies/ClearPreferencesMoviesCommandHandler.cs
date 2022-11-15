@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CinemaBookingSystem.Domain.Enums;
 
 namespace CinemaBookingSystem.Application.Movies.Commands.ClearPreferencesMovies
 {
@@ -27,6 +28,13 @@ namespace CinemaBookingSystem.Application.Movies.Commands.ClearPreferencesMovies
 
             foreach (var movie in userMovie)
                 _context.UserPreferencesMovies.Remove(movie);
+
+            var userRecommendation = await _context.UserRecommendationTypes.FirstOrDefaultAsync(x => x.UserId == _userService.Id,
+                cancellationToken);
+
+            userRecommendation.RecommendationType = RecommendationType.None;
+
+            _context.UserRecommendationTypes.Update(userRecommendation);
 
             await _context.SaveChangesAsync(cancellationToken);
 

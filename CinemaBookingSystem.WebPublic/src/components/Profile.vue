@@ -1,5 +1,8 @@
 <template>
   <div class="text-white page container">
+    <b-alert v-model="recommendationTypeSuccess" variant="danger" dismissible>
+      {{this.errorMessage}}
+    </b-alert>
     <div class="row mt-5">
       <h5 class="text-white underline font-weight-bold">Profile information</h5>
       <div class="col-md-12">
@@ -9,17 +12,22 @@
         </template>
       </div>
     </div>
-    <div class="row mt-5">
+    <div class="row mt-2">
       <h5 class="text-white underline font-weight-bold">Recommendation settings</h5>
       <div class="col-md-12">
         <template v-if="profile !== null">
-          <p>Recomendation type</p>
-          <div>Picked: {{ picked }}</div>
-          <input type="radio" id="one" value="collaborative-filtering" v-model="picked" />
-          <label for="one">Collaborative Filtering</label>
-          <input type="radio" id="two" value="content-based" v-model="picked" />
-          <label for="two">Content-Based</label><br>
-          <b-button @click="clearMoviesPreferences()" >Clear movies preferences</b-button>
+          <p>Recomendation type:</p>
+          <input type="radio" id="0" value="0" v-model="this.recommendationType" @click="changeUserRecommendation(0)"/>
+          <label for="0">Collaborative Filtering</label>
+          <input type="radio" id="1" value="1" v-model="this.recommendationType" @click="changeUserRecommendation(1)"/>
+          <label for="1">Content-Based</label>
+          <input type="radio" id="2" value="2" v-model="this.recommendationType" @click="changeUserRecommendation(2)"/>
+          <label for="2">None</label>
+          <br><br>
+          <div v-if="this.recommendationType == 1">
+            <p>Preferences movie list:</p>
+            <b-button @click="clearMoviesPreferences()" >Clear movies preferences</b-button>
+          </div>
         </template>
       </div>
     </div>
@@ -54,6 +62,7 @@
 
 <script>
 import BookingService from '@/api-services/booking-service'
+import RecommendationService from '@/api-services/recommendation-service'
 import MoviesService from '@/api-services/movie-service'
 import MoviesPreferencesList from '@/components/MoviesPreferencesList'
 export default {
@@ -68,7 +77,9 @@ export default {
       newUser: false,
       moviesPrefList: [],
       showMoviesPref: true,
-      picked: null
+      recommendationType: null,
+      recommendationTypeSuccess: false,
+      errorMessage: null
     }
   },
   mounted () {
@@ -99,6 +110,11 @@ export default {
   }).catch(error => {
     console.log(error)
   })
+  RecommendationService.getType().then((response) => {
+      this.recommendationType = response.data
+    }).catch((error) => {
+      console.log(error.response.data)
+    })
 },
   methods: {
     showBookingDetail (bookingId) {
@@ -107,6 +123,16 @@ export default {
     clearMoviesPreferences () {
       MoviesService.ClearPref()
       this.$router.go(this.$router.currentRoute)
+    },
+    changeUserRecommendation (type) {
+      RecommendationService.updateType({
+        recommendationType: type
+      }).then((response) => {
+        this.$router.go(this.$router.currentRoute)
+      }).catch((error) => {
+        this.recommendationTypeSuccess = true
+        this.errorMessage = error.response.data
+      })
     }
   }
 }
