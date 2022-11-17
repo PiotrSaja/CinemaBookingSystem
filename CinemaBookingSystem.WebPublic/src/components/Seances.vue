@@ -13,6 +13,7 @@
                     id="id"
                     :reduce="(cinema) => cinema.id"
                     @input="fetchMoviesWithShows()"
+                    :clearable="false"
                     ></v-select>
                 </div>
             </div>

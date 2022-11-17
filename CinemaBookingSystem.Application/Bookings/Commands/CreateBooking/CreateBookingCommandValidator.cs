@@ -8,15 +8,12 @@ namespace CinemaBookingSystem.Application.Bookings.Commands.CreateBooking
         {
             RuleFor(x => x.FirstName)
                 .NotEmpty()
-                .MaximumLength(40)
-                .MinimumLength(2);
+                .MaximumLength(128);
             RuleFor(x => x.LastName)
                 .NotEmpty()
-                .MaximumLength(40)
-                .MinimumLength(2);
+                .MaximumLength(128);
             RuleFor(x => x.PhoneNumber)
-                .NotEmpty()
-                .Matches("^([+]?[\\s0-9]+)?(\\d{3}|[(]?[0-9]+[)])?([-]?[\\s]?[0-9])+$");
+                .NotEmpty();
             RuleFor(x => x.SeanceId)
                 .NotNull();
             RuleFor(x => x.SeanceSeatIds)

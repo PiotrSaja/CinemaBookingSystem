@@ -53,7 +53,32 @@ export default {
   name: 'BookingDetail',
   data () {
     return {
-      booking: {},
+      booking: {
+        bookingId: 0,
+        bookingStatus: 0,
+        numberOfSeats: 0,
+        seance: {
+          cinemaHall: {
+            id: 0,
+            name: '',
+            cinema: {
+              id: 0,
+              name: '',
+              street: '',
+              city: ''
+            }
+          },
+          date: null,
+          movie: {
+            backgroundImagePath: '',
+            id: 0,
+            posterPath: '',
+            title: ''
+          },
+          seanceType: 0,
+          seanceSeats: []
+        }
+      },
       errorMessage: ''
     }
   },

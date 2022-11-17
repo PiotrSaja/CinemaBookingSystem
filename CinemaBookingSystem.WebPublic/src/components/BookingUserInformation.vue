@@ -197,6 +197,21 @@ export default {
       if (!this.payment_method) {
         this.validate_errors.push('Payment method required.')
       }
+      if (this.first_name.length < 3) {
+        this.validate_errors.push('Fist name must be more than 2 characters.')
+      }
+      if (this.last_name.length < 3) {
+        this.validate_errors.push('Last name must be more than 2 characters.')
+      }
+      if (this.first_name.length > 40) {
+        this.validate_errors.push('Fist name must be less than 40 characters.')
+      }
+      if (this.last_name.length > 40) {
+        this.validate_errors.push('Last name must be less than 40 characters.')
+      }
+      if (!this.phone_number.length === 9) {
+        this.validate_errors.push('Phone must have 9 characters.')
+      }
     },
     editFields () {
       this.input_disabled = !this.input_disabled

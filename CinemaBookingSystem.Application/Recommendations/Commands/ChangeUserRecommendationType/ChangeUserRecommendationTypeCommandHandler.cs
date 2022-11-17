@@ -38,10 +38,10 @@ namespace CinemaBookingSystem.Application.Recommendations.Commands.ChangeUserRec
             var clusterSetForUser = await _context.UserClusters.FirstOrDefaultAsync(x => x.UserId == _userService.Id, cancellationToken);
 
             if (moviesPreferences.Count == 0 && request.RecommendationType == RecommendationType.ContentBased)
-                throw new Exception("Can't change recommendation type to content based");
+                throw new Exception("Can't change recommendation type to content based. You don't have favorite movies. Please select favorites movies bellow.");
 
             if (moviesVotes.Count <= 5 && clusterSetForUser == null && request.RecommendationType == RecommendationType.KMeans)
-                throw new Exception("Can't change recommendation type to collaborative filtering");
+                throw new Exception("Can't change recommendation type to collaborative filtering. You don't have more than 5 movie votes or you don't have assigned cluster.");
 
             var userRecommendation = await _context.UserRecommendationTypes.FirstOrDefaultAsync(x => x.UserId == _userService.Id,
                 cancellationToken);
