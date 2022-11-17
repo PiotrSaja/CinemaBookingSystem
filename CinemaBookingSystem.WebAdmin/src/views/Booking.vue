@@ -132,7 +132,7 @@
                       focus:border-primary
                       w-full
                     "
-                    v-model="booking.seance.date"
+                    v-model="booking.seance.movie.title"
                     disabled
                   />
                 </div>
@@ -140,9 +140,10 @@
               <h5>Tickets</h5>
               <li v-for="item in booking.seanceSeats" :key="item.id">
                 <span
-                  >Seat number: {{ item.cinemaSeat.seatNumber }} Row:
-                  {{ item.cinemaSeat.row }} Type:
-                  {{ item.cinemaSeat.seatType }}</span
+                  >Seat number: {{ item.cinemaSeat.seatNumber }} | Row:
+                  {{ item.cinemaSeat.row }} | Type:
+                  {{ item.cinemaSeat.seatType }} | Price:
+                  {{item.price}} $</span
                 >
               </li>
             </div>
@@ -226,7 +227,10 @@ export default {
             phoneNumber: ''
         },
         seance: {
-            date: null
+            date: null,
+            movie: {
+              title: ''
+            }
         }
       },
       showError: false,
