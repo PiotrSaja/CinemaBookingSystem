@@ -3,10 +3,10 @@
     <div class="row">
         <div class="xs-12 md-6 mx-auto">
             <div id="text-container">
-                <div class="number">Welcome</div>
-                <div class="text">MyCinema - Admin Panel</div>
+                <div class="number">MyCinema</div>
+                <div class="text">Admin Panel</div>
                 <div class="text">Probably you not logged in system. Please click button below.</div>
-                <div class="text"> <Button @click="onLogin()">Login</Button></div>
+                <div class="text"> <Button @click="onLogin()">Go to login page</Button></div>
             </div>
         </div>
     </div>
