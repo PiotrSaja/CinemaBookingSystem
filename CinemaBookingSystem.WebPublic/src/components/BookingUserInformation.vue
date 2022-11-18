@@ -11,7 +11,7 @@
               <li v-for="error in this.validate_errors" :key="error">{{ error }}</li>
             </ul>
           </b-alert>
-          <b-alert v-if="this.booking_error_status" variant="danger" show class="text-center">
+          <b-alert v-if="this.seats_error_status" variant="danger" show class="text-center">
             Seats not locked in service. Please select new seats for reservation.
           </b-alert>
         </div>
@@ -144,7 +144,8 @@ export default {
             showId: 0,
             showSeatIds: []
           },
-          booking_error_status: false
+          booking_error_status: false,
+          seats_error_status: false
       }
   },
   mounted () {
@@ -197,21 +198,6 @@ export default {
       if (!this.payment_method) {
         this.validate_errors.push('Payment method required.')
       }
-      if (this.first_name.length < 3) {
-        this.validate_errors.push('Fist name must be more than 2 characters.')
-      }
-      if (this.last_name.length < 3) {
-        this.validate_errors.push('Last name must be more than 2 characters.')
-      }
-      if (this.first_name.length > 40) {
-        this.validate_errors.push('Fist name must be less than 40 characters.')
-      }
-      if (this.last_name.length > 40) {
-        this.validate_errors.push('Last name must be less than 40 characters.')
-      }
-      if (!this.phone_number.length === 9) {
-        this.validate_errors.push('Phone must have 9 characters.')
-      }
     },
     editFields () {
       this.input_disabled = !this.input_disabled
@@ -227,11 +213,14 @@ export default {
         this.booking.seanceId = this.seance.id
         this.booking.seanceSeatIds = this.seatsIds
         await BookingService.create(this.booking).then((response) => {
-            console.log(response.data)
             this.$router.replace({name: 'BookingConfirmation', params: {id: response.data.bookingId}})
           }).catch(error => {
             this.booking_error_status = true
-            console.log(error)
+            this.validate_errors = JSON.parse(JSON.stringify(error.response.data)).Message.split(';')
+            this.validate_errors.splice(-1)
+            if (error.response.status === 500) {
+              this.seats_error_status = true
+            }
           })
       }
     }

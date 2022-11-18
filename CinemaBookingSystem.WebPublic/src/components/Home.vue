@@ -37,7 +37,7 @@
                     </a>
                     <span class="movie-label-soon" v-if="substractMovieDate(item.releasedDate) <= 14">Soon</span>
                   </div>
-                  <div class="movie-content" v-resize-text>
+                  <div class="movie-content">
                     <h3 class="title"><a href="#">{{ item.title }}</a></h3>
                   </div>
                 </div>

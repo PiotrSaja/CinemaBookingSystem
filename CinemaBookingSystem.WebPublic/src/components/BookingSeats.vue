@@ -126,9 +126,9 @@ export default {
           await SeanceSeats.lock(this.lockData).then((response) => {
             this.ok = response.data
             if (this.ok) {
-              this.lockedIds.push(this.lockData.ShowSeatId)
+              this.lockedIds.push(this.lockData.SeanceSeatId)
             } else {
-              this.noLockedIds.push(this.lockData.ShowSeatId)
+              this.noLockedIds.push(this.lockData.SeanceSeatId)
             }
           }).catch(error => {
             console.log(error)
@@ -136,22 +136,21 @@ export default {
       }
       if (this.noLockedIds.length === 0) {
               return true
-            } else {
-              this.reloadSeatsForShow()
-              this.selectedIds = this.lockedIds
-              this.alertMessage = 'Please select other seats, probably someone choose them faster than you. Seat ids: ' + this.noLockedIds
-              this.showAlert = true
-              this.noLockedIds = []
-            }
-    },
-    reloadSeatsForShow () {
-      SeanceSeats.getByShowId(this.$router.currentRoute.params.id).then((response) => {
-      this.seats = response.data
-    }).catch(error => {
-      if (error.response.status === 404) {
-      this.$router.replace({name: 'NotFound', params: {err: error.response.data.Message}})
+      } else {
+        SeanceSeats.getBySeanceId(this.$router.currentRoute.params.id).then((response) => {
+          this.seats = response.data
+        }).catch(error => {
+          if (error.response.status === 404) {
+          this.$router.replace({name: 'NotFound', params: {err: error.response.data.Message}})
+          }
+        })
+        console.log('lockedIds:' + this.lockedIds)
+        console.log('nolockedIds:' + this.noLockedIds)
+        this.selectedIds = this.lockedIds
+        this.alertMessage = 'Please select other seats, probably someone choose them faster than you. Seat ids: ' + this.noLockedIds
+        this.showAlert = true
+        this.noLockedIds = []
       }
-    })
     }
   }
 }
@@ -177,7 +176,7 @@ min-height: 100vh;
 }
 
 .custom-margin-top {
-  margin-top: 100px
+  margin-top: 50px
 }
 
 @media only screen and (min-width: 1px) and (max-width: 576px) {

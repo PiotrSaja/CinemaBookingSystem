@@ -50,9 +50,9 @@ namespace CinemaBookingSystem.Api.Extensions
                 result = new ErrorDetails()
                 {
                     Message = exception.Message,
-                    StatusCode = (int)exception.StatusCode
+                    StatusCode = (int)HttpStatusCode.UnprocessableEntity
                 }.ToString();
-                context.Response.StatusCode = (int)exception.StatusCode;
+                context.Response.StatusCode = (int) HttpStatusCode.UnprocessableEntity;
             }
             else
             {

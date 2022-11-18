@@ -70,7 +70,27 @@ export default {
   name: 'MovieDetail',
   data () {
     return {
-      movie: {},
+      movie: {
+        actors: {
+          fullName: '',
+          id: 0
+        },
+        backgroundImagePath: '',
+        country: '',
+        director: {
+          fullName: '',
+          id: 0
+        },
+        duration: 0,
+        genres: null,
+        id: 0,
+        imdbRating: '',
+        language: '',
+        plot: '',
+        posterPath: '',
+        released: '',
+        title: ''
+      },
       errorMessage: '',
       voteRating: 0,
       ratingDisabled: false,
