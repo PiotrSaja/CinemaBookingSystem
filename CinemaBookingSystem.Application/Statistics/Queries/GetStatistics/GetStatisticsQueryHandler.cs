@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CinemaBookingSystem.Application.Common.Interfaces;
 using CinemaBookingSystem.Domain.Enums;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
-namespace CinemaBookingSystem.Application.Statistics.Queries
+namespace CinemaBookingSystem.Application.Statistics.Queries.GetStatistics
 {
     public class GetStatisticsQueryHandler : IRequestHandler<GetStatisticsQuery, StatisticsModel>
     {
@@ -26,12 +25,12 @@ namespace CinemaBookingSystem.Application.Statistics.Queries
         {
             var result = new StatisticsModel();
 
-            var bookings = await _context.Bookings.Include(x=>x.SeanceSeats).ToListAsync(cancellationToken);
-            var seances =  await _context.Seances.ToListAsync(cancellationToken);
+            var bookings = await _context.Bookings.Include(x=>x.SeanceSeats).Where(x=>x.BookingStatus == BookingStatus.Successful && x.StatusId != 0).ToListAsync(cancellationToken);
+            var seances =  await _context.Seances.Where(x=>x.StatusId != 0 && x.SeanceSeats.Count > 0).ToListAsync(cancellationToken);
 
             result.NumberOfBookings = bookings.Count(x => x.BookingStatus == BookingStatus.Successful);
             result.NumberOfTodayBookings = bookings.Count(x => x.Created == DateTime.Today);
-            result.NumberOfCustomers = bookings.Count();
+            result.NumberOfCustomers = bookings.Select(x=>x.UserId).Distinct().Count();
             result.NumberOfSeances = seances.Count();
             result.NumberOfTodaySeances = seances.Count(x => x.Date == DateTime.Today);
 
@@ -55,31 +54,6 @@ namespace CinemaBookingSystem.Application.Statistics.Queries
                         result.RevenueMinusOneWeek += seanceSeat.Price;
                     }
                 }
-            }
-
-            result.BookingsInMonths = new List<int>();
-
-            for (int i = 1; i <= 12; i++)
-                result.BookingsInMonths.Add(bookings.Count(x => x.Created.Month == i));
-
-
-            result.RevenueInMonths = new List<double>();
-
-            for (int i = 1; i <= 12; i++)
-            {
-                var temp = 0.0d;
-                foreach (var booking in bookings.Where(x => x.Created.Month == i))
-                {
-                    
-                    if (booking.SeanceSeats != null)
-                    {
-                        foreach (var seanceSeat in booking.SeanceSeats)
-                        {
-                            temp += seanceSeat.Price;
-                        }
-                    }
-                }
-                result.RevenueInMonths.Add(temp);
             }
 
             return result;

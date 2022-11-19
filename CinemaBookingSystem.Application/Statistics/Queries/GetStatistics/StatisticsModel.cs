@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace CinemaBookingSystem.Application.Statistics.Queries
+﻿namespace CinemaBookingSystem.Application.Statistics.Queries.GetStatistics
 {
     public class StatisticsModel
     {
@@ -11,7 +9,5 @@ namespace CinemaBookingSystem.Application.Statistics.Queries
         public int NumberOfCustomers { get; set; }
         public double RevenueAll { get; set; }
         public double RevenueMinusOneWeek { get; set; }
-        public List<double> RevenueInMonths { get; set; }
-        public List<int> BookingsInMonths { get; set; }
     }
 }

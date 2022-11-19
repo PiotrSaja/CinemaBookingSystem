@@ -44,7 +44,7 @@
                   <div>
                     <span class="block text-500 font-medium mb-3">Revenue</span>
                     <div class="text-900 font-medium text-xl">
-                      ${{ statistics.revenueAll }}
+                      ${{ statistics.revenueAll.toFixed(2) }}
                     </div>
                   </div>
                   <div
@@ -61,7 +61,7 @@
                   </div>
                 </div>
                 <span class="text-green-500 font-medium"
-                  >+{{ statistics.revenueAll - statistics.revenueMinusOneWeek }}
+                  >+{{ (statistics.revenueAll - statistics.revenueMinusOneWeek).toFixed(2) }}
                 </span>
                 <span class="text-500"> since last week</span>
               </div>
@@ -131,6 +131,15 @@
                   </div>
                 </div>
                 <Chart type="line" :data="basicData" :options="basicOptions" />
+                <div class="mt-4">
+                  <Dropdown v-model="selectedChart" :options="chartsOptions" optionLabel="name" optionValue="value" placeholder="Select type of chart" />&nbsp;
+                  <Dropdown v-if="selectedChart==='BookingsInMonth' || selectedChart==='RevenueInMonth'" v-model="selectedMonth" :options="monthOptions" optionLabel="name" optionValue="value" placeholder="Select a month" />&nbsp;
+                  <Button label="Show" @click="getChartData()"/><br><br>
+                </div>
+                <div v-if="selectedChart==='Bookings' || selectedChart==='Revenue'">
+                  Optional filters <Calendar v-model="from" view="month" dateFormat="mm/yy" placeholder="Date from"/>&nbsp;-
+                  <Calendar v-model="to" view="month" dateFormat="mm/yy" placeholder="Date to"/>
+                </div>
               </div>
             </div>
           </div>
@@ -141,15 +150,91 @@
 </template>
 
 <script>
+import moment from 'moment'
 import Navbar from "@/components/Navbar.vue";
 import Menubar1 from "@/components/Menubar.vue";
+import Calendar from "primevue/calendar";
+import Dropdown from "primevue/dropdown";
 import Chart from "primevue/chart";
 import StatisticsService from "@/services/statistics-service";
+import Button from "primevue/button";
 export default {
   name: "HomeView",
   data() {
     return {
       isUserLoggedIn: false,
+      selectedChart: null,
+      selectedMonth: null,
+      chartsOptions: [
+        {
+          name: "Bookings in year",
+          value: 'Bookings'
+        },
+        {
+          name: "Revenue in year",
+          value: 'Revenue'
+        },
+        {
+          name: "Bookings in month",
+          value: 'BookingsInMonth'
+        },
+        {
+          name: "Revenue in month",
+          value: 'RevenueInMonth'
+        }
+      ],
+      monthOptions: [
+        {
+          name: "January",
+          value: '1'
+        },
+        {
+          name: "February",
+          value: '2'
+        },
+        {
+          name: "March",
+          value: '3'
+        },
+        {
+          name: "April",
+          value: '4'
+        },
+        {
+          name: "May",
+          value: '5'
+        },
+        {
+          name: "June",
+          value: '6'
+        },
+        {
+          name: "July",
+          value: '7'
+        },
+        {
+          name: "August",
+          value: '8'
+        },
+        {
+          name: "September",
+          value: '9'
+        },
+        {
+          name: "October",
+          value: '10'
+        },
+        {
+          name: "November",
+          value: '11'
+        },
+        {
+          name: "December",
+          value: '12'
+        }
+      ],
+      from: null,
+      to: null,
       profile: null,
       statistics: null,
       basicData: {
@@ -170,14 +255,14 @@ export default {
         datasets: [
           {
             label: "Bookings",
-            data: [65, 59, 80, 81, 56, 55, 40, 100, 200, 50, 20, 47],
+            data: null,
             fill: false,
             borderColor: "#42A5F5",
             tension: 0.4,
           },
           {
             label: "Revenue $",
-            data: [28, 48, 40, 19, 86, 27, 90, 127, 341, 89, 45, 60],
+            data: null,
             fill: false,
             borderColor: "#FFA726",
             tension: 0.4,
@@ -190,14 +275,14 @@ export default {
     Chart,
     Navbar,
     Menubar1,
+    Calendar,
+    Dropdown,
+    Button
   },
   created() {
     StatisticsService.get()
       .then((response) => {
         this.statistics = response.data;
-
-        this.basicData.datasets[0].data = this.statistics.bookingsInMonths;
-        this.basicData.datasets[1].data = this.statistics.revenueInMonths;
       })
       .catch((error) => {
         console.log(error.response.data);
@@ -225,6 +310,127 @@ export default {
     onLogin() {
       this.$auth.login();
     },
+    getChartData(){
+      this.basicData.datasets[0].data = null
+      this.basicData.datasets[1].data = null
+      
+      StatisticsService.getChartData(this.selectedChart, this.from !== null ? moment(String(this.from)).format('YYYY-MM-DD') : "", this.to !== null ? moment(String(this.to)).format('YYYY-MM-DD') : "", this.selectedMonth != null ? this.selectedMonth : '')
+      .then((response) => {
+        if(this.selectedChart  === "Bookings"){
+          this.basicData.datasets[0].data = response.data.dataToChart;
+          let labelsTemp = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ]
+          this.basicData.labels = labelsTemp;
+        }
+        if(this.selectedChart  === "Revenue"){
+          this.basicData.datasets[1].data = response.data.dataToChart;
+          let labelsTemp = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ]
+          this.basicData.labels = labelsTemp;
+        }
+        if(this.selectedChart  === "BookingsInMonth"){
+          this.basicData.datasets[0].data = response.data.dataToChart;
+          let labelsTemp = [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22",
+          "23",
+          "24",
+          "25",
+          "26",
+          "27",
+          "28",
+          "29",
+          "30",
+          "31",
+        ]
+          this.basicData.labels = labelsTemp;
+        }
+        if(this.selectedChart  === "RevenueInMonth"){
+          this.basicData.datasets[1].data = response.data.dataToChart;
+          let labelsTemp = [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22",
+          "23",
+          "24",
+          "25",
+          "26",
+          "27",
+          "28",
+          "29",
+          "30",
+          "31",
+        ]
+          this.basicData.labels = labelsTemp;
+        }
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+    }
   },
 };
 </script>
