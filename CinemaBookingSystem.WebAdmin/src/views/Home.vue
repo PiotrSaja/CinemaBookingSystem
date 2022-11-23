@@ -313,6 +313,14 @@ export default {
     getChartData(){
       this.basicData.datasets[0].data = null
       this.basicData.datasets[1].data = null
+
+      StatisticsService.get(this.from !== null ? moment(String(this.from)).format('YYYY-MM-DD') : "", this.to !== null ? moment(String(this.to)).format('YYYY-MM-DD') : "", this.selectedMonth != null ? this.selectedMonth : '')
+      .then((response) => {
+        this.statistics = response.data;
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
       
       StatisticsService.getChartData(this.selectedChart, this.from !== null ? moment(String(this.from)).format('YYYY-MM-DD') : "", this.to !== null ? moment(String(this.to)).format('YYYY-MM-DD') : "", this.selectedMonth != null ? this.selectedMonth : '')
       .then((response) => {
