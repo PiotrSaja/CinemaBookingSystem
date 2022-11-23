@@ -60,8 +60,6 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesPrediction
                 movieResultAssigns.Remove(x);
             });
 
-            movieResultAssigns.Remove(movieResultAssigns.FirstOrDefault(x => x == request.SelectedMovieId));
-
             var movies = await _context.Movies
                 .Where(x => x.StatusId != 0 && movieResultAssigns.Contains(x.Id))
                 .AsNoTracking()

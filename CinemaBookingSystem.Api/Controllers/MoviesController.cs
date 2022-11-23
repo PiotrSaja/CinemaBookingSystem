@@ -10,6 +10,7 @@ using CinemaBookingSystem.Application.Movies.Queries.GetMovieDetail;
 using CinemaBookingSystem.Application.Movies.Queries.GetMovies;
 using CinemaBookingSystem.Application.Movies.Queries.GetMoviesContentBasedPrediction;
 using CinemaBookingSystem.Application.Movies.Queries.GetMoviesDaysToPremiere;
+using CinemaBookingSystem.Application.Movies.Queries.GetMoviesDetailRecommendation;
 using CinemaBookingSystem.Application.Movies.Queries.GetMoviesForSelectingFavorite;
 using CinemaBookingSystem.Application.Movies.Queries.GetMoviesPrediction;
 using CinemaBookingSystem.Application.Movies.Queries.GetMoviesWithSeanceOnCurrentCinemaAndDay;
@@ -186,7 +187,7 @@ namespace CinemaBookingSystem.Api.Controllers
         [Authorize(Roles = "Administrator,User")]
         public async Task<IActionResult> GetMoviesPredictions(int page, int limit, int selectedMovieId)
         {
-            var result = await Mediator.Send(new GetMoviesPredictionQuery() { PageIndex = page, PageSize = limit, SelectedMovieId = selectedMovieId});
+            var result = await Mediator.Send(new GetMoviesPredictionQuery() { PageIndex = page, PageSize = limit});
 
             return Ok(result);
         }
@@ -234,7 +235,22 @@ namespace CinemaBookingSystem.Api.Controllers
         [Authorize(Roles = "Administrator,User")]
         public async Task<IActionResult> GetMoviesContentBasedPredictions(int page, int limit, int selectedMovieId)
         {
-            var result = await Mediator.Send(new GetMoviesContentBasedPredictionQuery() { PageIndex = page, PageSize = limit, SelectedMovieId = selectedMovieId});
+            var result = await Mediator.Send(new GetMoviesContentBasedPredictionQuery() { PageIndex = page, PageSize = limit});
+
+            return Ok(result);
+        }
+
+        #endregion
+
+        #region GetMoviesDetailRecommendation()
+
+        [HttpGet("movie/predictions")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetMoviesDetailRecommendation(int page, int limit, int selectedMovieId)
+        {
+            var result = await Mediator.Send(new GetMoviesDetailRecommendationQuery() { PageIndex = page, PageSize = limit, SelectedMovieId = selectedMovieId });
 
             return Ok(result);
         }

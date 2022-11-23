@@ -53,7 +53,7 @@
               <subsequent-seances/>
             </div>
             <div class="row" v-if="movieRecomendationVisable">
-              <horizontal-movie-recomandation-list :selectedMovieId="movie.id"/>
+              <horizontal-movie-recomandation-list :selectedMovieId="this.$router.currentRoute.params.id"/>
             </div>
         </div>
     </div>
@@ -64,7 +64,6 @@ import StarRating from 'vue-star-rating'
 import MovieService from '@/api-services/movie-service'
 import HorizontalMovieRecomandationList from '@/components/HorizontalMovieRecomandationList.vue'
 import SubsequentSeances from '@/components/SubsequentSeances.vue'
-import RecommendationService from '@/api-services/recommendation-service'
 export default {
   components: { HorizontalMovieRecomandationList, SubsequentSeances, StarRating },
   name: 'MovieDetail',
@@ -83,7 +82,6 @@ export default {
         },
         duration: 0,
         genres: null,
-        id: 0,
         imdbRating: '',
         language: '',
         plot: '',
@@ -106,16 +104,7 @@ export default {
         this.profile = profile
         if (this.profile === null) {
           this.ratingVisable = false
-          this.movieRecomendationVisable = false
       } else {
-        RecommendationService.getType().then((response) => {
-          if (response.data === 2) {
-              this.movieRecomendationVisable = false
-          }
-        }).catch((error) => {
-          console.log(error.response.data)
-        })
-
         MovieService.getUserMovieVote(this.$router.currentRoute.params.id).then((response) => {
           this.voteRating = response.data.rating
           this.ratingDisabled = true

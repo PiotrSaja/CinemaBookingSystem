@@ -17,7 +17,13 @@ namespace CinemaBookingSystem.Api.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetStatistics() => Ok(await Mediator.Send(new GetStatisticsQuery()));
+        public async Task<IActionResult> GetStatistics([FromQuery] DateTime? from, [FromQuery] DateTime? to,
+            [FromQuery] int? month) => Ok(await Mediator.Send(new GetStatisticsQuery()
+        {
+            DateTimeFrom = from,
+            DateTimeTo = to,
+            Month = month
+        }));
 
         [HttpGet("chart")]
         [ProducesResponseType(StatusCodes.Status200OK)]
