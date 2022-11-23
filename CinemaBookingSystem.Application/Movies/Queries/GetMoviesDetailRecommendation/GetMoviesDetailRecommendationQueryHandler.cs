@@ -1,29 +1,28 @@
-﻿using System;
+﻿using AutoMapper;
+using CinemaBookingSystem.Application.Common.Exceptions;
+using CinemaBookingSystem.Application.Common.Extensions;
+using CinemaBookingSystem.Application.Common.Interfaces;
+using CinemaBookingSystem.Domain.Entities;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
-using CinemaBookingSystem.Application.Common.Exceptions;
-using CinemaBookingSystem.Application.Common.Extensions;
-using CinemaBookingSystem.Application.Common.Interfaces;
-using CinemaBookingSystem.Domain.Entities;
-using LinqKit;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
 
-namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesContentBasedPrediction
+namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesDetailRecommendation
 {
-    public class GetMoviesContentBasedPredictionQueryHandler : IRequestHandler<GetMoviesContentBasedPredictionQuery, MoviesDetailVm>
+    public class GetMoviesDetailRecommendationQueryHandler : IRequestHandler<GetMoviesDetailRecommendationQuery, MoviesDetailVm>
     {
         private readonly ICinemaDbContext _context;
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
 
-        #region GetMoviesContentBasedPredictionQueryHandler()
-        public GetMoviesContentBasedPredictionQueryHandler(ICinemaDbContext context, IMapper mapper, IUserService userService)
+        #region GetMoviesDetailRecommendationQueryHandler()
+        public GetMoviesDetailRecommendationQueryHandler(ICinemaDbContext context, IMapper mapper, IUserService userService)
         {
             _context = context;
             _mapper = mapper;
@@ -33,68 +32,58 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesContentBasedPr
 
         #region Handle()
 
-        public async Task<MoviesDetailVm> Handle(GetMoviesContentBasedPredictionQuery request, CancellationToken cancellationToken)
+        public async Task<MoviesDetailVm> Handle(GetMoviesDetailRecommendationQuery request, CancellationToken cancellationToken)
         {
             if (request.PageSize < 1 && request.PageIndex < 1) { throw new HttpStatusCodeException(HttpStatusCode.InternalServerError, "Page size and Page index can't be null or less than 1"); }
             if (request.PageSize < 1) { throw new HttpStatusCodeException(HttpStatusCode.InternalServerError, "Page size can't be null or less than 1"); }
             if (request.PageIndex < 1) { throw new HttpStatusCodeException(HttpStatusCode.InternalServerError, "Page index can't be null or less than 1"); }
 
-            var moviesPref = await _context.UserPreferencesMovies
-                .Include(x=>x.Movie)
-                .ThenInclude(x=>x.Actors)
-                .Include(x=>x.Movie)
-                .ThenInclude(x=>x.Director)
-                .Include(x=>x.Movie)
-                .ThenInclude(x=>x.Genres)
-                .Where(x => x.UserId == _userService.Id && x.StatusId != 0)
-                .ToListAsync(cancellationToken);
+            var selectedMovie = await _context.Movies
+                .Include(x => x.Actors)
+                .Include(x => x.Director)
+                .Include(x => x.Genres)
+                .FirstOrDefaultAsync(x => x.Id == request.SelectedMovieId && x.StatusId != 0, cancellationToken);
 
             //Prepare user profile for content base filtering
             var userProfile = new UserProfile();
             var counter = 0;
 
-            foreach (var moviePref in moviesPref)
+            double currentMovieImdbRate;
+            if (selectedMovie.ImdbRating != null)
             {
-                double imdbRate;
-                if (moviePref.Movie.ImdbRating != null)
+                if (Double.TryParse(selectedMovie.ImdbRating, NumberStyles.Number, CultureInfo.CreateSpecificCulture("en-US"), out currentMovieImdbRate))
                 {
-                    if (Double.TryParse(moviePref.Movie.ImdbRating, NumberStyles.Number, CultureInfo.CreateSpecificCulture("en-US"),
-                            out imdbRate))
-                    {
-                        userProfile.ImdbVoteAvg += imdbRate;
-                        counter++;
-                    }
-                }
-
-                if (!userProfile.DirectorsString.Contains(moviePref.Movie.Director.DirectorName.ToString()))
-                    userProfile.DirectorsString += moviePref.Movie.Director.DirectorName.ToString();
-
-                foreach (var genre in moviePref.Movie.Genres)
-                {
-                    if (!userProfile.GenresString.Contains(genre.Name))
-                        userProfile.GenresString += genre.Name;
-                }
-
-                foreach (var actor in moviePref.Movie.Actors)
-                {
-                    if (!userProfile.ActorsString.Contains(actor.ActorName.ToString()))
-                        userProfile.ActorsString += actor.ActorName.ToString();
+                    userProfile.ImdbVoteAvg += currentMovieImdbRate;
+                    counter++;
                 }
             }
 
-            userProfile.ImdbVoteAvg /= counter;
+            if (!userProfile.DirectorsString.Contains(selectedMovie.Director.DirectorName.ToString()))
+                userProfile.DirectorsString += selectedMovie.Director.DirectorName.ToString();
+
+            foreach (var genre in selectedMovie.Genres)
+            {
+                if (!userProfile.GenresString.Contains(genre.Name))
+                    userProfile.GenresString += genre.Name;
+            }
+
+            foreach (var actor in selectedMovie.Actors)
+            {
+                if (!userProfile.ActorsString.Contains(actor.ActorName.ToString()))
+                    userProfile.ActorsString += actor.ActorName.ToString();
+            }
+
+            if (selectedMovie.ImdbRating != null)
+                userProfile.ImdbVoteAvg /= counter;
+            
             userProfile.DirectorsString = RemoveWhitespace(userProfile.DirectorsString);
             userProfile.GenresString = RemoveWhitespace(userProfile.GenresString);
             userProfile.ActorsString = RemoveWhitespace(userProfile.ActorsString);
 
-            var predicate = PredicateBuilder.New<Movie>(true);
-
-            predicate.And(x => !moviesPref.Select(x => x.MovieId).Contains(x.Id));
-
-            var movies = await _context.Movies.Where(predicate)
-                .Include(x=>x.Director)
-                .Include(x=>x.Actors)
-                .Include(x=>x.Genres)
+            var movies = await _context.Movies
+                .Include(x => x.Director)
+                .Include(x => x.Actors)
+                .Include(x => x.Genres)
                 .ToListAsync(cancellationToken);
 
             var result = new List<ResultModel>();
@@ -102,11 +91,11 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesContentBasedPr
             foreach (var movie in movies)
             {
                 var imdbRate = 0.0d;
-                //If movie imdb rate < userProfile.ImdbVoteAvg skip or don't have valid value
+                //If movie imdb rate < userProfile.ImdbVoteAvg - 2 skip or don't have valid value
                 if (Double.TryParse(movie.ImdbRating, NumberStyles.Number, CultureInfo.CreateSpecificCulture("en-US"),
                         out imdbRate))
                 {
-                    if (imdbRate < userProfile.ImdbVoteAvg)
+                    if (imdbRate < userProfile.ImdbVoteAvg - 2)
                         continue;
                 }
                 else
@@ -135,10 +124,12 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesContentBasedPr
                 });
             }
 
+            result.Remove(result.FirstOrDefault(x => x.Movie.Id == request.SelectedMovieId));
+
             var orderedMovie = result.OrderByDescending(x => x.GenreDistance)
                 .ThenByDescending(x => x.ActorDistance)
                 .ThenByDescending(x => x.DirectorDistance)
-                .Select(x=> x.Movie)
+                .Select(x => x.Movie)
                 .Paginate(request.PageIndex, request.PageSize, cancellationToken);
 
             var moviesDto = _mapper.Map<List<Movie>, List<MovieDetailDto>>(orderedMovie.Items.ToList());
@@ -168,19 +159,19 @@ namespace CinemaBookingSystem.Application.Movies.Queries.GetMoviesContentBasedPr
             var lengthA = a.Length;
             var lengthB = b.Length;
             var distances = new int[lengthA + 1, lengthB + 1];
-            for (var i = 0; i <= lengthA; distances[i, 0] = i++);
-            for (var j = 0; j <= lengthB; distances[0, j] = j++);
+            for (var i = 0; i <= lengthA; distances[i, 0] = i++) ;
+            for (var j = 0; j <= lengthB; distances[0, j] = j++) ;
 
             for (var i = 1; i <= lengthA; i++)
-            for (var j = 1; j <= lengthB; j++)
-            {
-                var cost = b[j - 1] == a[i - 1] ? 0 : 1;
-                distances[i, j] = Math.Min
-                (
-                    Math.Min(distances[i - 1, j] + 1, distances[i, j - 1] + 1),
-                    distances[i - 1, j - 1] + cost
-                );
-            }
+                for (var j = 1; j <= lengthB; j++)
+                {
+                    var cost = b[j - 1] == a[i - 1] ? 0 : 1;
+                    distances[i, j] = Math.Min
+                    (
+                        Math.Min(distances[i - 1, j] + 1, distances[i, j - 1] + 1),
+                        distances[i - 1, j - 1] + cost
+                    );
+                }
             return distances[lengthA, lengthB];
         }
         #endregion

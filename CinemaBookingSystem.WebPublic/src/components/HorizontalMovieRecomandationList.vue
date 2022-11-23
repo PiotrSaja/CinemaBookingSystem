@@ -11,7 +11,6 @@
 
 <script>
 import MovieService from '@/api-services/movie-service'
-import RecommendationService from '@/api-services/recommendation-service'
 import VueHorizontalListAutoscroll from 'vue-horizontal-list-autoscroll'
 import MovieItem from '@/components/MovieItem'
 export default {
@@ -59,24 +58,10 @@ export default {
     }
   },
   created () {
-    RecommendationService.getType().then((response) => {
-      this.type = response.data
-
-      if (this.type === 0) {
-          MovieService.getMoviesPrediction(1, 12, this.selectedMovieId).then((response) => {
+    MovieService.getMoviesDetailPrediction(1, 12, this.selectedMovieId).then((response) => {
             this.movies = response.data.items
           }).catch((error) => {
             console.log(error.response.data)
-          })
-      } else if (this.type === 1) {
-          MovieService.getMoviesContentBasedPrediction(1, 12, this.selectedMovieId).then((response) => {
-            this.movies = response.data.items
-          }).catch((error) => {
-            console.log(error.response.data)
-          })
-      }
-    }).catch((error) => {
-      console.log(error.response.data)
     })
   },
   methods: {

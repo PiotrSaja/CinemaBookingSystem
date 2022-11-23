@@ -4,7 +4,8 @@
     <div class="container">
       <div class="row mt-3">
         <div class="col-md-12">
-          <h5 class="text-white underline font-weight-bold">Premieres</h5>
+          <h5 v-if="this.type < 2 && this.type !== null" class="text-white underline font-weight-bold">Recomendations</h5>
+          <h5 v-else class="text-white underline font-weight-bold">Premieres</h5>
           <vue-horizontal-list-autoscroll :items="movies" :options="options">
             <template v-slot:default="{ item }">
               <div class="movie-grid" @click="onMovieClicked(item.id)">
@@ -56,12 +57,14 @@ import moment from 'moment'
 import MovieService from '@/api-services/movie-service'
 import MovieCarousel from '@/components/MovieCarousel'
 import VueHorizontalListAutoscroll from 'vue-horizontal-list-autoscroll'
+import RecommendationService from '@/api-services/recommendation-service'
 export default {
   components: { MovieCarousel, VueHorizontalListAutoscroll, VueResizeText },
   name: 'Home',
   data () {
     return {
       movies: [],
+      type: null,
       soonMovies: [],
       options: {
         autoscroll: {
@@ -99,15 +102,40 @@ export default {
     }
   },
   created () {
-    MovieService.getAllSoon(1, 100, -1).then((response) => {
-      this.movies = response.data.items
-    }).catch((error) => {
-      console.log(error.response.data)
-    })
     MovieService.getAllSoon(1, 100, 1).then((response) => {
       this.soonMovies = response.data.items
     }).catch((error) => {
       console.log(error.response.data)
+    })
+    RecommendationService.getType().then((response) => {
+      this.type = response.data
+
+      if (this.type === 0) {
+          MovieService.getMoviesPrediction(1, 12).then((response) => {
+            this.movies = response.data.items
+          }).catch((error) => {
+            console.log(error.response.data)
+          })
+      } else if (this.type === 1) {
+          MovieService.getMoviesContentBasedPrediction(1, 12).then((response) => {
+            this.movies = response.data.items
+          }).catch((error) => {
+            console.log(error.response.data)
+          })
+      } else if (this.type === 2) {
+          MovieService.getAllSoon(1, 100, -1).then((response) => {
+          this.movies = response.data.items
+          }).catch((error) => {
+            console.log(error.response.data)
+          })
+      }
+    }).catch((error) => {
+      console.log(error.response.data)
+      MovieService.getAllSoon(1, 100, -1).then((response) => {
+      this.movies = response.data.items
+      }).catch((error) => {
+        console.log(error.response.data)
+      })
     })
   },
   methods: {
