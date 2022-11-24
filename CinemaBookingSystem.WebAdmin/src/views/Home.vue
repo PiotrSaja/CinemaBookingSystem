@@ -280,7 +280,7 @@ export default {
     Button
   },
   created() {
-    StatisticsService.get()
+    StatisticsService.getAll()
       .then((response) => {
         this.statistics = response.data;
       })
