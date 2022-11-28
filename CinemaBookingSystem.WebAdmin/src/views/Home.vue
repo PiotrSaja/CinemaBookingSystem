@@ -12,7 +12,7 @@
               <div class="surface-card shadow-2 p-3 border-round">
                 <div class="flex justify-content-between mb-3">
                   <div>
-                    <span class="block text-500 font-medium mb-3"
+                    <span class="block text-500 font-medium mb-3" v-bind:href="'/bookings'"
                       >Bookings</span
                     >
                     <div class="text-900 font-medium text-xl">
@@ -42,7 +42,7 @@
               <div class="surface-card shadow-2 p-3 border-round">
                 <div class="flex justify-content-between mb-3">
                   <div>
-                    <span class="block text-500 font-medium mb-3">Revenue</span>
+                    <span class="block text-500 font-medium mb-3" v-bind:href="'/bookings'">Revenue</span>
                     <div class="text-900 font-medium text-xl">
                       ${{ statistics.revenueAll.toFixed(2) }}
                     </div>
@@ -70,7 +70,7 @@
               <div class="surface-card shadow-2 p-3 border-round">
                 <div class="flex justify-content-between mb-3">
                   <div>
-                    <span class="block text-500 font-medium mb-3"
+                    <span class="block text-500 font-medium mb-3" v-bind:href="'/bookings'"
                       >Customers</span
                     >
                     <div class="text-900 font-medium text-xl">
@@ -97,7 +97,7 @@
               <div class="surface-card shadow-2 p-3 border-round">
                 <div class="flex justify-content-between mb-3">
                   <div>
-                    <span class="block text-500 font-medium mb-3">Seances</span>
+                    <span class="block text-500 font-medium mb-3" v-bind:href="'/seances'">Seances</span>
                     <div class="text-900 font-medium text-xl">
                       {{ statistics.numberOfSeances }} All
                     </div>
