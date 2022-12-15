@@ -20,7 +20,11 @@
                 <span>Movie: {{ seance.movie.title }}</span
                 ><br />
                 <span>Cinema Hall: {{ seance.cinemaHall.name }}</span>
-                <table class="mt-3">
+                <br />
+                <span>Insert option: </span>
+                <RadioButton name="insertOption" value="All" v-model="insertOption" /> All
+                <RadioButton name="insertOption" value="Row" v-model="insertOption" /> Row
+                <table class="mt-3" v-if="insertOption === 'All'">
                   <tr>
                     <th>Row</th>
                     <th>Seat number</th>
@@ -38,6 +42,24 @@
                       <InputNumber
                         id="price"
                         v-model="seanceSeatsPrice[index]"
+                        mode="decimal"
+                        :minFractionDigits="2"
+                        :allowEmpty="false"
+                      />
+                    </td>
+                  </tr>
+                </table>
+                <table class="mt-3" v-if="insertOption === 'Row'">
+                  <tr>
+                    <th>Row</th>
+                    <th>Price</th>
+                  </tr>
+                  <tr v-for="(row, index) in cinemaSeatsRows" :key="row">
+                    <td>{{ row}}</td>
+                    <td>
+                      <InputNumber
+                        id="price"
+                        v-model="seanceSeatsRowPrice[index]"
                         mode="decimal"
                         :minFractionDigits="2"
                         :allowEmpty="false"
@@ -76,6 +98,7 @@ import Navbar from "@/components/Navbar.vue";
 import Menubar1 from "@/components/Menubar.vue";
 import Message from "primevue/message";
 import Button from "primevue/button";
+import RadioButton from 'primevue/radiobutton';
 import SeanceService from "@/services/seance-service";
 import CinemaSeatsService from "@/services/cinema-seats-service";
 import SeanceSeatsService from "@/services/seance-seats-service";
@@ -90,6 +113,7 @@ export default {
     InputNumber,
     Navbar,
     Menubar1,
+    RadioButton
   },
   data() {
     return {
@@ -105,7 +129,10 @@ export default {
         }
       },
       cinemaSeats: {},
+      cinemaSeatsRows: {},
       seanceSeatsPrice: [],
+      seanceSeatsRowPrice: [],
+      insertOption: 'All'
     };
   },
   created() {
@@ -118,6 +145,8 @@ export default {
         CinemaSeatsService.getAll(response.data.cinemaHall.id)
           .then((response) => {
             this.cinemaSeats = response.data;
+            this.cinemaSeatsRows = [... new Set(this.cinemaSeats.items.map(x=>x.row))];
+            console.log(this.cinemaSeatsRows);
           })
           .catch((error) => {
             if (error.response.status === 404) {
@@ -172,8 +201,40 @@ export default {
           this.showError = true;
         });
     },
+    createSeanceSeatsByRow() {
+      const seanceSeats = [];
+      for(var j = 0; j < this.seanceSeatsRowPrice.length; j++){
+        for (var i = 0; i < this.cinemaSeats.items.length; i++) {
+          if(this.cinemaSeats.items[i].row === j+1){
+            var seanceSeat = {
+            cinemaSeatId: this.cinemaSeats.items[i].id,
+            price: this.seanceSeatsRowPrice[j],
+          };
+          seanceSeats.push(seanceSeat);
+          }
+        }
+      }
+      
+      const request = {
+        seanceId: this.seance.id,
+        seanceSeats: seanceSeats,
+      };
+      SeanceSeatsService.createSeats(request)
+        .then((response) => {
+          console.log(response.data);
+          this.$router.replace({ name: "Seances" });
+        })
+        .catch((error) => {
+          console.log(error);
+          this.errorMessage = error.response.data.Message;
+          this.showError = true;
+        });
+    },
     submit() {
-      this.createSeanceSeats();
+      if(this.insertOption === 'All')
+        this.createSeanceSeats();
+      else
+        this.createSeanceSeatsByRow();
     },
   },
 };

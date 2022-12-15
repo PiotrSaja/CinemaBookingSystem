@@ -46,8 +46,13 @@
                               v-model="sortType"
                               label="name"
                               id="value"
-                              @input="sortBy(sortType.value)"
+                              @input="sortBy(sortType.value, 'DESC')"
                               ></v-select>
+                            </div>
+                            <div v-if="sortType.value != null">
+                              <h5 class="text-center mb-4">Order</h5>
+                              <b-button style="width:100%" @click="sortBy(sortType.value, 'DESC')" v-if="orderDesc">Descrending</b-button>
+                              <b-button style="width:100%" @click="sortBy(sortType.value, 'ASC')" v-if="!orderDesc">Ascending</b-button>
                             </div>
                           </b-card>
                     </b-collapse>
@@ -107,7 +112,8 @@ export default {
           { name: 'Sort by: Genre', value: 'genre' },
           { name: 'Sort by: Imdb Rating', value: 'imdbRating' }
          ],
-         searchString: ''
+         searchString: '',
+         orderDesc: true
       }
   },
   created () {
@@ -161,8 +167,13 @@ export default {
     onSeanceClicked (seanceId) {
       this.showSeanceDetail(seanceId)
     },
-    sortBy (prop) {
-      this.moviesWithSeances.items.sort((a, b) => a[prop] > b[prop] ? -1 : 1)
+    sortBy (prop, order) {
+      this.orderDesc = !this.orderDesc;
+      if (order === "ASC"){
+        this.moviesWithSeances.items.sort((a, b) => a[prop] < b[prop] ? -1 : 1)
+      }else {
+        this.moviesWithSeances.items.sort((a, b) => a[prop] > b[prop] ? -1 : 1)
+      }
     }
   },
   mounted () {
